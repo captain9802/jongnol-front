@@ -17,8 +17,7 @@
 .env.production.local
 
 ### Safe For Using Code For Front Project ###
-### add at 24/08/23 - 12:37 by robbie ###
-#.env
+.env
 
 npm-debug.log*
 yarn-debug.log*
