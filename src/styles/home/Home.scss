@@ -1,0 +1,39 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__logo {
+      margin-bottom: 16px;
+    }
+  
+    &__search-container {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 720px;
+      margin-bottom: 50px;
+  
+      .MuiOutlinedInput-root {
+        height: 100%;
+        border-radius: 8px;
+        background-color: white;
+      }
+    }
+  
+    &__grid {
+      margin-top: 16px;
+      justify-content: center;
+    }
+  
+    &__grid-item {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .css-19midj6 {
+    padding: 0 !important;
+}
+
+  

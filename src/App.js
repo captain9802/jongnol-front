@@ -6,13 +6,15 @@ import Join from './pages/login/join';
 import Layout from './pages/Layout';
 import store from './store/store';
 import { Provider } from 'react-redux';
-import { Container } from '@mui/material';
+import { Container, ThemeProvider } from '@mui/material';
+import common from './styles/common';
 
 function App() {
   return (
+    <ThemeProvider theme={common}>
     <Provider store={store}>
       <Router>
-        <Container maxWidth={false} style={{ maxWidth: "1200px", padding: 0 }}>
+        <Container maxWidth={false} style={{ maxWidth: "1200px", padding: 0}}>
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<Home />} />
@@ -23,6 +25,7 @@ function App() {
         </Container>
       </Router>
     </Provider>
+    </ThemeProvider>
   );
 }
 

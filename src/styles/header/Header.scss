@@ -1,0 +1,25 @@
+.header {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    align-items: center;
+  
+    &__logo {
+      height: 56px;
+      cursor: pointer;
+    }
+  
+    &__buttons {
+      margin-left: auto;
+  
+      &__button {
+        variant: contained;
+        size: small;
+        
+        &:first-child {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  
