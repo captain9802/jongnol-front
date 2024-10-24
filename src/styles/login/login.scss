@@ -1,0 +1,29 @@
+.login {
+    margin-top: 8%; 
+    max-width: 400px;
+
+    .MuiOutlinedInput-root {
+        background-color: white;
+      }
+
+    &__title {
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    &__field {
+        margin-bottom: 16px;     
+    }
+
+    &__button {
+        margin-top: 16px;
+        border-radius: 5px;
+    }
+
+    &__link {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 16px;
+    }
+    
+}
