@@ -1,23 +1,61 @@
 .login {
-    margin-top: 8%; 
-    max-width: 400px;
+    padding: 0 !important;
+    display: grid;
+    justify-content: center;
+
 
     .MuiOutlinedInput-root {
         background-color: white;
       }
 
-    &__title {
-        text-align: center;
-        margin-bottom: 16px;
+    .css-bmd30r-MuiGrid2-root {
+        --Grid-rowSpacing: 0;
     }
 
-    &__field {
-        margin-bottom: 16px;     
+    &__backarrow {
+        width: 40px;
+    }  
+
+    &__img {
+        margin-bottom: 50px;
+        justify-content: center;
+        display: flex;
+        width: 100%;
+        &:hover{
+            cursor: pointer;
+        }
+        &__logo {
+            width: 400px;
+        }
+    }
+
+    &__paper {
+        &.MuiPaper-root {
+            border-radius: 10px;
+            padding: 30px;
+            width: 452px;
+        };
+    }
+
+    &__title {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    &__id {
+        margin-bottom: 20px;     
+    }
+
+    &__join {
+        margin-bottom: 45px;     
     }
 
     &__button {
-        margin-top: 16px;
-        border-radius: 5px;
+        border-radius: 10px !important;
+        background-color: #CBDEB8 !important;
+        &:hover {
+            box-shadow: none !important;
+        }
     }
 
     &__link {

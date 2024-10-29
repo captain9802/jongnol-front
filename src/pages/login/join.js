@@ -1,8 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import { Button, Container, Grid2, Link, TextField, Typography, IconButton, Box, Paper } from '@mui/material';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import {join} from '../../apis/userApi';
+import { join } from '../../apis/userApi';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import '../../styles/login/join.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Join = () => {
     const [form, setForm] = useState({
@@ -11,10 +14,12 @@ const Join = () => {
         userPwChk: '',
         userNickName: '',
     });
+    const [NickNameChk,setNickNameChk] = useState(false);
     const [idChk, setIdChk] = useState(false);
     const [pwValidation, setPwValidtaion] = useState(false);
     const [pwChk, setPwChk] = useState(false);
     const dispatch = useDispatch();
+    const navi = useNavigate();
 
     const textFiledchanged = useCallback((e) => {
         setForm({
@@ -22,16 +27,20 @@ const Join = () => {
             [e.target.name]: e.target.value
         });
 
-        if(e.target.name === 'userId') {
+        if (e.target.name === 'userNickName') {
+            setNickNameChk(false);
+            document.querySelector("#userNickName").removeAttribute('disabled');
+            return;
+        }
+
+        if (e.target.name === 'userId') {
             setIdChk(false);
             document.querySelector("#userIdChk").removeAttribute('disabled');
             return;
         }
 
-
-        // 비밀번호 일치 여부
-        if(e.target.name === 'userPw') {
-            if(e.target.value === form.userPwChk) {
+        if (e.target.name === 'userPw') {
+            if (e.target.value === form.userPwChk) {
                 setPwChk(true);
                 document.querySelector("#password-check-success").style.display = 'block';
                 document.querySelector("#password-check-fail").style.display = 'none';
@@ -40,12 +49,11 @@ const Join = () => {
                 document.querySelector("#password-check-success").style.display = 'none';
                 document.querySelector("#password-check-fail").style.display = 'block';
             }
-
             return;
         }
 
-        if(e.target.name === 'userPwChk') {
-            if(e.target.value === form.userPw) {
+        if (e.target.name === 'userPwChk') {
+            if (e.target.value === form.userPw) {
                 setPwChk(true);
                 document.querySelector("#password-check-success").style.display = 'block';
                 document.querySelector("#password-check-fail").style.display = 'none';
@@ -54,183 +62,264 @@ const Join = () => {
                 document.querySelector("#password-check-success").style.display = 'none';
                 document.querySelector("#password-check-fail").style.display = 'block';
             }
-
             return;
         }
     }, [form]);
 
-    // id 중복 체크
+    const userNickNameCheck = useCallback(async () => {
+        if (form.userNickName === '') {
+            alert("닉네임 입력하세요.");
+            document.querySelector("#userNickName").focus();
+            return;
+        }
+
+        try {
+            const response = await axios.post(`http://localhost:8080/user/nickname-check`, {
+                userNickName: form.userNickName
+            });
+            if (response.data.item.nicknameCheckResult === 'invalid nickname') {
+                alert("사용중인 닉네임입니다. 다른 닉네임을 사용해주세요.");
+                document.querySelector("#userNickName").focus();
+                return;
+            } else {
+                if (window.confirm(`${form.userNickName}는 사용가능한 닉네임입니다. 사용하시겠습니까?`)) {
+                    document.querySelector("#userNickName").setAttribute('disabled', true);
+                    setNickNameChk(true);
+                    return;
+                }
+            }
+        } catch (e) {
+            alert("에러 발생. 관리자에게 문의하세요.");
+        }
+    }, [form.userNickName]);
+
     const idCheck = useCallback(async () => {
-        if(form.userId === '') {
-            alert("아이디를 입력하세요.");
+        if (form.userId === '') {
+            alert("닉네임을 입력하세요.");
             document.querySelector("#userId").focus();
             return;
         }
 
         try {
-            const response = await axios.post(
-                `http://localhost:8080/user/id-check`,
-                {
-                    userId: form.userId
-                }
-            );
-            console.log("??????????")
-            if(response.data.item.idCheckResult === 'invalid id') {
+            const response = await axios.post(`http://localhost:8080/user/id-check`, {
+                userId: form.userId
+            });
+            if (response.data.item.idCheckResult === 'invalid id') {
                 alert("중복된 아이디입니다. 다른 아이디로 변경해주세요.");
                 document.querySelector("#userId").focus();
                 return;
             } else {
-                if(window.confirm(`${form.userId}는 사용가능한 아이디입니다. 사용하시겠습니까?`)) {
+                if (window.confirm(`${form.userId}는 사용가능한 아이디입니다. 사용하시겠습니까?`)) {
                     document.querySelector("#userIdChk").setAttribute('disabled', true);
                     setIdChk(true);
                     return;
                 }
             }
-        } catch(e) {
-            console.log("??????????")
-            console.log(e);
+        } catch (e) {
             alert("에러 발생. 관리자에게 문의하세요.");
         }
     }, [form.userId]);
 
-    // 비밀번호 유효성 검사 정규식
     const validatePassword = (userPw) => {
         return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*+=-]).{9,}$/.test(userPw);
     }
 
-    // 비밀번호 입력 인풋에서 커서가 나가면 유효성 검사
     const userPwBlur = useCallback((e) => {
-        if(validatePassword(e.target.value)) {
+        if (validatePassword(e.target.value)) {
             setPwValidtaion(true);
             document.querySelector("#password-validation").style.display = "none";
-            return;
         } else {
             setPwValidtaion(false);
             document.querySelector("#password-validation").style.display = "block";
             document.querySelector("#userPw").focus();
-            return;
         }
     }, []);
 
-    // 회원가입 처리
     const handleJoin = useCallback((e) => {
         e.preventDefault();
 
-        if(!idChk) {
+        if (!idChk) {
             alert("아이디 중복체크를 진행하세요.");
             return;
         }
 
-        if(!pwValidation) {
+        if (!NickNameChk) {
+            alert("닉네임 중복체크를 진행하세요.");
+            return;
+        }
+
+        if (!pwValidation) {
             alert("비밀번호는 특수문자, 영문자, 숫자 조합의 9자리 이상으로 설정하세요.");
             document.querySelector("#userPw").focus();
             return;
         }
 
-        if(!pwChk) {
+        if (!pwChk) {
             alert("비밀번호가 일치하지 않습니다.");
             document.querySelector("#userPwChk").focus();
             return;
         }
 
         dispatch(join(form));
-    }, [form, idChk, pwValidation, pwChk, dispatch]);
-  return (
-    <Container component='div' maxWidth="xs" style={{marginTop: '8%'}}>
-        <form onSubmit={handleJoin}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography component='h1' variant='h5'>
-                        회원가입
-                    </Typography>
-                </Grid>
-                <Grid item xs={12} textAlign='right'>
-                    <TextField
-                        name='userId'
-                        variant='outlined'
-                        required
-                        id='userId'
-                        label='아이디'
-                        autoFocus
-                        fullWidth
-                        value={form.userId}
-                        onChange={textFiledchanged}
-                    ></TextField>
-                    <Button name='userIdChk' id='userIdChk' color='primary' onClick={idCheck}>
-                        중복확인
-                    </Button>
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name='userPw'
-                        variant='outlined'
-                        required
-                        id='userPw'
-                        label='비밀번호'
-                        fullWidth
-                        type='password'
-                        value={form.userPw}
-                        onChange={textFiledchanged}
-                        onBlur={userPwBlur}
-                    ></TextField>
+    }, [form, NickNameChk, idChk, pwValidation, pwChk, dispatch]);
+
+    const handleBack = () => {
+        navi(-1);
+    };
+
+    const handleHome = () => {
+        navi('/');
+    }
+
+    return (
+        <Container component="div" maxWidth="xs" className="join">
+             <IconButton className='join__backarrow' onClick={handleBack}>
+              <ArrowBackIcon/>
+            </IconButton>
+            <Box className='join__img' onClick={handleHome}>
+            <img src='logo/4.png' alt='logo'/>
+            </Box>
+            <Paper className='join__paper'>
+            <form onSubmit={handleJoin} className="join__form">
+                <Grid2 container spacing={2} className="join__grid">
+                    <Grid2 item xs={12} className="join__title">
+                        <Typography component="h1" variant="BT" align="center">
+                            회원가입
+                        </Typography>
+                    </Grid2>
+                    <Grid2 item xs={12} sx={{display:'flex', alignItems:'center'}}>
+                        <Box className='join__text 1'>
+                         <Typography variant="PCT">닉네임</Typography>
+                        </Box>
+                        <TextField
+                            name="userNickName"
+                            variant="standard"
+                            required
+                            id="userNickName"
+                            label="닉네임"
+                            autoFocus
+                            fullWidth
+                            value={form.userNickName}
+                            onChange={textFiledchanged}
+                            className="join__input join__input--id"
+                        />
+                        <Button
+                            name="userNickNameChk"
+                            id="userNickNameChk"
+                            color="primary"
+                            size="small"
+                            onClick={userNickNameCheck}
+                            className="join__button join__button--id-check"
+                        >
+                            중복확인
+                        </Button>
+                    </Grid2>
+                    <Grid2 item xs={12} sx={{display:'flex', alignItems:'center'}}>
+                        <Box className='join__text 2'>
+                         <Typography variant="PCT">아이디</Typography>
+                        </Box>
+                        <TextField
+                            name="userId"
+                            variant="standard"
+                            required
+                            id="userId"
+                            label="아이디"
+                            autoFocus
+                            fullWidth
+                            value={form.userId}
+                            onChange={textFiledchanged}
+                            className="join__input join__input--id"
+                        />
+                        <Button
+                            name="userIdChk"
+                            id="userIdChk"
+                            color="primary"
+                            size="small"
+                            onClick={idCheck}
+                            className="join__button join__button--id-check"
+                        >
+                            중복확인
+                        </Button>
+                    </Grid2>
+                    <Grid2 item xs={12} sx={{display:'flex', alignItems:'center'}}>
+                        <Box className='join__text 3'>
+                         <Typography variant="PCT">비밀번호</Typography>
+                        </Box>
+                        <TextField
+                            name="userPw"
+                            variant="standard"
+                            required
+                            id="userPw"
+                            label="비밀번호"
+                            fullWidth
+                            type="password"
+                            value={form.userPw}
+                            onChange={textFiledchanged}
+                            onBlur={userPwBlur}
+                            className="join__input join__input--password"
+                        />
+                    </Grid2>
                     <Typography
-                        name='password-validation'
-                        id='password-validation'
-                        component='p'
-                        variant='string'
-                        style={{display: 'none', color: 'red'}}>
-                        비밀번호는 특수문자, 영문자, 숫자 조합의 9자리 이상으로 설정하세요.
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name='userPwChk'
-                        variant='outlined'
-                        required
-                        id='userPwChk'
-                        label='비밀번호 확인'
-                        fullWidth
-                        type='password'
-                        value={form.userPwChk}
-                        onChange={textFiledchanged}
-                    ></TextField>
-                    <Typography
-                        name='password-check-success'
-                        id='password-check-success'
-                        component='p'
-                        variant='string'
-                        style={{display: 'none', color: 'green'}}>
-                        비밀번호가 일치합니다.
-                    </Typography>
-                    <Typography
-                        name='password-check-fail'
-                        id='password-check-fail'
-                        component='p'
-                        variant='string'
-                        style={{display: 'none', color: 'red'}}>
-                        비밀번호가 일치하지 않습니다.
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Button
-                        type='submit'
-                        fullWidth
-                        variant='contained'
-                        color='primary'>
-                        회원가입
-                    </Button>
-                </Grid>
-            </Grid>
-            <Grid container justifyContent='flex-end'>
-                <Grid item>
-                    <Link href="/login" variant='body2'>
-                        이미 계정이 있으시면 로그인하세요.
-                    </Link>
-                </Grid>
-            </Grid>
-        </form>
-    </Container>
-  );
+                            id="password-validation"
+                            className="join__validation join__validation--password"
+                            color="error"
+                        >
+                            비밀번호는 특수문자, 영문자, 숫자 조합의 9자리 이상으로 설정하세요.
+                        </Typography>
+                    <Grid2 item xs={12} sx={{display:'flex', alignItems:'center'}}>
+                        <Box className='join__text 4'>
+                         <Typography variant="PCT">비밀번호 재확인</Typography>
+                        </Box>
+                        <TextField
+                            name="userPwChk"
+                            variant="standard"
+                            required
+                            id="userPwChk"
+                            label="비밀번호 확인"
+                            fullWidth
+                            type="password"
+                            value={form.userPwChk}
+                            onChange={textFiledchanged}
+                            className="join__input join__input--password-check"
+                        />
+                        <Typography
+                            id="password-check-success"
+                            className="join__validation join__validation--success"
+                            color="success"
+                        >
+                            비밀번호가 일치합니다.
+                        </Typography>
+                        <Typography
+                            id="password-check-fail"
+                            className="join__validation join__validation--fail"
+                            color="error"
+                        >
+                            비밀번호가 일치하지 않습니다.
+                        </Typography>
+                    </Grid2>
+                    <Grid2 item xs={12}>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className="join__button join__button--submit"
+                        >
+                            회원가입
+                        </Button>
+                    </Grid2>
+                </Grid2>
+                <Grid2 container justifyContent="flex-end" className="join__link-container">
+                    <Grid2 item>
+                        <Link href="/login" variant="body2" className="join__link">
+                            이미 계정이 있으시면 로그인하세요.
+                        </Link>
+                    </Grid2>
+                </Grid2>
+            </form>
+            </Paper>
+        </Container>
+    );
 }
 
 export default Join;

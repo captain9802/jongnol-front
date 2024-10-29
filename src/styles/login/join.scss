@@ -1,0 +1,106 @@
+
+.join {
+    display: grid;
+    justify-content: center;
+
+    .MuiOutlinedInput-root {
+        background-color: white;
+      }
+    .css-bmd30r-MuiGrid2-root {
+        --Grid-rowSpacing: 0;
+    }
+
+    &__backarrow {
+        width: 40px;
+    }  
+
+    &__img {
+        margin-bottom: 50px;
+        justify-content: center;
+        display: flex;
+        width: 100%;
+        &:hover{
+            cursor: pointer;
+        }
+        &__logo {
+            width: 400px;
+        }
+    }
+
+    &__paper {
+        &.MuiPaper-root {
+            border-radius: 10px;
+            padding: 30px;
+            width: 452px;
+        };
+    }
+
+    &__text {
+        width: 90px;
+    }
+
+    &__grid {
+        display: grid !important;
+    }
+    
+    &__title {
+        margin-bottom: 15px;
+    }
+
+    .join__input{
+        width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
+
+        .css-1n91y37-MuiInputBase-root-MuiInput-root{
+            margin-top: 8px ;
+        }
+
+        .css-1e2f6ol-MuiFormLabel-root-MuiInputLabel-root {
+            top: -10px;
+        }
+    }
+
+    &__button {
+        margin-top: 5px;
+
+        &--id-check {
+            margin-left: 8px;
+            float: right;
+        }
+
+        &--submit {
+            margin-top: 16px;
+            color: #fff;
+        }
+    }
+
+    &__validation {
+        display: none;
+        font-size: 0.875rem;
+        margin-top: 5px;
+
+        &--password {
+            color: red;
+        }
+
+        &--success {
+            color: green;
+        }
+
+        &--fail {
+            color: red;
+        }
+    }
+
+    &__link-container {
+        margin-top: 16px;
+        text-align: right;
+    }
+
+    &__link {
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
