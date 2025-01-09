@@ -24,8 +24,16 @@ const Login = () => {
 
     const handleLogin = useCallback((e) => {
         e.preventDefault();
-        dispatch(login(form));
-        navi("/");
+        dispatch(login(form)).then((result) => {
+            if (result.type === 'user/login/fulfilled') {
+                navi("/");
+            }else {
+                setForm((prevForm) => ({
+                    ...prevForm,
+                    userPw: ''
+                }));
+            }
+        });
     }, [form, dispatch, navi]);
 
     const handleBack = () => {

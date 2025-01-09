@@ -4,7 +4,7 @@ import { login, join, logout } from "../apis/userApi";
 const boardSlice = createSlice({
     name: 'user',
     initialState: {
-        isLogin: false,
+        isLogin: sessionStorage.getItem("ACCESS_TOKEN") ? true : false,
         loginUserId: ''
     },
     reducers: {

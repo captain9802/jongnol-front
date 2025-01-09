@@ -15,6 +15,10 @@ const Header = () => {
     navi("/login");
   }, [dispatch, navi]);
 
+  const quizCreat = useCallback(() => {
+    navi("/quizcreate");
+  }, [navi])
+
   return (
     <Box className="header">
       <img
@@ -25,6 +29,7 @@ const Header = () => {
       />
       <Box className="header__buttons">
         {isLogin ? (
+          <>
           <Button
             className="header__buttons__button"
             color='inherit'
@@ -34,6 +39,16 @@ const Header = () => {
           >
             로그아웃
           </Button>
+           <Button
+           className="header__buttons__button"
+           color='inherit'
+           variant="contained"
+           size="small"
+           onClick={quizCreat}
+         >
+           퀴즈 등록
+         </Button>
+         </>
         ) : (
           <>
             <Button

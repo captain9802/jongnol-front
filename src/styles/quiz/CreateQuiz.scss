@@ -1,0 +1,47 @@
+.creatquiz {
+    width: 100%;
+    margin-top: 20px;
+    
+    &__tabs {
+      width: 1200px; // 탭의 길이 설정
+      height: 48px; // 탭의 높이 설정
+      margin: auto; // 가운데 정렬
+      background-color: white; // 탭의 배경색
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); // 약간의 그림자 추가
+  
+      .MuiTabs-indicator {
+        display: flex;
+        justify-content: center;
+        background-color: transparent;
+      }
+  
+      .MuiTabs-indicatorSpan {
+        max-width: 70px;
+        width: 100%;
+        background-color: black; // 원하는 색상
+      }
+    }
+
+    &__content {
+        display: grid;
+        gap: 20px;
+    }
+
+    .creatquiz__quizimage {
+        height: 413px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .creatquiz__icon {
+        height: 50px;
+        width: 50px;
+    }
+    
+    .creatquiz__button {
+        
+    }
+  }
+  
