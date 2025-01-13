@@ -1,6 +1,10 @@
 .creatquiz {
   margin-top: 20px;
 
+  .css-w4nesw-MuiInputBase-input-MuiOutlinedInput-input {
+    height: 100% !important;
+  }
+
   .creatquiz__Box {
     width: 800px;
     margin: auto;

@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear'; // x 아이콘 추가
+import QuizNavigator from './quiznavigator';
 
 const Creatquiz = () => {
   const navi = useNavigate();
@@ -178,7 +179,10 @@ const Creatquiz = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
+      <QuizNavigator 
+        currentStep={value} // 현재 스텝 전달
+        onStepChange={setValue} // 스텝 변경 핸들러 전달
+      />
       {/* 객관식 문제 영역에서의 이미지 삽입 */}
       <Tabs
         value={value}
