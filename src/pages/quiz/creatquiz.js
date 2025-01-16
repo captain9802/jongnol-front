@@ -14,13 +14,18 @@ const Creatquiz = () => {
   const isLogin = useSelector((state) => state.user.isLogin);
 
   const [value, setValue] = useState(0);
+  const [currentQuiz, setCurrentQuiz] = useState(1);
   const [maintitle, setMainTitle] = useState('');
   const [mainex, setMainEx] = useState('');
   const [subtitle, setSubTitle] = useState('');
-  const [answers, setAnswers] = useState(['']);
+  const [tanswer, setTanswer] = useState('');
+  const [fanswers, setFanswers] = useState(['']);
   const [imageDialog, setImageDialog] = useState(null); // Dialog 이미지 상태
   const [imageBox, setImageBox] = useState(null); // Box 이미지 상태
   const [openDialog, setOpenDialog] = useState(true); // Dialog 열기 상태
+  const [quizzes, setQuizzes] = useState({
+    1: { type: 0, title: "", image: "",correctanswer: "", flaseanswers: [""] }, // 초기값
+  });
 
   useEffect(() => {
     if (!isLogin) {
@@ -31,16 +36,29 @@ const Creatquiz = () => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    handleTypeChange(newValue); // 탭 선택 시 type 값 업데이트
+  };
+
+  const handleTypeChange = (newType) => {
+    setQuizzes((prevQuizzes) => ({
+      ...prevQuizzes,
+      [currentQuiz]: {
+        ...prevQuizzes[currentQuiz],
+        type: newType,
+        correctAnswer: newType === 1 ? [] : "",  // 주관식일 때 correctAnswer는 배열, 객관식일 때는 문자열
+        falseAnswers: newType === 0 ? [""] : [],  // 객관식일 때만 falseAnswers 배열이 필요하고, 주관식일 땐 빈 배열
+      },
+    }));
   };
 
   const handleAddAnswer = () => {
-    setAnswers([...answers, '']);
+    setFanswers([...fanswers, '']);
   };
 
   const handleRemoveAnswer = (index) => {
-    if (answers.length > 1) {
-      const newAnswers = answers.filter((_, i) => i !== index);
-      setAnswers(newAnswers);
+    if (fanswers.length > 1) {
+      const newAnswers = fanswers.filter((_, i) => i !== index);
+      setFanswers(newAnswers);
     }
   };
 
@@ -83,6 +101,33 @@ const Creatquiz = () => {
 
   const handleCancel = () => {
     navi(-1); // 뒤로 가기, 이전 페이지로 이동
+  };
+
+  const handleQuizChange = (newQuizNumber) => {
+    console.log(newQuizNumber);
+    setCurrentQuiz(newQuizNumber); // 퀴즈 번호를 변경
+    console.log(`현재 퀴즈 번호: ${newQuizNumber}`); // 변경된 퀴즈 번호 출력
+  };
+
+  const handleNextQuiz = () => {
+    setCurrentQuiz((prevQuiz) => {
+      const nextQuiz = prevQuiz + 1;
+      handleQuizChange(nextQuiz);
+      return nextQuiz;
+    });
+  };
+
+  const handleBackQuiz = () => {
+    console.log(currentQuiz);
+    setCurrentQuiz((prevQuiz) => {
+      const nextQuiz = prevQuiz - 1;
+      if (nextQuiz < 1) {
+        alert("첫 번째 문제입니다.");
+        return prevQuiz;
+      }
+      handleQuizChange(nextQuiz);
+      return nextQuiz;
+    });
   };
 
   return (
@@ -180,8 +225,8 @@ const Creatquiz = () => {
         </DialogActions>
       </Dialog>
       <QuizNavigator 
-        currentStep={value} // 현재 스텝 전달
-        onStepChange={setValue} // 스텝 변경 핸들러 전달
+        currentQuiz={currentQuiz}
+        onQuizChange={handleQuizChange} // 스텝 변경 핸들러 전달
       />
       {/* 객관식 문제 영역에서의 이미지 삽입 */}
       <Tabs
@@ -263,16 +308,30 @@ const Creatquiz = () => {
               className="creatquiz__inputField"
             />
             <Typography variant="BT" className="creatquiz__header">
-              객관식 답안
+              객관식 정답
             </Typography>
-            {answers.map((answer, index) => (
+              <Box className="creatquiz__answerBox">
+                <TextField
+                  value={tanswer}
+                  onChange={(e) => setTanswer(e.target.value)}
+                  placeholder="객관식 정답을 입력해주세요. (최대 50자)"
+                  inputProps={{
+                    maxLength: 30,
+                  }}
+                  className="creatquiz__answerField"
+                />
+              </Box>
+            <Typography variant="BT" className="creatquiz__header">
+              객관식 보기
+            </Typography>
+            {fanswers.map((answer, index) => (
               <Box key={index} className="creatquiz__answerBox">
                 <TextField
                   value={answer}
                   onChange={(e) => {
-                    const newAnswers = [...answers];
-                    newAnswers[index] = e.target.value;
-                    setAnswers(newAnswers);
+                    const newFanswers = [...fanswers];
+                    newFanswers[index] = e.target.value;
+                    setFanswers(newFanswers);
                   }}
                   placeholder="객관식 보기 및 답안을 작성해주세요. (최대 50자)"
                   inputProps={{
@@ -280,7 +339,7 @@ const Creatquiz = () => {
                   }}
                   className="creatquiz__answerField"
                 />
-                {answers.length > 1 && (
+                {fanswers.length > 1 && (
                   <RemoveCircleOutlineIcon
                     className="creatquiz__removeIcon"
                     onClick={() => handleRemoveAnswer(index)}
@@ -309,6 +368,16 @@ const Creatquiz = () => {
             color="inherit"
             variant="contained"
             size="small"
+            onClick={handleBackQuiz}
+          >
+            이전 문제
+          </Button>
+          <Button
+            className="creatquiz__button"
+            color="inherit"
+            variant="contained"
+            size="small"
+            onClick={handleNextQuiz}
           >
             다음 문제
           </Button>
