@@ -12,9 +12,7 @@ const Creatquiz = () => {
   const isLogin = useSelector((state) => state.user.isLogin);
 
   const [currentQuiz, setCurrentQuiz] = useState(1);
-  const [quizzes, setQuizzes] = useState({
-    currentQuiz: { type: 0, title: "", image: "",correctanswer: "", flaseanswers: [""] },
-  });
+  const [quizzes, setQuizzes] = useState({});
 
   useEffect(() => {
     if (!isLogin) {
@@ -24,9 +22,7 @@ const Creatquiz = () => {
   }, [isLogin, navi]);
 
   const handleQuizChange = (newQuizNumber) => {
-    console.log(newQuizNumber);
     setCurrentQuiz(newQuizNumber);
-    console.log(`현재 퀴즈 번호: ${newQuizNumber}`);
   };
 
   const handleNextQuiz = () => {
@@ -38,7 +34,6 @@ const Creatquiz = () => {
   };
 
   const handleBackQuiz = () => {
-    console.log(currentQuiz);
     setCurrentQuiz((prevQuiz) => {
       const nextQuiz = prevQuiz - 1;
       if (nextQuiz < 1) {
@@ -52,19 +47,18 @@ const Creatquiz = () => {
 
   return (
     <Box className="creatquiz">
-      <QuizDialog/>
+      <QuizDialog />
       <QuizNavigator 
         currentQuiz={currentQuiz}
         onQuizChange={handleQuizChange}
       />
       <QuizForm
         currentQuiz={currentQuiz}
-        setCurrentQuiz={setCurrentQuiz}
         quizzes={quizzes}
-        setQuizzes={setQuizzes}
+        setQuizzes={setQuizzes}  // quizzes와 setQuizzes를 전달
       />
-        <Box className="creatquiz__buttonbox">
-          <Box className="creatquiz__buttons">
+      <Box className="creatquiz__buttonbox">
+        <Box className="creatquiz__buttons">
           <Button
             className="creatquiz__button"
             color="inherit"
@@ -92,7 +86,7 @@ const Creatquiz = () => {
             등록하기
           </Button>
         </Box>
-        </Box>
+      </Box>
     </Box>
   );
 };

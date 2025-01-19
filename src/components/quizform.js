@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField, Typography, Paper, Tabs, Tab } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -12,6 +12,46 @@ const QuizForm = ({ currentQuiz, setQuizzes }) => {
   const [tanswer, setTanswer] = useState('');
   const [fanswers, setFanswers] = useState(['']);
   const [imageBox, setImageBox] = useState(null);
+
+  useEffect(() => {
+    const savedQuiz = JSON.parse(localStorage.getItem(`quiz-${currentQuiz}`));
+
+    if (savedQuiz) {
+      setSubTitle(savedQuiz.subtitle || '');
+      setTanswer(savedQuiz.tanswer || '');
+      setFanswers(savedQuiz.fanswers || ['']);
+      setImageBox(savedQuiz.imageBox || null);
+      setValue(savedQuiz.type || 0);
+    } else {
+      setSubTitle('');
+      setTanswer('');
+      setFanswers(['']);
+      setImageBox(null);
+      setValue(0);
+    }
+  }, [currentQuiz]);
+
+  useEffect(() => {
+    if (hasInputData()) {
+      const existingData = JSON.parse(localStorage.getItem(`quiz-${currentQuiz}`)) || {};
+
+      localStorage.setItem(
+        `quiz-${currentQuiz}`,
+        JSON.stringify({
+          ...existingData,
+          subtitle,
+          tanswer,
+          fanswers,
+          imageBox,
+          type: value,
+        })
+      );
+    } else {
+      if (!hasInputData()) {
+        localStorage.removeItem(`quiz-${currentQuiz}`);
+      }
+    }
+  }, [subtitle, tanswer, fanswers, imageBox, currentQuiz, value]);
 
   const hasInputData = () => {
     return subtitle || tanswer || fanswers.some(answer => answer.trim() !== '') || imageBox;
@@ -34,12 +74,14 @@ const QuizForm = ({ currentQuiz, setQuizzes }) => {
     setTanswer('');
     setFanswers(['']);
     setImageBox(null);
+    localStorage.removeItem(`quiz-${currentQuiz}`);
   };
 
   const handleChangeTab = (event, newValue) => {
+    event.preventDefault();
     if (confirmAndClearData()) {
-        setValue(newValue);
-        handleTypeChange(newValue);
+      setValue(newValue);
+      handleTypeChange(newValue);
     }
   };
 
@@ -62,6 +104,16 @@ const QuizForm = ({ currentQuiz, setQuizzes }) => {
   const handleRemoveAnswer = (index) => {
     const newAnswers = fanswers.filter((_, i) => i !== index);
     setFanswers(newAnswers);
+  
+    localStorage.setItem(
+      `quiz-${currentQuiz}`,
+      JSON.stringify({
+        subtitle,
+        tanswer,
+        fanswers: newAnswers,
+        imageBox,
+      })
+    );
   };
 
   const handleImageClickBox = () => {
