@@ -1,58 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, Typography, Paper, Tabs, Tab } from '@mui/material';
+import { Box, TextField, Typography, Paper, Tabs, Tab, Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import '../styles/quiz/QuizForm.scss';
 
-const QuizForm = ({ currentQuiz, setQuizzes }) => {
+const QuizForm = ({ currentQuiz, setQuizzes, deleteData , quizzes}) => {
   const [value, setValue] = useState(0);
   const [subtitle, setSubTitle] = useState('');
   const [tanswer, setTanswer] = useState('');
   const [fanswers, setFanswers] = useState(['']);
   const [imageBox, setImageBox] = useState(null);
 
-  useEffect(() => {
-    const savedQuiz = JSON.parse(localStorage.getItem(`quiz-${currentQuiz}`));
-
-    if (savedQuiz) {
-      setSubTitle(savedQuiz.subtitle || '');
-      setTanswer(savedQuiz.tanswer || '');
-      setFanswers(savedQuiz.fanswers || ['']);
-      setImageBox(savedQuiz.imageBox || null);
-      setValue(savedQuiz.type || 0);
+   useEffect(() => {
+    const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
+  
+    const existingQuiz = newQuizData.questions.filter(q => q !== null).find(q => q.quizNumber === currentQuiz);
+    if (existingQuiz) {
+      setValue(existingQuiz.type || 0); 
+      setSubTitle(existingQuiz.subtitle || '');  
+      setTanswer(existingQuiz.tanswer || ''); 
+      setFanswers(existingQuiz.fanswers || ['']);
+      setImageBox(existingQuiz.imageBox || null);
     } else {
-      setSubTitle('');
-      setTanswer('');
-      setFanswers(['']);
-      setImageBox(null);
       setValue(0);
+      setSubTitle(''); 
+      setTanswer(''); 
+      setFanswers(['']); 
+      setImageBox(null); 
     }
-  }, [currentQuiz]);
+  }, [currentQuiz, quizzes]); 
 
-  useEffect(() => {
-    if (hasInputData()) {
-      const existingData = JSON.parse(localStorage.getItem(`quiz-${currentQuiz}`)) || {};
+  const saveData = () => {
 
-      localStorage.setItem(
-        `quiz-${currentQuiz}`,
-        JSON.stringify({
-          ...existingData,
-          subtitle,
-          tanswer,
-          fanswers,
-          imageBox,
-          type: value,
-        })
-      );
-    } else {
-      if (!hasInputData()) {
-        localStorage.removeItem(`quiz-${currentQuiz}`);
-      }
+    console.log(fanswers);
+
+    if (!subtitle) {
+      alert('제목이 비어있습니다. 제목을 입력해주세요.');
+      return;
     }
-  }, [subtitle, tanswer, fanswers, imageBox, currentQuiz, value]);
+  
+    if (!tanswer) {
+      alert('정답칸이 비어있습니다. 정답을 입력해주세요.');
+      return;
+    }
+  
+    if (value === 0 && (!fanswers || fanswers.length === 0 || fanswers.some(f => f.trim() === ""))) {
+      alert('오답 선택지가 비어있습니다. 최소한 하나의 오답을 입력해주세요.');
+      return;
+    }
 
+    const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
+  
+    newQuizData.questions[currentQuiz - 1] = {
+      quizNumber: currentQuiz, 
+      type: value,              
+      subtitle,                
+      tanswer,                 
+      fanswers,                
+      imageBox                 
+    };
+  
+    localStorage.setItem('newquiz', JSON.stringify(newQuizData));
+  };
+
+  
+  
   const hasInputData = () => {
     return subtitle || tanswer || fanswers.some(answer => answer.trim() !== '') || imageBox;
   };
@@ -98,7 +112,15 @@ const QuizForm = ({ currentQuiz, setQuizzes }) => {
   };
 
   const handleAddAnswer = () => {
-    setFanswers([...fanswers, '']);
+    if (fanswers.length < 6) {
+      setFanswers([...fanswers, '']);
+    } else {
+      if(value == 0) {
+        alert('최대 6개의 보기만 추가할 수 있습니다.');
+      } else {
+        alert('최대 6개의 유사답안을 추가 할 수 있습니다.');
+      }
+    }
   };
 
   const handleRemoveAnswer = (index) => {
@@ -123,7 +145,14 @@ const QuizForm = ({ currentQuiz, setQuizzes }) => {
   const handleImageChangeBox = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImageBox(URL.createObjectURL(file));
+      const reader = new FileReader();
+      
+      reader.onloadend = () => {
+        const base64Image = reader.result;
+        setImageBox(base64Image);
+      };
+  
+      reader.readAsDataURL(file);
     }
   };
 
@@ -340,6 +369,22 @@ const QuizForm = ({ currentQuiz, setQuizzes }) => {
               </Paper>
             </>
           )}
+        </Box>
+        <Box className="creatquiz__submit">
+          <Button 
+          className="creatquiz__submitButton"
+          onClick={saveData}>
+              <Typography variant="PCT" className="creatquiz__header">
+                문제 등록하기
+              </Typography>
+          </Button>
+          <Button 
+          className="creatquiz__deleteButton"
+          onClick={deleteData}>
+              <Typography variant="PCT" className="creatquiz__header">
+                문제 삭제하기
+              </Typography>
+          </Button>
         </Box>
       </Box>
     </>

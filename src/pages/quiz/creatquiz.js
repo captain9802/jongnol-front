@@ -11,8 +11,8 @@ const Creatquiz = () => {
   const navi = useNavigate();
   const isLogin = useSelector((state) => state.user.isLogin);
 
-  const [currentQuiz, setCurrentQuiz] = useState(1);
-  const [quizzes, setQuizzes] = useState({});
+  const [currentQuiz, setCurrentQuiz] = useState(0);
+  const [quizzes, setQuizzes] = useState([]);
 
   useEffect(() => {
     if (!isLogin) {
@@ -20,6 +20,43 @@ const Creatquiz = () => {
       navi('/login');
     }
   }, [isLogin, navi]);
+
+  const deleteData = () => {
+    if (currentQuiz === 1) {
+      alert('1번 퀴즈는 삭제할 수 없습니다.');
+      return;
+    }
+  
+    const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
+  
+    if (window.confirm((`현재 작성 중인 ${currentQuiz}번 퀴즈가 삭제됩니다. 괜찮으시겠습니까?`))) {
+      if (currentQuiz !== newQuizData.questions.length) {
+        for (let i = currentQuiz; i < newQuizData.questions.length; i++) {
+          newQuizData.questions[i].quizNumber -= 1;
+        }
+      }
+    
+      newQuizData.questions.splice(currentQuiz - 1, 1);
+    
+      localStorage.setItem('newquiz', JSON.stringify(newQuizData));
+    
+      setQuizzes((prevQuizzes) => {
+        const newQuizzes = prevQuizzes.slice(0, -1);
+    
+        if (currentQuiz === prevQuizzes.length) {
+          handleQuizChange(currentQuiz - 1);
+        }
+    
+        return newQuizzes;
+      });
+    
+      alert('퀴즈가 삭제되었습니다.');
+      } else {
+        alert('취소되었습니다.')
+      }
+  };
+  
+  
 
   const handleQuizChange = (newQuizNumber) => {
     setCurrentQuiz(newQuizNumber);
@@ -51,11 +88,16 @@ const Creatquiz = () => {
       <QuizNavigator 
         currentQuiz={currentQuiz}
         onQuizChange={handleQuizChange}
+        quizzes={quizzes}
+        setQuizzes={setQuizzes}
+        deleteData={deleteData}
       />
       <QuizForm
         currentQuiz={currentQuiz}
+        onQuizChange={handleQuizChange}
+        setQuizzes={setQuizzes}
+        deleteData={deleteData}
         quizzes={quizzes}
-        setQuizzes={setQuizzes}  // quizzes와 setQuizzes를 전달
       />
       <Box className="creatquiz__buttonbox">
         <Box className="creatquiz__buttons">
@@ -78,12 +120,12 @@ const Creatquiz = () => {
             다음 문제
           </Button>
           <Button
-            className="creatquiz__button"
+            className="creatquiz__submitbutton"
             color="inherit"
             variant="contained"
             size="small"
           >
-            등록하기
+            퀴즈 등록하기
           </Button>
         </Box>
       </Box>
