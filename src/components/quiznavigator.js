@@ -1,14 +1,13 @@
-import React, { useState,useEffect } from 'react';
+import React, { useEffect } from 'react';
 import '../styles/quiz/QuizNavigator.scss';
 
-const QuizNavigator = ({ currentQuiz , onQuizChange , quizzes, setQuizzes, deleteData}) => {
+const QuizNavigator = ({ currentQuiz , onQuizChange , quizzes, setQuizzes, deleteData, handleAddQuiz}) => {
 
   useEffect(() => {
-
     if (currentQuiz > quizzes.length) {
       handleAddQuiz();
     }
-  }, [currentQuiz]);
+  }, [currentQuiz ]);
 
   useEffect(() => {
     const storedQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
@@ -26,19 +25,6 @@ const QuizNavigator = ({ currentQuiz , onQuizChange , quizzes, setQuizzes, delet
   const handleQuizChange = (quizNumber) => {
     if (onQuizChange) {
       onQuizChange(quizNumber);
-    }
-  };
-
-  const handleAddQuiz = () => {
-    if (quizzes.length < 50) {
-      setQuizzes((prevQuizzes) => {
-        const newQuizzes = [...prevQuizzes, prevQuizzes.length + 1];
-        handleQuizChange(newQuizzes.length);
-        return newQuizzes;
-      });
-    } else {
-      alert('최대 50개의 퀴즈만 추가할 수 있습니다.');
-      handleQuizChange(quizzes.length);
     }
   };
 

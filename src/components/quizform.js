@@ -6,7 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import '../styles/quiz/QuizForm.scss';
 
-const QuizForm = ({ currentQuiz, setQuizzes, deleteData , quizzes}) => {
+const QuizForm = ({ currentQuiz, deleteData , quizzes}) => {
   const [value, setValue] = useState(0);
   const [subtitle, setSubTitle] = useState('');
   const [tanswer, setTanswer] = useState('');
@@ -33,8 +33,6 @@ const QuizForm = ({ currentQuiz, setQuizzes, deleteData , quizzes}) => {
   }, [currentQuiz, quizzes]); 
 
   const saveData = () => {
-
-    console.log(fanswers);
 
     if (!subtitle) {
       alert('제목이 비어있습니다. 제목을 입력해주세요.');
@@ -95,33 +93,29 @@ const QuizForm = ({ currentQuiz, setQuizzes, deleteData , quizzes}) => {
     event.preventDefault();
     if (confirmAndClearData()) {
       setValue(newValue);
-      handleTypeChange(newValue);
     }
-  };
-
-  const handleTypeChange = (newType) => {
-    setQuizzes((prevQuizzes) => ({
-      ...prevQuizzes,
-      [currentQuiz]: {
-        ...prevQuizzes[currentQuiz],
-        type: newType,
-        correctAnswer: newType === 1 ? [] : "",
-        falseAnswers: newType === 0 ? [""] : [],
-      },
-    }));
   };
 
   const handleAddAnswer = () => {
-    if (fanswers.length < 6) {
+    if (value === 0) {
+     if(fanswers.length < 5) {
       setFanswers([...fanswers, '']);
-    } else {
-      if(value == 0) {
-        alert('최대 6개의 보기만 추가할 수 있습니다.');
       } else {
-        alert('최대 6개의 유사답안을 추가 할 수 있습니다.');
+        alert('최대 5개의 보기만 추가할 수 있습니다.');
+        return;
       }
+    } else if (value === 1) {
+      if(fanswers.length < 4) {
+        setFanswers([...fanswers, '']);
+      }else {
+        alert('최대 4개의 유사 답변을 추가할 수 있습니다.');
+        return;
     }
-  };
+  }};
+
+  useEffect(() => {
+    console.log('Updated value:', value);
+  }, [value]);
 
   const handleRemoveAnswer = (index) => {
     const newAnswers = fanswers.filter((_, i) => i !== index);

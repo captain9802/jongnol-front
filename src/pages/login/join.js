@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import { join } from '../../apis/userApi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../styles/login/join.scss';
-import { useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 
 const Join = () => {
     const [form, setForm] = useState({
-        userId: '',
+        userName: '',
         userPw: '',
         userPwChk: '',
         userNickName: '',
@@ -33,9 +33,9 @@ const Join = () => {
             return;
         }
 
-        if (e.target.name === 'userId') {
+        if (e.target.name === 'userName') {
             setIdChk(false);
-            document.querySelector("#userIdChk").removeAttribute('disabled');
+            document.querySelector("#usernameChk").removeAttribute('disabled');
             return;
         }
 
@@ -94,23 +94,24 @@ const Join = () => {
     }, [form.userNickName]);
 
     const idCheck = useCallback(async () => {
-        if (form.userId === '') {
+        if (form.userName === '') {
             alert("닉네임을 입력하세요.");
-            document.querySelector("#userId").focus();
+            document.querySelector("#userName").focus();
             return;
         }
 
         try {
             const response = await axios.post(`http://localhost:8080/user/id-check`, {
-                userId: form.userId
+                userName: form.userName
             });
+            console.log(form.userName);
             if (response.data.item.idCheckResult === 'invalid id') {
                 alert("중복된 아이디입니다. 다른 아이디로 변경해주세요.");
-                document.querySelector("#userId").focus();
+                document.querySelector("#userName").focus();
                 return;
             } else {
-                if (window.confirm(`${form.userId}는 사용가능한 아이디입니다. 사용하시겠습니까?`)) {
-                    document.querySelector("#userIdChk").setAttribute('disabled', true);
+                if (window.confirm(`${form.userName}는 사용가능한 아이디입니다. 사용하시겠습니까?`)) {
+                    document.querySelector("#userName").setAttribute('disabled', true);
                     setIdChk(true);
                     return;
                 }
@@ -118,7 +119,7 @@ const Join = () => {
         } catch (e) {
             alert("에러 발생. 관리자에게 문의하세요.");
         }
-    }, [form.userId]);
+    }, [form.userName]);
 
     const validatePassword = (userPw) => {
         return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*+=-]).{9,}$/.test(userPw);
@@ -219,20 +220,20 @@ const Join = () => {
                          <Typography variant="PCT">아이디</Typography>
                         </Box>
                         <TextField
-                            name="userId"
+                            name="userName"
                             variant="standard"
                             required
-                            id="userId"
+                            id="userName"
                             label="아이디"
                             autoFocus
                             fullWidth
-                            value={form.userId}
+                            value={form.userName}
                             onChange={textFiledchanged}
                             className="join__input join__input--id"
                         />
                         <Button
-                            name="userIdChk"
-                            id="userIdChk"
+                            name="usernameChk"
+                            id="usernameChk"
                             color="primary"
                             size="small"
                             onClick={idCheck}

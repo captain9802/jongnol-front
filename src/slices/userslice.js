@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, join, logout } from "../apis/userApi";
 
-const boardSlice = createSlice({
+const userSlice = createSlice({
     name: 'user',
     initialState: {
         isLogin: sessionStorage.getItem("ACCESS_TOKEN") ? true : false,
@@ -19,7 +19,7 @@ const boardSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(join.fulfilled, (state, action) => {
-            alert(`${action.payload.userId}님 회원가입을 축하합니다.`);
+            alert(`${action.payload.userNickName}님 회원가입을 축하합니다.`);
             window.location.href = '/login';
             
             return state;
@@ -35,7 +35,7 @@ const boardSlice = createSlice({
             return {
                 ...state,
                 isLogin: true,
-                loginUserId: action.payload.userId
+                loginUserId: action.payload.userNickName
             };
         });
         builder.addCase(login.rejected, (state, action) => {
@@ -52,7 +52,7 @@ const boardSlice = createSlice({
         builder.addCase(logout.fulfilled, (state, action) => {
             alert("로그아웃되었습니다.");
             sessionStorage.removeItem("ACCESS_TOKEN");
-
+            localStorage.clear('newquiz');
             return {
                 ...state,
                 isLogin: false
@@ -61,4 +61,4 @@ const boardSlice = createSlice({
     }
 });
 
-export default boardSlice.reducer;
+export default userSlice.reducer;

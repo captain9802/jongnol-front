@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useNavigate } from 'react-router-dom';
 import '../styles/quiz/QuizDialog.scss';
 
-const QuizDialog = ({}) => {
+const QuizDialog = () => {
     const [imageDialog, setImageDialog] = useState(null);
     const [openDialog, setOpenDialog] = useState(true);
     const [maintitle, setMainTitle] = useState('');

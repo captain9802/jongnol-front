@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
 import { Box, Button } from '@mui/material';
 import '../../styles/quiz/CreateQuiz.scss';
 import QuizNavigator from '../../components/quiznavigator';
 import QuizDialog from '../../components/quizdialog';
 import QuizForm from '../../components/quizform';
+import { sendQuiz } from '../../apis/quizApi';
 
 const Creatquiz = () => {
   const navi = useNavigate();
@@ -13,6 +14,7 @@ const Creatquiz = () => {
 
   const [currentQuiz, setCurrentQuiz] = useState(0);
   const [quizzes, setQuizzes] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isLogin) {
@@ -31,6 +33,7 @@ const Creatquiz = () => {
   
     if (window.confirm((`현재 작성 중인 ${currentQuiz}번 퀴즈가 삭제됩니다. 괜찮으시겠습니까?`))) {
       if (currentQuiz !== newQuizData.questions.length) {
+        console.log(newQuizData.questions)
         for (let i = currentQuiz; i < newQuizData.questions.length; i++) {
           newQuizData.questions[i].quizNumber -= 1;
         }
@@ -62,12 +65,21 @@ const Creatquiz = () => {
     setCurrentQuiz(newQuizNumber);
   };
 
-  const handleNextQuiz = () => {
-    setCurrentQuiz((prevQuiz) => {
-      const nextQuiz = prevQuiz + 1;
-      handleQuizChange(nextQuiz);
-      return nextQuiz;
-    });
+  const handleAddQuiz = () => {
+    const quizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
+    if (!quizData.questions[currentQuiz - 1] || !quizData.questions[currentQuiz - 1].subtitle) {
+      alert('먼저 문제를 등록 후 퀴즈를 추가해주세요.');
+      return;
+    }    if (quizzes.length < 50) {
+      setQuizzes((prevQuizzes) => {
+        const newQuizzes = [...prevQuizzes, prevQuizzes.length + 1];
+        handleQuizChange(newQuizzes.length);
+        return newQuizzes;
+      });
+    } else {
+      alert('최대 50개의 퀴즈만 추가할 수 있습니다.');
+      handleQuizChange(quizzes.length);
+    }
   };
 
   const handleBackQuiz = () => {
@@ -82,6 +94,26 @@ const Creatquiz = () => {
     });
   };
 
+  const handleSubmitQuiz = async () => {
+    const quizData = JSON.parse(localStorage.getItem('newquiz'));
+
+    if (!quizData || !quizData.questions.length) {
+      alert('등록할 퀴즈가 없습니다.');
+      return;
+    }
+
+    if (window.confirm('퀴즈를 등록하시겠습니까?')) {
+      try {
+        await dispatch(sendQuiz(quizData)).unwrap();
+      } catch (error) {
+        alert('퀴즈 등록 중 오류가 발생했습니다. 관리자에게 문의하세요.');
+        console.error(error);
+      }
+    } else {
+      alert('등록이 취소되었습니다.');
+    }
+  };
+
   return (
     <Box className="creatquiz">
       <QuizDialog />
@@ -91,11 +123,11 @@ const Creatquiz = () => {
         quizzes={quizzes}
         setQuizzes={setQuizzes}
         deleteData={deleteData}
+        handleAddQuiz={handleAddQuiz}
       />
       <QuizForm
         currentQuiz={currentQuiz}
         onQuizChange={handleQuizChange}
-        setQuizzes={setQuizzes}
         deleteData={deleteData}
         quizzes={quizzes}
       />
@@ -115,7 +147,7 @@ const Creatquiz = () => {
             color="inherit"
             variant="contained"
             size="small"
-            onClick={handleNextQuiz}
+            onClick={handleAddQuiz}
           >
             다음 문제
           </Button>
@@ -124,6 +156,7 @@ const Creatquiz = () => {
             color="inherit"
             variant="contained"
             size="small"
+            onClick={handleSubmitQuiz}
           >
             퀴즈 등록하기
           </Button>

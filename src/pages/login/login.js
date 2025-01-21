@@ -8,7 +8,7 @@ import '../../styles/login/login.scss';
 
 const Login = () => {
     const [form, setForm] = useState({
-        userId: '',
+        userName: '',
         userPw: ''
     });
 
@@ -62,14 +62,14 @@ const Login = () => {
                     </Grid2>
                     <Grid2 className='login__id'>
                         <TextField
-                            name='userId'
+                            name='userName'
                             variant='standard'
                             required
-                            id='userId'
+                            id='userName'
                             label='아이디를 입력해주세요.'
                             autoFocus
                             fullWidth
-                            value={form.userId}
+                            value={form.userName}
                             onChange={textFieldChanged}
                         />
                     </Grid2>
