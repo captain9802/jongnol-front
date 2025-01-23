@@ -21,3 +21,24 @@ export const sendQuiz = createAsyncThunk(
         }
     } 
 );
+
+export const getQuiz = createAsyncThunk(
+    'quiz/getquiz',
+    async ({ searchCondition, searchKeyword }, thunkAPI) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8080/quiz/getquiz`,
+                {
+                    params: {
+                        searchCondition,
+                        searchKeyword
+                    }
+                }
+            );
+            console.log(response.data.item);
+            return response.data.item;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    } 
+);
