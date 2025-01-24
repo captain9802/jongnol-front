@@ -6,28 +6,37 @@ import Card from '../../components/card';
 import '../../styles/home/Home.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getQuiz } from '../../apis/quizApi';
+import { useLocation } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useDispatch();
   const quizzes = useSelector((state) => state.quiz.quizzes);
+  const hasMore = useSelector((state) => state.quiz.hasMore);
+  const location = useLocation();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [visibleCards, setVisibleCards] = useState(9);
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchCondition, setSearchCondition] = useState("최신순");
+  const [searchKeyword, setSearchKeyword] = useState(location.state?.searchKeyword || '');
+  const [searchCondition, setSearchCondition] = useState(location.state?.searchCondition || "최신순");
+  const [offset, setOffset] = useState(0);
+  const [limit] = useState(20);
 
   useEffect(() => {
-    dispatch(getQuiz({ searchCondition: 'title', searchKeyword: 'all' }));
-  }, [dispatch, searchCondition]);
+    console.log(hasMore);
+    if (!hasMore) return;
+      const keywordToUse = (searchKeyword || '').trim() === '' ? 'all' : searchKeyword;
+      dispatch(getQuiz({ searchCondition: 'title', searchKeyword: keywordToUse, offset, limit }));
+  }, [dispatch, searchCondition, offset]);
 
   const handleScroll = useCallback(() => {
+    if (!hasMore) return;
+
     const scrollPosition = window.scrollY + window.innerHeight;
     const windowHeight = document.documentElement.scrollHeight;
 
     if (scrollPosition >= windowHeight - 5) {
-      setVisibleCards((prev) => Math.min(prev + 6, quizzes.length));
+      setOffset((prevOffset) => prevOffset + limit);
     }
-  }, [quizzes]);
+  }, [hasMore, limit]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -55,7 +64,8 @@ const Home = () => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      dispatch(getQuiz({ searchCondition: 'title', searchKeyword }));
+      const keyword = searchKeyword.trim() === '' ? 'all' : searchKeyword;
+      dispatch(getQuiz({ searchCondition: 'title', searchKeyword: keyword, offset, limit }));
     }
   };
 
@@ -97,17 +107,15 @@ const Home = () => {
         </Menu>
       </Box>
       <Grid2 container spacing={2} className="home__grid">
-        {quizzes
-          .slice(0, visibleCards)
-          .map((card, index) => (
-            <Grid2 item key={index} className="home__grid-item">
-              <Card
-                image={card.thumbnail}
-                title={card.title}
-                description={card.description}
-              />
-            </Grid2>
-          ))}
+        {quizzes.map((card, index) => (
+          <Grid2 item key={index} className="home__grid-item">
+            <Card
+              image={card.thumbnail}
+              title={card.title}
+              description={card.description}
+            />
+          </Grid2>
+        ))}
       </Grid2>
     </Box>
   );

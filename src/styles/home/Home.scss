@@ -29,11 +29,20 @@
     &__grid-item {
       display: flex;
       justify-content: center;
+      font-family: 'Pretendard, sans-serif';
+      width: 348px;
     }
   }
 
   .css-19midj6 {
     padding: 0 !important;
+}
+
+.css-1ycw4xz-MuiTypography-root {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
   

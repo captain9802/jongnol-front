@@ -6,7 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import '../styles/quiz/QuizForm.scss';
 
-const QuizForm = ({ currentQuiz, deleteData , quizzes}) => {
+const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
   const [value, setValue] = useState(0);
   const [subtitle, setSubTitle] = useState('');
   const [tanswer, setTanswer] = useState('');
@@ -48,7 +48,6 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes}) => {
       alert('오답 선택지가 비어있습니다. 최소한 하나의 오답을 입력해주세요.');
       return;
     }
-
     const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
   
     newQuizData.questions[currentQuiz - 1] = {
@@ -61,6 +60,8 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes}) => {
     };
   
     localStorage.setItem('newquiz', JSON.stringify(newQuizData));
+    handleAddQuiz();
+    alert('문제가 등록되었습니다.');
   };
 
   
@@ -112,10 +113,6 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes}) => {
         return;
     }
   }};
-
-  useEffect(() => {
-    console.log('Updated value:', value);
-  }, [value]);
 
   const handleRemoveAnswer = (index) => {
     const newAnswers = fanswers.filter((_, i) => i !== index);
@@ -366,6 +363,7 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes}) => {
         </Box>
         <Box className="creatquiz__submit">
           <Button 
+          variant="contained"
           className="creatquiz__submitButton"
           onClick={saveData}>
               <Typography variant="PCT" className="creatquiz__header">
@@ -373,6 +371,7 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes}) => {
               </Typography>
           </Button>
           <Button 
+          variant="contained"
           className="creatquiz__deleteButton"
           onClick={deleteData}>
               <Typography variant="PCT" className="creatquiz__header">

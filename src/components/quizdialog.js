@@ -19,6 +19,19 @@ const QuizDialog = () => {
             setImageDialog(savedQuizData.thumbnail || null);
     }, []);
 
+    useEffect(() => {
+        if (imageDialog !== null) {
+            const existingQuizData = JSON.parse(localStorage.getItem('newquiz')) || {};
+            const quizData = {
+                title: maintitle,
+                description: mainex,
+                thumbnail: imageDialog,
+                questions: existingQuizData.questions || [],
+            };
+            localStorage.setItem('newquiz', JSON.stringify(quizData));
+        }
+    }, [imageDialog])
+
     const handleCancel = () => {
         navi(-1);
     };
@@ -48,22 +61,30 @@ const QuizDialog = () => {
 
     const handleSaveQuiz = () => {
 
+        if (!imageDialog) {
+            const randomImageIndex = Math.floor(Math.random() * 5) + 1;
+            const randomImage = `/images/random/g_${randomImageIndex}.jpg`;
+            convertImageToBase64(randomImage);
+        }
         if (!maintitle || !mainex) {
             alert('퀴즈 제목과 설명을 작성해 주세요.');
             return;
         }
+            setOpenDialog(false);
+    };
 
-      const existingQuizData = JSON.parse(localStorage.getItem('newquiz')) || {};; 
-        const quizData = {
-            title: maintitle,
-            description: mainex,
-            thumbnail: imageDialog,
-            questions: existingQuizData.questions ? existingQuizData.questions : []
+    const convertImageToBase64 = (imageUrl) => {
+        const img = new Image();
+        img.src = imageUrl;
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            setImageDialog(canvas.toDataURL());
         };
-
-        localStorage.setItem('newquiz', JSON.stringify(quizData));
-
-        setOpenDialog(false);
     };
 
     return (
@@ -139,28 +160,18 @@ const QuizDialog = () => {
             <DialogActions>
                 <Button
                     onClick={handleCancel}
-                    sx={{
-                        backgroundColor: "#C8DEB8",
-                        "&:hover": {
-                            backgroundColor: "#C8DEB8",
-                        },
-                    }}
+                    color='primary'
                     variant="contained"
-                    size="small"
+                    size="smallSize"
                 >
                     취소하기
                 </Button>
                 <Button
                     onClick={handleSaveQuiz}
-                    sx={{
-                        backgroundColor: "#C8DEB8",
-                        "&:hover": {
-                            backgroundColor: "#C8DEB8",
-                        },
-                    }}
+                    color='primary'
                     className="creatquiz__button"
                     variant="contained"
-                    size="small"
+                    size="smallSize"
                 >
                     등록하기
                 </Button>

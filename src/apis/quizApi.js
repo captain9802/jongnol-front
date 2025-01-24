@@ -15,6 +15,7 @@ export const sendQuiz = createAsyncThunk(
                     }
                 }
             );
+            localStorage.clear('newquiz');
             return response.data.item;
         } catch(e) {
             return thunkAPI.rejectWithValue(e);
@@ -24,19 +25,35 @@ export const sendQuiz = createAsyncThunk(
 
 export const getQuiz = createAsyncThunk(
     'quiz/getquiz',
-    async ({ searchCondition, searchKeyword }, thunkAPI) => {
+    async ({ searchCondition, searchKeyword, offset, limit  }, thunkAPI) => {
         try {
             const response = await axios.get(
                 `http://localhost:8080/quiz/getquiz`,
                 {
                     params: {
                         searchCondition,
-                        searchKeyword
+                        searchKeyword,
+                        offset,
+                        limit
                     }
                 }
             );
-            console.log(response.data.item);
-            return response.data.item;
+            return response.data;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    } 
+);
+
+export const getCountQP = createAsyncThunk(
+    'quiz/getcountqp',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8080/quiz/getcountqp`,
+            );
+            console.log(response.data);
+            return response.data;
         } catch(e) {
             return thunkAPI.rejectWithValue(e);
         }

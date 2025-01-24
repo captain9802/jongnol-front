@@ -14,7 +14,7 @@
     .MuiTabs-indicatorSpan {
       max-width: 70px;
       width: 100%;
-      background-color: black;
+      background-color: white;
     }
 
     .MuiTab-root {
@@ -24,13 +24,14 @@
       transition: background-color 0.3s ease, color 0.3s ease;
 
       &.Mui-selected {
-        background-color: #f0f0f0;
+        background-color: #F5904B;
         font-weight: bold;
-        color: black;
+        color: white;
       }
 
       &:hover {
         background-color: #f0f0f0;
+        color: #572973;
       }
     }
 }
@@ -201,7 +202,9 @@
     height: 100%;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
-    background-color: #87CEEB;
+    background-color: #F5904B;
+        color: white;
+
   }
   .creatquiz__deleteButton {
     display: flex;
@@ -211,7 +214,8 @@
     height: 100%;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
-    background-color: #f05650;
+    color: white;
+    background-color: #F5904B;
   }
 }
 

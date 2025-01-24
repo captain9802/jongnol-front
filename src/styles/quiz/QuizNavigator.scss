@@ -18,12 +18,13 @@
       text-align: center;
       border: 1px solid #ccc;
       border-radius: 20px;
-      background-color: #f9f9f9;
+      background-color: white;
+      color: #572973;
       cursor: pointer;
       transition: background-color 0.3s ease;
   
       &--active {
-        background-color: #007bff;
+        background-color: #F5904B;
         color: white;
         font-weight: bold;
       }

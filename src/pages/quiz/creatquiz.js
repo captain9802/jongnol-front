@@ -73,6 +73,7 @@ const Creatquiz = () => {
     }    if (quizzes.length < 50) {
       setQuizzes((prevQuizzes) => {
         const newQuizzes = [...prevQuizzes, prevQuizzes.length + 1];
+        console.log(newQuizzes.length);
         handleQuizChange(newQuizzes.length);
         return newQuizzes;
       });
@@ -107,7 +108,6 @@ const Creatquiz = () => {
         await dispatch(sendQuiz(quizData)).unwrap();
       } catch (error) {
         alert('퀴즈 등록 중 오류가 발생했습니다. 관리자에게 문의하세요.');
-        console.error(error);
       }
     } else {
       alert('등록이 취소되었습니다.');
@@ -130,32 +130,33 @@ const Creatquiz = () => {
         onQuizChange={handleQuizChange}
         deleteData={deleteData}
         quizzes={quizzes}
+        handleAddQuiz={handleAddQuiz}
       />
       <Box className="creatquiz__buttonbox">
         <Box className="creatquiz__buttons">
           <Button
             className="creatquiz__button"
-            color="inherit"
+            color="primary"
             variant="contained"
-            size="small"
+            size="sizeSmall"
             onClick={handleBackQuiz}
           >
             이전 문제
           </Button>
           <Button
             className="creatquiz__button"
-            color="inherit"
+            color="primary"
             variant="contained"
-            size="small"
+            size="sizeSmall"
             onClick={handleAddQuiz}
           >
             다음 문제
           </Button>
           <Button
             className="creatquiz__submitbutton"
-            color="inherit"
+            color="primary"
             variant="contained"
-            size="small"
+            size="sizeSmall"
             onClick={handleSubmitQuiz}
           >
             퀴즈 등록하기

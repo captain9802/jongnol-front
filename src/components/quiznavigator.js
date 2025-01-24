@@ -13,7 +13,7 @@ const QuizNavigator = ({ currentQuiz , onQuizChange , quizzes, setQuizzes, delet
     const storedQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
     console.log(storedQuizData);
     if (storedQuizData.questions.length === 0) {
-      setQuizzes([1, 2, 3]);
+      setQuizzes([1]);
     } else {
       const quizCount = storedQuizData.questions.length;
       const quizzesFromStorage = Array.from({ length: quizCount }, (_, i) => i + 1);
