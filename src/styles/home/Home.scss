@@ -31,6 +31,11 @@
       justify-content: center;
       font-family: 'Pretendard, sans-serif';
       width: 348px;
+      cursor: pointer;
+    }
+
+    &__grid-item-card {
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     }
   }
 
@@ -38,10 +43,11 @@
     padding: 0 !important;
 }
 
-.css-1ycw4xz-MuiTypography-root {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
+.css-9wshju-MuiTypography-root {
+  display: -webkit-box;        
+  -webkit-line-clamp: 2;       
+  -webkit-box-orient: vertical;
+  overflow: hidden;            
   text-overflow: ellipsis;
 }
 

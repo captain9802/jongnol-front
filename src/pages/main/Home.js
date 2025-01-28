@@ -7,6 +7,8 @@ import '../../styles/home/Home.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getQuiz } from '../../apis/quizApi';
 import { useLocation } from 'react-router-dom';
+import InQuiz from '../../components/inquiz';
+import { motion } from 'framer-motion';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,30 +20,52 @@ const Home = () => {
   const [searchKeyword, setSearchKeyword] = useState(location.state?.searchKeyword || '');
   const [searchCondition, setSearchCondition] = useState(location.state?.searchCondition || "최신순");
   const [offset, setOffset] = useState(0);
-  const [limit] = useState(20);
+  const [limit] = useState(28);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const [questionCount, setQuestionCount] = useState(0);
+  let debounceTimeout = null;
 
   useEffect(() => {
-    console.log(hasMore);
+    console.log("1번번")
+    console.log("hasmore :" + hasMore);
+    console.log("searchKeyword :" + searchKeyword);
+    console.log("searchCondition :" + searchCondition);
+    console.log("offset :" + offset);
+    console.log("limit :" + limit);
+
     if (!hasMore) return;
       const keywordToUse = (searchKeyword || '').trim() === '' ? 'all' : searchKeyword;
       dispatch(getQuiz({ searchCondition: 'title', searchKeyword: keywordToUse, offset, limit }));
+      
   }, [dispatch, searchCondition, offset]);
 
   const handleScroll = useCallback(() => {
+    console.log("2번번")
+
     if (!hasMore) return;
 
     const scrollPosition = window.scrollY + window.innerHeight;
     const windowHeight = document.documentElement.scrollHeight;
 
-    if (scrollPosition >= windowHeight - 5) {
-      setOffset((prevOffset) => prevOffset + limit);
-    }
+    if (scrollPosition >= windowHeight - 600) {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+  
+      debounceTimeout = setTimeout(() => {
+        setOffset((prevOffset) => prevOffset + limit);
+      }, 100);
+    }    
   }, [hasMore, limit]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
     };
   }, [handleScroll]);
 
@@ -67,6 +91,39 @@ const Home = () => {
       const keyword = searchKeyword.trim() === '' ? 'all' : searchKeyword;
       dispatch(getQuiz({ searchCondition: 'title', searchKeyword: keyword, offset, limit }));
     }
+  };
+
+  const handleCardClick = (quiz) => {
+    console.log("??");
+    setSelectedQuiz(quiz);
+    setQuestionCount(quiz.questionsCount);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleStartQuiz = (questionCount) => {
+    console.log(`퀴즈 시작 - 문제 수: ${questionCount}`);
+    setDialogOpen(false);
+  };
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 50,
+      boxShadow: '0px 0px 0px rgba(0, 0, 0, 0)', 
+    },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      boxShadow: '1px 1px 4px rgba(0, 0, 0, 0.2)',
+      transition: { 
+        delay: i * 0.05, 
+        duration: 0.5,
+      },
+    }),
   };
 
   return (
@@ -108,15 +165,34 @@ const Home = () => {
       </Box>
       <Grid2 container spacing={2} className="home__grid">
         {quizzes.map((card, index) => (
-          <Grid2 item key={index} className="home__grid-item">
+          <Grid2 item key={index} onClick={() => handleCardClick(card)}>
+             <motion.div
+             className="home__grid-item"
+              initial="hidden"
+              animate="visible"
+              custom={index}
+              variants={cardVariants}
+              onAnimationComplete={() => console.log(card.id)}
+            >
             <Card
+              className="home__gird-item-card"
               image={card.thumbnail}
               title={card.title}
               description={card.description}
             />
+            </motion.div>
           </Grid2>
         ))}
       </Grid2>
+      {selectedQuiz && (
+        <InQuiz
+          open={dialogOpen}
+          onClose={handleCloseDialog}
+          onStart={handleStartQuiz}
+          quizData={selectedQuiz}
+          questionCount={questionCount}
+        />
+      )}
     </Box>
   );
 };

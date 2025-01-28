@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import { Container, ThemeProvider } from '@mui/material';
 import common from './styles/common';
 import QuizCreate from './pages/quiz/creatquiz';
-
+import SolveQuiz from './pages/quiz/solvequiz';
 function App() {
   return (
     <Provider store={store}>
@@ -24,6 +24,7 @@ function App() {
                   <Route path='/join' element={<Join />} />
                   <Route path='/login' element={<Login />} />
                   <Route path='/quizcreate' element={<QuizCreate />}/>
+                  <Route path='/solvequiz/:id' element={<SolveQuiz />}/>
                 </Route>
               </Routes>
             </Container>

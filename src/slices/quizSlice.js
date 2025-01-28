@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { sendQuiz, getQuiz, getCountQP } from "../apis/quizApi";
+import { sendQuiz, getQuiz, getCountQP, solveQuiz } from "../apis/quizApi";
 
 const quizSlice = createSlice({
   name: "quiz",
@@ -10,7 +10,8 @@ const quizSlice = createSlice({
     searchKeyword: "",
     quizzesCount: 0,
     usersCount: 0,
-    hasMore: true
+    hasMore: true,
+    solvequiz: JSON.parse(localStorage.getItem("solvequiz")) || []
   },
   reducers: {
     change_searchCondition: (state, action) => {
@@ -18,7 +19,7 @@ const quizSlice = createSlice({
     },
     change_searchKeyword: (state, action) => {
       state.searchKeyword = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -45,6 +46,15 @@ const quizSlice = createSlice({
         state.usersCount = action.payload.usersCount;
       })
       .addCase(getCountQP.rejected, (state, action) => {
+        alert("퀴즈 유저 에러 발생. 관리자에게 문의하세요.")
+        console.log(action.payload);
+      })
+      .addCase(solveQuiz.fulfilled, (state, action) => {
+        state.solvequiz = action.payload;
+        console.log(action.payload);
+        console.log(state.solvequiz);
+      })
+      .addCase(solveQuiz.rejected, (state, action) => {
         alert("퀴즈 유저 에러 발생. 관리자에게 문의하세요.")
         console.log(action.payload);
       });

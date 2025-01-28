@@ -6,37 +6,45 @@ const theme = createTheme({
     fontFamily: 'Pretendard, sans-serif',
     VBT: {
       fontSize: '35px',    // 큰 글씨 강조 (BT)
-      fontWeight: 600,     // semibold
+      fontWeight: 600,
+      lineHeight: 1.2     // semibold
     },
     BT: {
       fontSize: '28px',    // 큰 글씨 강조 (BT)
-      fontWeight: 600,     // semibold
+      fontWeight: 600,
+      lineHeight: 1.2      // semibold
     },
     SBT: {
       fontSize: '28px',    // 큰 글씨 강조 (BT)
-      fontWeight: 500,     // regular
+      fontWeight: 500,
+      lineHeight: 1.2      // regular
     },
     PBT: {                // PC 화면에서의 버튼 안 텍스트 (PBT)
       fontSize: '18px',    
-      fontWeight: 400,     // regular
+      fontWeight: 400,
+      lineHeight: 1.2      // regular
     },
     PCT: {                // 카드 대제목 (PCT)
       fontSize: '16px',    
-      fontWeight: 600,     // semibold
+      fontWeight: 600,
+      lineHeight: 1.2      // semibold
     },
     MPCT: {                // 카드 대제목 (PCT)
       fontSize: '16px',    
-      fontWeight: 400,     // semibold
+      fontWeight: 400,
+      lineHeight: 1.2      // semibold
     },
     PCE: {                // 카드 설명글 (PCE)
       fontSize: '14px',    
       fontWeight: 400,     // regular
-      color: '#9E9E9E',    // 설명글 색상
+      color: '#9E9E9E',
+      lineHeight: 1.2     // 설명글 색상
     },
     TE: {                 // TextField 안의 텍스트 (TE)
       fontSize: '16px',    
       fontWeight: 400,     // regular
-      color: '#1D1B20',    // 텍스트 색상
+      color: '#1D1B20',
+      lineHeight: 1.2     // 텍스트 색상
     },
   },
   components: {
