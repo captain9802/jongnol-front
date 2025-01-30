@@ -15,7 +15,7 @@ export const sendQuiz = createAsyncThunk(
                     }
                 }
             );
-            localStorage.clear('newquiz');
+            localStorage.removeItem('newquiz');
             return response.data.item;
         } catch(e) {
             return thunkAPI.rejectWithValue(e);

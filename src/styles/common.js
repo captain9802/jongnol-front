@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material/styles';
-import { color } from 'framer-motion';
 
 const theme = createTheme({
   typography: {
@@ -106,7 +105,11 @@ const theme = createTheme({
     secondary: {
       main: '#CECECE',
     },
+    background: {
+      default: '#fff1e8',
+    },
   },
+  
 });
 
 export default theme;

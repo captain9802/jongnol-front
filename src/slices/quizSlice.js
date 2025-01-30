@@ -51,6 +51,7 @@ const quizSlice = createSlice({
       })
       .addCase(solveQuiz.fulfilled, (state, action) => {
         state.solvequiz = action.payload;
+        localStorage.setItem("solvequiz", JSON.stringify(state.solvequiz));
         console.log(action.payload);
         console.log(state.solvequiz);
       })

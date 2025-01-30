@@ -1,10 +1,7 @@
-html, body {
-  background-color: #fff1e8;
-}
-
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 
 html::-webkit-scrollbar-thumb,

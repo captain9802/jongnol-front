@@ -1,0 +1,101 @@
+.solvequiz {
+    width: 100%;
+    .solvequiz__boxes {
+        display: grid;
+        gap: 2rem;
+
+        &__buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        &__button {
+            background-color: white;
+            color: #572973;
+            &--active {
+                background-color: #F5904B;
+                color: white;
+                font-weight: bold;
+              }
+        }
+        
+        &__title {
+            display: flex;
+            justify-content: center;
+        }
+
+        &__content {
+
+            display: flex;
+            justify-content: center;
+            gap: 8rem;
+            &__img {
+                &--question{
+                    object-fit: contain;
+                    max-width: 50rem;
+                }
+                display: flex;
+                justify-content: center;
+            }
+    
+            &__multi {
+                flex: 0.4;
+                &--box {
+                    width: 100%;
+                    align-content: center;
+                    height: 100%;
+                    display: grid;
+                    gap: 1rem;
+
+                    .selected {
+                        background-color: #F5904B;
+                        color: white;
+                      }
+                    .non {
+                        background-color: white;
+                        color: #572973;
+                    }
+                }
+            }
+        }
+
+        &__contents {
+
+            display: grid;
+            gap: 2rem;
+    
+            &__subjective {
+                display: flex;
+                justify-content: center;
+    
+                &--textfeild {
+                    background-color: white;
+                    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+                    width: 50rem;
+                    &:focus-within {
+                        border-color: #F5904B;
+                        box-shadow: 0 0 8px rgba(245, 144, 75, 0.5);
+                      }
+                    
+                      .MuiOutlinedInput-root {
+                        fieldset {
+                          border: 2px solid #F5904B; 
+                        }
+                      }
+                    
+                }
+
+            }
+        }
+
+        &__submit {
+            justify-content: center;
+            display: flex;
+            width: 100%;
+            &--button {
+                width: 50rem;
+            }
+        }
+    }
+}

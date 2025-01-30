@@ -7,7 +7,7 @@ import Join from './pages/login/Join';
 import Layout from './pages/Layout';
 import store from './store/store';
 import { Provider } from 'react-redux';
-import { Container, ThemeProvider } from '@mui/material';
+import { Container, ThemeProvider, CssBaseline  } from '@mui/material';
 import common from './styles/common';
 import QuizCreate from './pages/quiz/creatquiz';
 import SolveQuiz from './pages/quiz/solvequiz';
@@ -15,6 +15,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={common}>
+       <CssBaseline />
           <Router>
             <Container maxWidth={false} style={{ maxWidth: "1440px", padding: 0}}>
               <Routes>
