@@ -173,6 +173,8 @@ const Home = () => {
               custom={index}
               variants={cardVariants}
               onAnimationComplete={() => console.log(card.id)}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.1 }}
             >
             <Card
               className="home__gird-item-card"

@@ -1,0 +1,80 @@
+.mypage {
+  .mypage_info {
+    justify-content: center;
+    border: 1px solid #F5904B;
+    position: relative;
+    padding: 20px;
+  }
+
+  .mypage_profile {
+    width: 150px;
+    height: 150px;
+    position: relative; 
+    margin: 0 auto;
+  }
+
+  .mypage_icon-container {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    border: 1px solid #F5904B;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    right: 0;
+  }
+
+  .mypage_folder-icon {
+    width: 28px;
+    height: 28px;
+    color: #374957;
+  }
+
+  .mypage_profile_name {
+    display: flex;
+    text-decoration: underline;
+    justify-content: center;
+    padding-left: 25px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  .mypage_profile_name_edit {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .mypage_info_password-button,
+  .mypage_info_update-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .mypage_info_image {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 2.1875rem;
+    justify-items: center;
+    margin-top: 20px;
+  }
+
+  .mypage_info_image-list {
+    list-style: none;
+  }
+
+  .mypage_info_image-box {
+    width: 5rem;
+  }
+
+  .mypage_delete-button {
+    float: right;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+}

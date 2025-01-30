@@ -162,7 +162,7 @@ const QuizDialog = () => {
                     onClick={handleCancel}
                     color='primary'
                     variant="contained"
-                    size="smallSize"
+                    size="small"
                 >
                     취소하기
                 </Button>
@@ -171,7 +171,7 @@ const QuizDialog = () => {
                     color='primary'
                     className="creatquiz__button"
                     variant="contained"
-                    size="smallSize"
+                    size="small"
                 >
                     등록하기
                 </Button>

@@ -19,6 +19,9 @@ const Header = ({className}) => {
     navi("/quizcreate");
   }, [navi])
 
+  const mypage = useCallback(() => {
+    navi("/mypage");
+  }, [navi])
   return (
     <Box className="header">
       <Box className={className === 'headerText' ? 'headerText' : 'headers'} onClick={() => navi('/')}>
@@ -36,22 +39,31 @@ const Header = ({className}) => {
         {isLogin ? (
           <>
           <Button
+           className="header__buttons__button"
+           color='primary'
+           variant="contained"
+           size="small"
+           onClick={quizCreat}
+         >
+           퀴즈 등록
+         </Button>
+          <Button
             className="header__buttons__button_logout"
             color='primary'
             variant="contained"
-            size="sizeSmall"
+            size="small"
             onClick={handleLogout}
           >
             로그아웃
           </Button>
-           <Button
+         <Button
            className="header__buttons__button"
            color='primary'
            variant="contained"
-           size="sizeSmall"
-           onClick={quizCreat}
+           size="small"
+           onClick={mypage}
          >
-           퀴즈 등록
+           마이페이지
          </Button>
          </>
         ) : (
@@ -60,7 +72,7 @@ const Header = ({className}) => {
               className="header__buttons__button"
               color='primary'
               variant="contained"
-              size="sizeSmall"
+              size="size"
               onClick={() => navi('/login')}
             >
               로그인 / 회원가입

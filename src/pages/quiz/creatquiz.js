@@ -138,7 +138,7 @@ const Creatquiz = () => {
             className="creatquiz__button"
             color="primary"
             variant="contained"
-            size="sizeSmall"
+            size="small"
             onClick={handleBackQuiz}
           >
             이전 문제
@@ -147,7 +147,7 @@ const Creatquiz = () => {
             className="creatquiz__button"
             color="primary"
             variant="contained"
-            size="sizeSmall"
+            size="small"
             onClick={handleAddQuiz}
           >
             다음 문제
@@ -156,7 +156,7 @@ const Creatquiz = () => {
             className="creatquiz__submitbutton"
             color="primary"
             variant="contained"
-            size="sizeSmall"
+            size="small"
             onClick={handleSubmitQuiz}
           >
             퀴즈 등록하기

@@ -99,7 +99,7 @@ const SolveQuiz = () => {
             <Button
               color='primary'
               variant="contained"
-              size="sizeSmall"
+              size="size"
               className={`solvequiz__boxes__button ${
                 question === currentQuestion ? 'solvequiz__boxes__button--active' : ''
               }`}
@@ -134,7 +134,7 @@ const SolveQuiz = () => {
                 <Button
                   color='primary'
                   variant="contained"
-                  size="sizeSmall"
+                  size="size"
                   key={idx}
                   onClick={() => handleAnswerSelection(currentQuestion.id, answer)}
                   className={storedAnswers[currentQuestion.id] === answer ? 'selected' : 'non'}
@@ -167,7 +167,7 @@ const SolveQuiz = () => {
               <Button 
                 className="solvequiz__boxes__submit--button"
                 variant="contained"
-                size="sizesmall"
+                size="size"
                 onClick={handleSubmit}>제출하기</Button>
             )}
           </Box>

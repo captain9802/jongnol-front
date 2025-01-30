@@ -7,12 +7,10 @@
   
     &__buttons {
       margin-left: auto;
+      display: flex;
+      gap: 0.825rem;
     }
-
-    .header__buttons__button_logout {
-      margin-right: 10px;
-    }
-
+    
     .headerText {
       position: absolute;
       left: 50%;
