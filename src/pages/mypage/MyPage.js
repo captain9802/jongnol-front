@@ -26,10 +26,12 @@ const MyPage = () => {
     <Box className="mypage_tabs">
       
       <Tabs value={tabIndex} onChange={handleTabChange}
-        TabIndicatorProps={{ sx: { backgroundColor: '#F5904B' }}}
-        className="mypage_tabs-box">
-        <Tab label="회원정보" />
-        <Tab label={isSmallScreen ? "나의 퀴즈" : "내가 등록한 퀴즈"} />
+        className="mypage_tabs-box"
+        TabIndicatorProps={{
+          children: <span className="MuiTabs-indicatorSpan" />,
+        }}>
+        <Tab className={`${tabIndex === 0  ? 'mypage_tabs-box--selected' : ''}`} label="회원정보" />
+        <Tab className={`${tabIndex === 1  ? 'mypage_tabs-box--selected' : ''}`} label={isSmallScreen ? "나의 퀴즈" : "내가 등록한 퀴즈"}/>
       </Tabs>
       <Box className='mypage_title'>
       <Typography variant="VBT">{getTitle()}</Typography>

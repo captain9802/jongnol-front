@@ -1,28 +1,30 @@
 .mypage_tabs {
     .mypage_tabs-box {
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         .MuiTab-root {
           height: 48px;
+          max-width: 720px;
+          width: 100%;
+          text-align: center;
+          transition: background-color 0.3s ease, color 0.3s ease;
+
+          &:hover {
+            background-color: #f0f0f0;
+            color: #572973 !important;
+          }
+        }
+        .MuiTabs-indicator {
+          display: flex;
+          justify-content: center;
+          background-color: transparent;
+        }
+        
+        .MuiTabs-indicatorSpan {
+          max-width: 100px;
+          width: 100%;
           background-color: white;
-          font-size: 18px;         
-          color: #49454F;         
-          text-transform: none; 
         }
-      
-        .css-dxxbcs-MuiButtonBase-root-MuiTab-root.Mui-selected {
-          color: #F5904B; 
-        }
-        .css-heg063-MuiTabs-flexContainer {
-          justify-content: space-around;
-        }
-      
-        .tab-indicator {
-          background-color: #F5904B;
-        }
-      }
-      .MuiTabs-root {
-        border-bottom: 1px solid #F5904B;
-      }
-      
+      }      
       @media (max-width: 600px) { 
         .mypage_tabs-box{   
             .MuiTab-root {
@@ -37,4 +39,10 @@
 .mypage_title{
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.css-15u1jf3-MuiTypography-root {
+  &:hover {
+    color: unset !important;
+  }
 }

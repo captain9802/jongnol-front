@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, join, logout } from "../apis/userApi";
+import { login, join, logout, updateUserProfile } from "../apis/userApi";
 
 const userSlice = createSlice({
     name: 'user',
     initialState: {
         isLogin: sessionStorage.getItem("ACCESS_TOKEN") ? true : false,
-        loginUserId: ''
+        userNickName: '',
+        userProfileImg: ''
     },
     reducers: {
         change_searchCondition: (state, action) => ({
@@ -31,11 +32,15 @@ const userSlice = createSlice({
         });
         builder.addCase(login.fulfilled, (state, action) => {
             sessionStorage.setItem("ACCESS_TOKEN", action.payload.token);
+            sessionStorage.setItem("UserNickName", action.payload.userNickName);
+            sessionStorage.setItem("UserProfile_Img", action.payload.profileImg);
+            console.log(action.payload);
 
             return {
                 ...state,
                 isLogin: true,
-                loginUserId: action.payload.userNickName
+                userNickName: action.payload.userNickName,
+                userProfileImg: action.payload.profileImg
             };
         });
         builder.addCase(login.rejected, (state, action) => {
@@ -52,12 +57,27 @@ const userSlice = createSlice({
         builder.addCase(logout.fulfilled, (state, action) => {
             alert("로그아웃되었습니다.");
             sessionStorage.removeItem("ACCESS_TOKEN");
-            localStorage.clear('newquiz');
+            localStorage.clear();
             return {
                 ...state,
                 isLogin: false
             }
-        })
+        });
+        builder.addCase(updateUserProfile.fulfilled, (state, action) => {
+            sessionStorage.setItem("UserNickName", action.payload.userNickName);
+            sessionStorage.setItem("UserProfile_Img", action.payload.profileImg);
+
+            return {
+                ...state,
+                userNickName: action.payload.userNickName,
+                userProfileImg: action.payload.profileImg
+            };
+        });
+        builder.addCase(updateUserProfile.rejected, (state, action) => {
+            alert("프로필 업데이트에 실패했습니다. 다시 시도해주세요.");
+            console.log(action.payload);
+            return state;
+        });
     }
 });
 

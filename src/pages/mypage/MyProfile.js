@@ -1,16 +1,81 @@
-import { Avatar, Box, Paper, Typography, Button } from '@mui/material';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import { Avatar, Box, Paper, Typography, Button, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../../styles/mypage/Mypage_Profile.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUserProfile } from '../../apis/userApi';
 
 const MyProfile = () => {
+  const dispatch = useDispatch();
 
-  const [profileImage, setProfileImage] = useState("profile-image-url");
+  const { isLogin, userNickName, userProfileImg } = useSelector((state) => state.user);
 
-  const handleImageClick = (image) => {
-    setProfileImage(image);
+  const [profileImage, setProfileImage] = useState(userProfileImg || "profile-image-url");
+  const [nickname, setNickname] = useState(userNickName);
+  const [isEditing, setIsEditing] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [form, setForm] = useState({
+    nickname: userNickName,
+    profileImage: userProfileImg
+  });
+
+  const handleImageClick = async (imageUrl) => {
+    
+    setImageFile(file);
+    setProfileImage(imageUrl);
   };
+
+  const handleNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleUpdateClick = useCallback((e) => {
+    e.preventDefault();
+
+    if (!nickname.trim()) {
+      alert("닉네임을 입력해주세요!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("nickname", nickname);
+
+    console.log(imageFile);
+
+    if (imageFile) {
+      formData.append("file", imageFile);
+    }
+
+    dispatch(updateUserProfile(formData))
+      .then((result) => {
+        if (result.type === 'user/updateUserProfile/fulfilled') {
+          setIsEditing(false);
+          alert("변경이 완료되었습니다.");
+        } else {
+          alert("업데이트 실패!");
+        }
+      })
+      .catch((error) => {
+        console.error("프로필 업데이트 실패:", error);
+        alert("업데이트 실패! 다시 시도해 주세요.");
+      });
+  }, [dispatch, nickname, imageFile]);
+
+  useEffect(() => {
+    if (isLogin) {
+      const storedNickName = sessionStorage.getItem("UserNickName");
+      const storedProfileImg = sessionStorage.getItem("UserProfile_Img");
+
+      if (storedNickName && storedProfileImg) {
+        setNickname(storedNickName);
+        setProfileImage(storedProfileImg)
+        };
+      }
+  }, [isLogin]);
 
   const images = [
     "images/profile_image/1.gif",
@@ -47,35 +112,51 @@ const MyProfile = () => {
 
   return (
     <Box className="mypage">
-      <Paper className='mypage_info'>
-        <Box className='mypage_profile'>
-          <Avatar src={profileImage} className='mypage_profile'/>
-          <Box className='mypage_icon-container'>
-            <FolderOpenIcon className='mypage_folder-icon' />
-          </Box>
+      <Paper className="mypage_info">
+        <Box className="mypage_profile">
+          <Avatar src={profileImage} className="mypage_profile" />
         </Box>
-          <Typography variant='BT' className="mypage_profile_name">김삿갓
-          <EditIcon className="mypage_profile_name_edit"/>
+        {isEditing ? (
+          <Box className="mypage_profile_name_editfield">
+          <TextField
+            value={nickname}
+            onChange={handleNicknameChange}
+            variant="outlined"
+            size="small"
+            className="mypage_profile_name_editfield--textfield"
+          />
+          </Box>
+        ) : (
+          <Typography variant="BT" className="mypage_profile_name">
+            {nickname}
+            <EditIcon className="mypage_profile_name_edit" onClick={handleEditClick} />
           </Typography>
-          <Box className="mypage_info_password-button">
-           <Button variant="contained" size="small" color="primary">비밀번호 변경</Button>
-          </Box>
-          <Box className="mypage_info_update-button">
-           <Button variant="contained" size="small" color="primary">업데이트</Button>
-          </Box>
-          <Box className="mypage_info_image">
-            {images.map((images, index) => (
-            <Box key={index} className="mypage_info_image-list" onClick={() => handleImageClick(images)}>
-                <img src={images} alt="Icon" className="mypage_info_image-box" />
+        )}
+        <Box className="mypage_info_update-button">
+          <Button variant="contained" size="small" color="primary" onClick={handleUpdateClick}>
+            업데이트
+          </Button>
+        </Box>
+        <Box className="mypage_info_image">
+          {images.map((image, index) => (
+            <Box key={index} className="mypage_info_image-list" onClick={() => handleImageClick(image)}>
+              <img src={image} alt="Icon" className="mypage_info_image-box" />
             </Box>
           ))}
-          </Box>
+        </Box>
       </Paper>
       <Box className="mypage_delete-button">
-          <Button variant="contained" size="sizeLarge " color="primary" sx={{backgroundColor: '#B3261E'}}>회원탈퇴</Button>
+        <Button
+          variant="contained"
+          size="sizeLarge"
+          color="primary"
+          sx={{ backgroundColor: '#B3261E' }}
+        >
+          회원탈퇴
+        </Button>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
 export default MyProfile;

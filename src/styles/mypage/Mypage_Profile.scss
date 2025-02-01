@@ -13,26 +13,6 @@
     margin: 0 auto;
   }
 
-  .mypage_icon-container {
-    position: absolute;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    border: 1px solid #F5904B;
-    background-color: white;
-    justify-content: center;
-    align-items: center;
-    bottom: 0;
-    right: 0;
-  }
-
-  .mypage_folder-icon {
-    width: 28px;
-    height: 28px;
-    color: #374957;
-  }
-
   .mypage_profile_name {
     display: flex;
     text-decoration: underline;
@@ -48,7 +28,12 @@
     align-items: center;
   }
 
-  .mypage_info_password-button,
+  .mypage_profile_name_editfield {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
   .mypage_info_update-button {
     width: 100%;
     display: flex;
