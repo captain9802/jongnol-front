@@ -186,7 +186,7 @@
 }
 
 .main_title-box {
-  margin-top: 1.875rem;
+  padding-top: 1.875rem;
   display: flex;
   justify-content: center;
 }
@@ -277,8 +277,10 @@
 
 
 .main_bottom {
-  height: 300px;
+  height: 100%;
   width: 100%;
+  background-color: white;
+  padding-bottom: 5rem;
 }
 
 .main_bottom_service {

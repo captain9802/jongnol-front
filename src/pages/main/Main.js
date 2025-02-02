@@ -73,7 +73,7 @@ const Main = () => {
   const items = [
     { imageSrc: "images/home/main_memo.png", textTop: "단순 암기", textBottom: "Simple Memorization", backgroundColor: "#02D7C5" },
     { imageSrc: "images/home/main_quiz.png", textTop: "매일 색다른 퀴즈", textBottom: "Different Quiz Every Day", backgroundColor: "#FFC91B" },
-    { imageSrc: "images/home/main_studynote.png", textTop: "오답노트", textBottom: "Incorrect Answer Note", backgroundColor: "#AC8EF8" }
+    { imageSrc: "images/home/main_studynote.png", textTop: "나만의 퀴즈", textBottom: "My Custom Quiz", backgroundColor: "#AC8EF8" }
   ];
 
   return (
@@ -111,10 +111,10 @@ const Main = () => {
             </Box>
             <Box className="info-text-group">
               <Typography variant="BT" className="info-number">
-                {quizzesCount}개
+                {usersCount}명
               </Typography>
               <Typography variant="BT" className="info-number">
-                {usersCount}명
+                {quizzesCount}개
               </Typography>
             </Box>
           </Box>
@@ -213,7 +213,7 @@ const Main = () => {
         </Box>
         <Box className="main-middle-right">
           {[
-            { img: "images/home/main_note-study.png", title: "Study Note", description: "원하는 퀴즈들을 오답노트로 추가해 한눈에 볼 수 있습니다." },
+            { img: "images/home/main_note-study.png", title: "My Quiz", description: "내가 등록한 퀴즈를 마이페지에서 확인 할 수 있습니다." },
             { img: "images/home/main_anywhere.png", title: "Any Where", description: "PC도 모바일도 원하면 언제든 접속이 가능합니다." },
             { img: "images/home/main_statistics.png", title: "Statistics", description: "퀴즈 결과를 한 눈에 보여지는 통계를 통해 자신의 문제점을 발견 할 수 있습니다." }
           ].map((feature, index) => (

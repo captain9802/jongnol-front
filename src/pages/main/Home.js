@@ -19,6 +19,7 @@ const Home = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchKeyword, setSearchKeyword] = useState(location.state?.searchKeyword || '');
   const [searchCondition, setSearchCondition] = useState(location.state?.searchCondition || "최신순");
+  const [prevSearchKeyword, setPrevSearchKeyword] = useState("");
   const [offset, setOffset] = useState(0);
   const [limit] = useState(28);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -31,8 +32,11 @@ const Home = () => {
     console.log("hasmore :" + hasMore);
     console.log("searchKeyword :" + searchKeyword);
     console.log("searchCondition :" + searchCondition);
+    console.log("prevSearchKeyword :" + prevSearchKeyword);
+
     console.log("offset :" + offset);
     console.log("limit :" + limit);
+    console.log("quizzes :" + quizzes);
 
     if (!hasMore) return;
       const keywordToUse = (searchKeyword || '').trim() === '' ? 'all' : searchKeyword;
@@ -41,7 +45,6 @@ const Home = () => {
   }, [dispatch, searchCondition, offset]);
 
   const handleScroll = useCallback(() => {
-    console.log("2번번")
 
     if (!hasMore) return;
 
@@ -87,9 +90,16 @@ const Home = () => {
   };
 
   const handleKeyPress = (event) => {
+    console.log("searchKeyword : " + searchKeyword);
     if (event.key === 'Enter') {
+      if (searchKeyword === prevSearchKeyword) {
+        alert("동일한 검색어입니다.");
+        return;
+    }
       const keyword = searchKeyword.trim() === '' ? 'all' : searchKeyword;
-      dispatch(getQuiz({ searchCondition: 'title', searchKeyword: keyword, offset, limit }));
+      setPrevSearchKeyword(keyword);
+      setOffset(0);
+      dispatch(getQuiz({ searchCondition: 'title', searchKeyword: keyword, offset : 0, limit}));
     }
   };
 

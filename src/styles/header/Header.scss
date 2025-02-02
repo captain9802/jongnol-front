@@ -9,6 +9,10 @@
       margin-left: auto;
       display: flex;
       gap: 0.825rem;
+
+      &__button_join {
+        width: 8.75rem !important;
+      }
     }
     
     .headerText {

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { join } from '../../apis/userApi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../styles/login/join.scss';
-import { Form, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Join = () => {
     const [form, setForm] = useState({
@@ -282,8 +282,9 @@ const Join = () => {
                             value={form.userPwChk}
                             onChange={textFiledchanged}
                             className="join__input join__input--password-check"
-                        />
-                        <Typography
+                        />                       
+                    </Grid2>
+                       <Typography
                             id="password-check-success"
                             className="join__validation join__validation--success"
                             color="success"
@@ -297,7 +298,6 @@ const Join = () => {
                         >
                             비밀번호가 일치하지 않습니다.
                         </Typography>
-                    </Grid2>
                     <Grid2 item xs={12}>
                         <Button
                             type="submit"

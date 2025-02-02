@@ -2,6 +2,7 @@ import { Box, Tabs, Tab, Typography} from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 import MyProfile from './MyProfile';
+import MyQuiz from './MyQuiz';
 import '../../styles/mypage/Mypage.scss';
 
 const MyPage = () => {
@@ -36,9 +37,8 @@ const MyPage = () => {
       <Box className='mypage_title'>
       <Typography variant="VBT">{getTitle()}</Typography>
       </Box>
-      {tabIndex === 0 && (
-         <MyProfile /> 
-      )}
+      {tabIndex === 0 && <MyProfile />}
+      {tabIndex === 1 && <MyQuiz />}
     </Box>
   );
 };

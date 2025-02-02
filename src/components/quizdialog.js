@@ -20,6 +20,9 @@ const QuizDialog = () => {
     }, []);
 
     useEffect(() => {
+        console.log("maintitle" + maintitle)
+        console.log("description" + mainex)
+
         if (imageDialog !== null) {
             const existingQuizData = JSON.parse(localStorage.getItem('newquiz')) || {};
             const quizData = {
@@ -30,7 +33,7 @@ const QuizDialog = () => {
             };
             localStorage.setItem('newquiz', JSON.stringify(quizData));
         }
-    }, [imageDialog])
+    }, [imageDialog,maintitle,mainex])
 
     const handleCancel = () => {
         navi(-1);

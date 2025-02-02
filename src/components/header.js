@@ -69,10 +69,10 @@ const Header = ({className}) => {
         ) : (
           <>
             <Button
-              className="header__buttons__button"
+              className="header__buttons__button_join"
               color='primary'
               variant="contained"
-              size="size"
+              size="small"
               onClick={() => navi('/login')}
             >
               로그인 / 회원가입

@@ -1,0 +1,24 @@
+.myquiz {
+    height: 100%;
+    .myquiz_info {
+      justify-content: center;
+      border: 1px solid #F5904B;
+      position: relative;
+      padding: 20px;
+
+      &__grid {
+        margin-top: 16px;
+        justify-content: center;
+      }
+    
+      &__grid-item {
+        display: flex;
+        justify-content: center;
+        font-family: 'Pretendard, sans-serif';
+        width: 348px;
+        border: 4px solid #F5904B;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    }
+}

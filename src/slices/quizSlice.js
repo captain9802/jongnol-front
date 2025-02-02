@@ -25,7 +25,7 @@ const quizSlice = createSlice({
     builder
       .addCase(sendQuiz.fulfilled, (state, action) => {
         alert('정상적으로 퀴즈가 등록되었습니다.');
-        window.location.href = '/';
+        window.location.href = '/search';
       })
       .addCase(sendQuiz.rejected, (state, action) => {
         alert("에러 발생. 관리자에게 문의하세요.")
@@ -35,9 +35,18 @@ const quizSlice = createSlice({
         state.loading = true;
       })
       .addCase(getQuiz.fulfilled, (state, action) => {
-        console.log(action.payload)
+        console.log(action.payload);
+        console.log(action.payload.hasMore);
+        console.log(state.searchKeyword);
+        if (state.searchKeyword !== action.payload.searchKeyword && action.payload.item.length !== 0 ) {
+          console.log("1번이 실행됨");
+          state.searchKeyword = action.payload.searchKeyword;
+          state.quizzes = action.payload.item;
+        } else {
+          console.log("2번이 실행됨");
+            state.quizzes = [...state.quizzes, ...action.payload.item];
+        }
         state.hasMore = action.payload.hasMore;
-        state.quizzes = [...state.quizzes, ...action.payload.item];
         state.loading = false;
       })
       .addCase(getCountQP.fulfilled, (state, action) => {

@@ -38,6 +38,7 @@ export const getQuiz = createAsyncThunk(
                     }
                 }
             );
+            console.log(response.data);
             return response.data;
         } catch(e) {
             return thunkAPI.rejectWithValue(e);

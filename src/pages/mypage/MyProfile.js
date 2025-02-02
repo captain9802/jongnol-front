@@ -13,16 +13,9 @@ const MyProfile = () => {
   const [profileImage, setProfileImage] = useState(userProfileImg || "profile-image-url");
   const [nickname, setNickname] = useState(userNickName);
   const [isEditing, setIsEditing] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
-  const [form, setForm] = useState({
-    nickname: userNickName,
-    profileImage: userProfileImg
-  });
 
-  const handleImageClick = async (imageUrl) => {
-    
-    setImageFile(file);
-    setProfileImage(imageUrl);
+  const handleImageClick = (image) => {
+        setProfileImage(image);
   };
 
   const handleNicknameChange = (e) => {
@@ -41,14 +34,11 @@ const MyProfile = () => {
       return;
     }
 
+    console.log(profileImage);
+
     const formData = new FormData();
     formData.append("nickname", nickname);
-
-    console.log(imageFile);
-
-    if (imageFile) {
-      formData.append("file", imageFile);
-    }
+    formData.append("profileImage", profileImage);
 
     dispatch(updateUserProfile(formData))
       .then((result) => {
@@ -63,7 +53,7 @@ const MyProfile = () => {
         console.error("프로필 업데이트 실패:", error);
         alert("업데이트 실패! 다시 시도해 주세요.");
       });
-  }, [dispatch, nickname, imageFile]);
+  }, [dispatch, nickname]);
 
   useEffect(() => {
     if (isLogin) {
