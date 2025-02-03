@@ -1,21 +1,26 @@
-import { Avatar, Box, Paper, Typography, Button, TextField } from '@mui/material';
+import { Box, Paper, Typography, Button, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import React, { useState, useEffect, useCallback } from 'react';
 import '../../styles/mypage/Mypage_Profile.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserProfile } from '../../apis/userApi';
+import ProfileImg from '../../components/profileImg';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
-
   const { isLogin, userNickName, userProfileImg } = useSelector((state) => state.user);
 
-  const [profileImage, setProfileImage] = useState(userProfileImg || "profile-image-url");
+  const [profileImage, setProfileImage] = useState(userProfileImg);
   const [nickname, setNickname] = useState(userNickName);
   const [isEditing, setIsEditing] = useState(false);
+  const [form, setForm] = useState({
+    userNickName: '',
+    userProfileImg: ''
+  });
 
   const handleImageClick = (image) => {
-        setProfileImage(image);
+    const profileNum = extractNumberFromImagePath(image);
+        setProfileImage(profileNum);
   };
 
   const handleNicknameChange = (e) => {
@@ -26,6 +31,12 @@ const MyProfile = () => {
     setIsEditing(true);
   };
 
+  useEffect(() => {
+    setForm({
+      userNickName: nickname,
+      userProfileImg: profileImage 
+    });
+  }, [nickname, profileImage]);
   const handleUpdateClick = useCallback((e) => {
     e.preventDefault();
 
@@ -34,26 +45,21 @@ const MyProfile = () => {
       return;
     }
 
-    console.log(profileImage);
-
-    const formData = new FormData();
-    formData.append("nickname", nickname);
-    formData.append("profileImage", profileImage);
-
-    dispatch(updateUserProfile(formData))
+    dispatch(updateUserProfile(form))
       .then((result) => {
-        if (result.type === 'user/updateUserProfile/fulfilled') {
+        if (result.type === 'user/updateprofile/fulfilled') {
           setIsEditing(false);
           alert("변경이 완료되었습니다.");
         } else {
-          alert("업데이트 실패!");
+          alert("중복 닉네임입니다. 다른 닉네임을 사용해주세요.");
+          document.querySelector("#nickname").focus();
         }
       })
       .catch((error) => {
-        console.error("프로필 업데이트 실패:", error);
+        console.log(error)
         alert("업데이트 실패! 다시 시도해 주세요.");
       });
-  }, [dispatch, nickname]);
+  }, [dispatch, nickname, form]);
 
   useEffect(() => {
     if (isLogin) {
@@ -62,53 +68,36 @@ const MyProfile = () => {
 
       if (storedNickName && storedProfileImg) {
         setNickname(storedNickName);
-        setProfileImage(storedProfileImg)
+        console.log(storedProfileImg)
+        setProfileImage(storedProfileImg);
         };
       }
   }, [isLogin]);
 
-  const images = [
-    "images/profile_image/1.gif",
-    "images/profile_image/2.png",
-    "images/profile_image/3.gif",
-    "images/profile_image/4.png",
-    "images/profile_image/5.gif",
-    "images/profile_image/6.gif",
-    "images/profile_image/7.png",
-    "images/profile_image/8.gif",
-    "images/profile_image/9.png",
-    "images/profile_image/10.gif",
-    "images/profile_image/11.png",
-    "images/profile_image/12.gif",
-    "images/profile_image/13.png",
-    "images/profile_image/14.gif",
-    "images/profile_image/15.png",
-    "images/profile_image/16.gif",
-    "images/profile_image/17.png",
-    "images/profile_image/18.gif",
-    "images/profile_image/19.png",
-    "images/profile_image/20.gif",
-    "images/profile_image/21.png",
-    "images/profile_image/22.gif",
-    "images/profile_image/23.png",
-    "images/profile_image/24.gif",
-    "images/profile_image/25.png",
-    "images/profile_image/26.png",
-    "images/profile_image/27.png",
-    "images/profile_image/28.gif",
-    "images/profile_image/29.png",
-    "images/profile_image/30.gif"
-  ];
+  const images = Array.from({ length: 30 }, (_, index) => {
+    const number = index + 1;
+    const extension = number % 2 === 0 ? 'gif' : 'png'; 
+    return `images/profile_image/${number}.${extension}`;
+  });
+
+  const extractNumberFromImagePath = (imagePath) => {
+    const match = imagePath.match(/\/(\d+)\.(gif|png)$/);
+    if (match) {
+      return parseInt(match[1], 10);
+    }
+    return null;
+  };
 
   return (
     <Box className="mypage">
       <Paper className="mypage_info">
         <Box className="mypage_profile">
-          <Avatar src={profileImage} className="mypage_profile" />
+          <ProfileImg number={profileImage} width={'150px'} height={'150px'} />
         </Box>
         {isEditing ? (
           <Box className="mypage_profile_name_editfield">
           <TextField
+            id='nickname'
             value={nickname}
             onChange={handleNicknameChange}
             variant="outlined"

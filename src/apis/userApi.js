@@ -55,19 +55,21 @@ export const logout = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
     'user/updateprofile',
-    async (formData, thunkAPI) => {
+    async (form, thunkAPI) => {
         try {
             const response = await axios.post(
                 `http://localhost:8080/user/updateprofile`,
-                formData, 
+                {
+                    userNickName: form.userNickName,
+                    profileImg: form.userProfileImg
+                  },
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
                     }
                 }
             );
-
+            console.log(response.data.item);
             return response.data.item;
         } catch (e) {
             return thunkAPI.rejectWithValue(e);

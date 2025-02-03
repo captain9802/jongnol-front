@@ -10,6 +10,26 @@
       display: flex;
       gap: 0.825rem;
 
+      &__menu {
+        .css-1tktgsa-MuiPaper-root-MuiPopover-paper-MuiMenu-paper{
+          border: 2px dashed #F5904B;
+        }
+        .css-1toxriw-MuiList-root-MuiMenu-list{
+          padding: 0;
+        }
+        .css-1nusg9n-MuiButtonBase-root-MuiMenuItem-root {
+          display: flex;
+          justify-content: center;
+          font-size: 16px;
+          color: #572973;
+        }
+
+        .css-hqc31-MuiButtonBase-root-MuiMenuItem-root {
+          font-size: 16px;
+          color: #572973;
+        }
+      }
+
       &__button_join {
         width: 8.75rem !important;
       }

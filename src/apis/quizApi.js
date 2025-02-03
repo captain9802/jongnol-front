@@ -46,6 +46,30 @@ export const getQuiz = createAsyncThunk(
     } 
 );
 
+export const getMyQuiz = createAsyncThunk(
+    'quiz/getmyquiz',
+    async ({ offset, limit  }, thunkAPI) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8080/quiz/getmyquiz`,
+                {
+                    params: {
+                        offset,
+                        limit
+                    },
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                    }
+                }
+            );
+            console.log(response.data);
+            return response.data;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    } 
+);
+
 export const getCountQP = createAsyncThunk(
     'quiz/getcountqp',
     async (_, thunkAPI) => {

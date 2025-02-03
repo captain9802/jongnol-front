@@ -28,16 +28,6 @@ const Home = () => {
   let debounceTimeout = null;
 
   useEffect(() => {
-    console.log("1번번")
-    console.log("hasmore :" + hasMore);
-    console.log("searchKeyword :" + searchKeyword);
-    console.log("searchCondition :" + searchCondition);
-    console.log("prevSearchKeyword :" + prevSearchKeyword);
-
-    console.log("offset :" + offset);
-    console.log("limit :" + limit);
-    console.log("quizzes :" + quizzes);
-
     if (!hasMore) return;
       const keywordToUse = (searchKeyword || '').trim() === '' ? 'all' : searchKeyword;
       dispatch(getQuiz({ searchCondition: 'title', searchKeyword: keywordToUse, offset, limit }));

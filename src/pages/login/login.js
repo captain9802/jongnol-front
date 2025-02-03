@@ -99,7 +99,6 @@ const Login = () => {
                             fullWidth
                             variant='contained'
                             color='primary'
-                            size='sizeLarge'
                             className='login__button'>
                             로그인
                         </Button>

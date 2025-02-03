@@ -67,7 +67,7 @@ const theme = createTheme({
           width: '6.25rem',
           height: '2.5rem',
           fontSize: '1rem',
-          padding: '0'
+          padding: '0',
         },
         // PC 화면에서의 큰 버튼 (BBT)
         sizeLarge: {

@@ -34,7 +34,6 @@ const userSlice = createSlice({
             sessionStorage.setItem("ACCESS_TOKEN", action.payload.token);
             sessionStorage.setItem("UserNickName", action.payload.userNickName);
             sessionStorage.setItem("UserProfile_Img", action.payload.profileImg);
-            console.log(action.payload);
 
             return {
                 ...state,
@@ -55,7 +54,6 @@ const userSlice = createSlice({
             return state;
         });
         builder.addCase(logout.fulfilled, (state, action) => {
-            alert("로그아웃되었습니다.");
             sessionStorage.removeItem("ACCESS_TOKEN");
             localStorage.clear();
             return {
@@ -66,7 +64,6 @@ const userSlice = createSlice({
         builder.addCase(updateUserProfile.fulfilled, (state, action) => {
             sessionStorage.setItem("UserNickName", action.payload.userNickName);
             sessionStorage.setItem("UserProfile_Img", action.payload.profileImg);
-
             return {
                 ...state,
                 userNickName: action.payload.userNickName,
@@ -74,8 +71,7 @@ const userSlice = createSlice({
             };
         });
         builder.addCase(updateUserProfile.rejected, (state, action) => {
-            alert("프로필 업데이트에 실패했습니다. 다시 시도해주세요.");
-            console.log(action.payload);
+            console.log(action.payload.response.data.errorCode);
             return state;
         });
     }

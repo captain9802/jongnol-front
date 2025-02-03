@@ -1,27 +1,56 @@
 import { Box, Grid2, Paper } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import '../../styles/mypage/Mypage_MyQuiz.scss';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQuiz } from '../../apis/quizApi';
+import { getMyQuiz } from '../../apis/quizApi';
 import Card from '../../components/card';
 
 const MyQuiz = () => {
-    const quizzes = useSelector((state) => state.quiz.quizzes);
+    const {myquizzes, myquizhasMore} = useSelector((state) => state.quiz);
 
     const dispatch = useDispatch();
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedQuiz, setSelectedQuiz] = useState(null);
     const [questionCount, setQuestionCount] = useState(0);
+    const [offset, setOffset] = useState(0);
+    const [limit] = useState(20);
+    let debounceTimeout = null;
 
     useEffect(() => {
-        dispatch(getQuiz({ searchCondition: 'title', searchKeyword: 'all', offset : 0, limit : 100}));
-        console.log(quizzes);
-    },[])
+      if(!myquizhasMore) return;
+        dispatch(getMyQuiz({offset, limit}));
+        console.log("offset : " + offset);
+    },[offset])
+
+    const handleScroll = useCallback(() => {
+        
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const windowHeight = document.documentElement.scrollHeight;
+    
+        if (scrollPosition >= windowHeight - 600) {
+          if (debounceTimeout) {
+            clearTimeout(debounceTimeout);
+          }
+      
+          debounceTimeout = setTimeout(() => {
+            setOffset((prevOffset) => prevOffset + limit);
+          }, 100);
+        }    
+      }, [limit]);
+    
+      useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+          if (debounceTimeout) {
+            clearTimeout(debounceTimeout);
+          }
+        };
+      }, [handleScroll]);
 
     const handleCardClick = (quiz) => {
-        console.log("??");
         setSelectedQuiz(quiz);
         setQuestionCount(quiz.questionsCount);
         setDialogOpen(true);
@@ -49,7 +78,7 @@ const MyQuiz = () => {
     <Box className="myquiz">
       <Paper className="myquiz_info">
       <Grid2 container spacing={9} className="myquiz_info__grid">
-        {quizzes.map((card, index) => (
+        {myquizzes.map((card, index) => (
           <Grid2 item key={index} onClick={() => handleCardClick(card)}>
              <motion.div
              className="myquiz_info__grid-item"

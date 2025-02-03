@@ -1,13 +1,23 @@
 import { Box, Tabs, Tab, Typography} from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MyProfile from './MyProfile';
 import MyQuiz from './MyQuiz';
 import '../../styles/mypage/Mypage.scss';
+import { useSelector } from 'react-redux';
 
 const MyPage = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const isLogin = useSelector(state => state.user.isLogin);
+
+  useEffect(() => {
+    if(!isLogin) {
+      alert("로그인이 필요합니다.");
+      return window.location.href = "/login";
+    }
+  },[isLogin])
+  
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };

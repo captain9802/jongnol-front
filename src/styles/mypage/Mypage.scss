@@ -3,8 +3,8 @@
       box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         .MuiTab-root {
           height: 48px;
-          max-width: 720px;
-          width: 100%;
+          max-width: none;
+          width: 50%;
           text-align: center;
           transition: background-color 0.3s ease, color 0.3s ease;
 
