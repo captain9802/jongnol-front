@@ -34,6 +34,8 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
 
   const saveData = () => {
 
+    const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
+
     if (!subtitle) {
       alert('제목이 비어있습니다. 제목을 입력해주세요.');
       return;
@@ -48,7 +50,23 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
       alert('오답 선택지가 비어있습니다. 최소한 하나의 오답을 입력해주세요.');
       return;
     }
-    const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
+
+    if (value === 1) {
+      const combinedTanswer = [tanswer, ...fanswers.filter(answer => answer.trim() !== "")].join(",");
+      newQuizData.questions[currentQuiz - 1] = {
+        quizNumber: currentQuiz, 
+        type: value,              
+        subtitle,                
+        tanswer: combinedTanswer,                 
+        fanswers: [''],                
+        imageBox                 
+      };
+    
+      localStorage.setItem('newquiz', JSON.stringify(newQuizData));
+      handleAddQuiz();
+      alert('문제가 등록되었습니다.');
+      return;
+    }
   
     newQuizData.questions[currentQuiz - 1] = {
       quizNumber: currentQuiz, 

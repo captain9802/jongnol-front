@@ -6,7 +6,7 @@ const userSlice = createSlice({
     initialState: {
         isLogin: sessionStorage.getItem("ACCESS_TOKEN") ? true : false,
         userNickName: '',
-        userProfileImg: ''
+        userProfileImg: sessionStorage.getItem("UserProfile_Img")
     },
     reducers: {
         change_searchCondition: (state, action) => ({

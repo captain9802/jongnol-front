@@ -13,6 +13,7 @@ import QuizCreate from './pages/quiz/creatquiz';
 import SolveQuiz from './pages/quiz/solvequiz';
 import MyPage from './pages/mypage/MyPage';
 import EerrorPage from './pages/errorPage';
+import ResultQuiz from './pages/quiz/resultquiz';
 function App() {
   return (
     <Provider store={store}>
@@ -29,6 +30,7 @@ function App() {
                   <Route path='/mypage' element={<MyPage/>}/>
                   <Route path='/quizcreate' element={<QuizCreate />}/>
                   <Route path='/solvequiz/:id' element={<SolveQuiz />}/>
+                  <Route path='/resultquiz' element={<ResultQuiz />}/>
                   <Route path="*" element={<EerrorPage />} />
                 </Route>
               </Routes>

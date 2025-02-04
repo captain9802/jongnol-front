@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { sendQuiz, getQuiz, getCountQP, solveQuiz, getMyQuiz } from "../apis/quizApi";
+import { sendQuiz, getQuiz, getCountQP, solveQuiz, getMyQuiz, completeQuiz } from "../apis/quizApi";
 
 const quizSlice = createSlice({
   name: "quiz",
   initialState: {
     quizzes: [],
     myquizzes: [],
+    resultquiz: JSON.parse(localStorage.getItem("resultquiz")) || [],
     loading: false,
     searchCondition: "",
     searchKeyword: "",
@@ -82,6 +83,14 @@ const quizSlice = createSlice({
       })
       .addCase(solveQuiz.rejected, (state, action) => {
         alert("퀴즈 유저 에러 발생. 관리자에게 문의하세요.")
+        console.log(action.payload);
+      })
+      .addCase(completeQuiz.fulfilled, (state, action) => {
+        state.resultquiz = action.payload;
+        localStorage.setItem("resultquiz", JSON.stringify(action.payload));
+      })
+      .addCase(completeQuiz.rejected, (state, action) => {
+        alert("퀴즈 결과 집계 중중 발생. 관리자에게 문의하세요.")
         console.log(action.payload);
       });
   },

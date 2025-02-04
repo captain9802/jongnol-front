@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/quiz/SolveQuiz.scss';
 import { Box, Typography, Button, TextField } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { completeQuiz } from '../../apis/quizApi';
+import { useNavigate } from 'react-router-dom';
 
 const SolveQuiz = () => {
   const quiz = useSelector((state) => state.quiz.solvequiz);  
+  const disPatch = useDispatch();
+  const navi = useNavigate();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
     const savedIndex = localStorage.getItem('currentQuestionIndex');
@@ -15,8 +20,6 @@ const SolveQuiz = () => {
   const [quizAnswers, setQuizAnswers] = useState(storedAnswers);
     
   useEffect(() => {
-    console.log(quiz);
-    console.log(quiz.length);
     if (quiz.length > 0 && quiz.length !== Object.keys(storedAnswers).length) {
       setQuizAnswers(
         quiz.reduce((acc, question) => {
@@ -39,7 +42,7 @@ const SolveQuiz = () => {
   };
 
   const handleNextQuestion = (isAnswered = false) => {
-    if (currentQuestionIndex === quiz.length - 1) {
+    if (currentQuestionIndex !== quiz.length) {
       if (isAnswered) {
       if (currentQuestionIndex < quiz.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -49,18 +52,43 @@ const SolveQuiz = () => {
   };
 
   const handleSubmit = () => {
-    window.confirm("퀴즈를 제출하시겠습니까?");
     const unansweredQuestions = Object.keys(storedAnswers).filter(
       (key) => storedAnswers[key] === null
     );
 
-    if(unansweredQuestions.length > 0) {
+    if(unansweredQuestions.length > 0 || Object.keys(storedAnswers).length === 0) {
       const question = quiz.find(q => q.id === parseInt(unansweredQuestions, 10));
       const questionNumber = quiz.indexOf(question) + 1;
-  
-      alert(`${questionNumber}의 문제 정답을 작성해주세요.`)
+      if(Object.keys(storedAnswers).length === 0) {
+        alert(`1번의 문제 정답을 작성해주세요.`);
+        return;
+      }
+      alert(`${questionNumber}의 문제 정답을 작성해주세요.`);
+      return;
+    } else {
+      Swal.fire({
+        title: '퀴즈를 제출하시겠습니까?',
+        // text: '다시 되돌릴 수 없습니다. 신중하세요.',
+        icon: 'warning',
+        
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        
+        reverseButtons: true,
+        
+     }).then(result => {
+        if (result.isConfirmed) {
+           Swal.fire('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
+           console.log('정답 제출:', quizAnswers.id);
+           disPatch(completeQuiz(quizAnswers));
+           localStorage.removeItem('quizAnswers');
+           navi("/resultquiz");
+        }
+     });
     }
-    console.log('정답 제출:', quizAnswers);
   };
 
   const handleInputChange = (e, questionId) => {
@@ -69,12 +97,7 @@ const SolveQuiz = () => {
     localStorage.setItem('quizAnswers', JSON.stringify(updatedAnswers));
 
     if (e.key === 'Enter') {
-      if (currentQuestionIndex === quiz.length - 1) {
-        const submit = window.confirm("퀴즈를 제출하시겠습니까?");
-        if (submit) {
-          handleSubmit();
-        }
-      } else {
+      if (currentQuestionIndex !== quiz.length - 1) {
         handleNextQuestion();
       }
     }

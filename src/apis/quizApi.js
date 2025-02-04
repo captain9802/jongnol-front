@@ -97,3 +97,28 @@ export const solveQuiz = createAsyncThunk(
         }
     } 
 );
+
+export const completeQuiz = createAsyncThunk(
+    'quiz/completequiz',
+    async (quizAnswers, thunkAPI) => {
+      try {
+        const questionDTOList = Object.keys(quizAnswers).map(key => {
+          const questionId = parseInt(key, 10); 
+          const tanswer = quizAnswers[key]; 
+          return {
+            id: questionId,
+            tanswer: tanswer,
+          };
+        });
+          const response = await axios.post(
+          `http://localhost:8080/quiz/completequiz`,
+           questionDTOList 
+        );
+        console.log(response.data);
+        return response.data;
+      } catch (e) {
+        return thunkAPI.rejectWithValue(e);
+      }
+    }
+  );
+  

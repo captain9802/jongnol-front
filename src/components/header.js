@@ -9,17 +9,11 @@ import Swal from 'sweetalert2';
 
 const Header = ({className}) => {
   const navi = useNavigate();
-  const {isLogin, userProfileImg} = useSelector(state => state.user);
+  const {isLogin, userProfileImg} = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const [userImg, setUserImg] = useState(userProfileImg);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const storedProfileImg = sessionStorage.getItem("UserProfile_Img");
-    setUserImg(storedProfileImg);
-  },[userProfileImg]);
-
   const handleLogout = useCallback(() => {
     dispatch(logout());
     Swal.fire({
@@ -63,6 +57,7 @@ const Header = ({className}) => {
         <>
           {isSmallScreen ? (
             <>
+            <Box sx={{marginRight: '1rem'}}>
               <ProfileImg number={userImg} onClick={handleProfileClick}/>
               <Menu
                   anchorEl={anchorEl}
@@ -82,6 +77,7 @@ const Header = ({className}) => {
                   <MenuItem sx={{borderBottom:"2px dashed #F5904B", borderTop:"2px dashed #F5904B"}} onClick={mypage}>마이페이지</MenuItem>
                   <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
                 </Menu>
+                </Box>
             </>
           ) : (
             <>
