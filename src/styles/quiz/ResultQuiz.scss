@@ -1,0 +1,49 @@
+.resultquiz {
+    display: grid;
+    justify-content: center;
+    gap: 2rem;
+
+    &__score {
+        width: 100%;
+        height: 100%;
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+
+        .CircularProgressbar {
+            width: 400px;
+        }
+    }
+
+    &__button {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+    }
+
+    &__list {
+        display: grid;
+        text-align: center;
+        gap: 1rem;
+
+        .quiz-image {
+            max-width: 50rem;
+        }
+    }
+    &__paper {
+        padding: 3rem;
+        border: 1px solid #F5904B;
+    }
+    &__item {
+        display: grid;
+        gap: 2rem;
+        justify-items: center;
+        
+        .wrong {
+            color: red;
+        }
+        .correct {
+            color: green;
+        }
+    }
+}

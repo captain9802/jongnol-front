@@ -30,7 +30,7 @@ function App() {
                   <Route path='/mypage' element={<MyPage/>}/>
                   <Route path='/quizcreate' element={<QuizCreate />}/>
                   <Route path='/solvequiz/:id' element={<SolveQuiz />}/>
-                  <Route path='/resultquiz' element={<ResultQuiz />}/>
+                  <Route path='/resultquiz/:id' element={<ResultQuiz />}/>
                   <Route path="*" element={<EerrorPage />} />
                 </Route>
               </Routes>

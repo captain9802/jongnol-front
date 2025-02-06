@@ -4,12 +4,15 @@ import { Box, Typography, Button, TextField } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { completeQuiz } from '../../apis/quizApi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import SubmitAlert from '../../components/alert/submitAlert';
 
 const SolveQuiz = () => {
   const quiz = useSelector((state) => state.quiz.solvequiz);  
+  const { id } = useParams();
   const disPatch = useDispatch();
   const navi = useNavigate();
+  const {submitAlert} = SubmitAlert();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
     const savedIndex = localStorage.getItem('currentQuestionIndex');
@@ -66,26 +69,13 @@ const SolveQuiz = () => {
       alert(`${questionNumber}의 문제 정답을 작성해주세요.`);
       return;
     } else {
-      Swal.fire({
-        title: '퀴즈를 제출하시겠습니까?',
-        // text: '다시 되돌릴 수 없습니다. 신중하세요.',
-        icon: 'warning',
-        
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '확인',
-        cancelButtonText: '취소',
-        
-        reverseButtons: true,
-        
+      submitAlert({
+        title: '퀴즈를 제출하시겠습니까?',        
      }).then(result => {
         if (result.isConfirmed) {
-           Swal.fire('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
-           console.log('정답 제출:', quizAnswers.id);
+          // SubmitAlert('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
            disPatch(completeQuiz(quizAnswers));
-           localStorage.removeItem('quizAnswers');
-           navi("/resultquiz");
+           navi(`/resultquiz/${id}`);
         }
      });
     }

@@ -1,0 +1,37 @@
+.swal2-actions .custom-cancel-button {
+    background-color: transparent;
+    border: 1px solid #d33;
+    color: #d33;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.swal2-actions .custom-cancel-button:hover {
+    background-color: #ffffff;
+    color: #572973;
+}
+
+.swal2-actions .custom-submit-button {
+    background-color: #F5904B !important;
+    color: white;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.swal2-actions .custom-submit-button:hover {
+    background-color: #ffffff !important;
+    color: #572973;
+}
+
+.swal2-actions .custom-img-button {
+    margin: 0;
+    justify-items: center;
+}
+
+div:where(.swal2-container) img:where(.swal2-image) {
+    margin: 0;
+    justify-self: center;
+}
+
+div:where(.swal2-container) h2:where(.swal2-title) {
+    padding: 0;
+}
+

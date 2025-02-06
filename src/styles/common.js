@@ -18,9 +18,14 @@ const theme = createTheme({
       fontWeight: 500,
       lineHeight: 1.2      // regular
     },
+    BBT: {                // PC 화면에서의 버튼 안 텍스트 (PBT)
+      fontSize: '20px',    
+      fontWeight: 500,
+      lineHeight: 1.2      // regular
+    },
     PBT: {                // PC 화면에서의 버튼 안 텍스트 (PBT)
       fontSize: '18px',    
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.2      // regular
     },
     PCT: {                // 카드 대제목 (PCT)
@@ -78,9 +83,21 @@ const theme = createTheme({
         },
         // 취소 버튼 스타일
         containedSecondary: {
-          backgroundColor: '#CECECE',
+          backgroundColor: 'transparent',
+          border:'1px solid #F5904B',
+          color: 'red',
           '&:hover': {
-            backgroundColor: '#BDBDBD', // 호버 시 더 진한 회색
+            backgroundColor: 'white',
+            color:'#572973',
+          },
+        },
+        containedThird: {
+          backgroundColor: 'transparent',
+          border:'1px solid #F5904B',
+          color: 'green',
+          '&:hover': {
+            backgroundColor: 'white',
+            color:'#572973',
           },
         },
       },
