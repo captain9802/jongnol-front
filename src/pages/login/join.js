@@ -6,6 +6,7 @@ import { join } from '../../apis/userApi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../styles/login/join.scss';
 import { useNavigate } from 'react-router-dom';
+import WarningAlert from '../../components/alert/warningAlert';
 
 const Join = () => {
     const [form, setForm] = useState({
@@ -20,6 +21,7 @@ const Join = () => {
     const [pwChk, setPwChk] = useState(false);
     const dispatch = useDispatch();
     const navi = useNavigate();
+    const {warningAlert} = WarningAlert();
 
     const textFiledchanged = useCallback((e) => {
         setForm({
@@ -68,7 +70,7 @@ const Join = () => {
 
     const userNickNameCheck = useCallback(async () => {
         if (form.userNickName === '') {
-            alert("닉네임 입력하세요.");
+            warningAlert({title:"닉네임 입력해주세요."});
             document.querySelector("#userNickName").focus();
             return;
         }
@@ -78,7 +80,7 @@ const Join = () => {
                 userNickName: form.userNickName
             });
             if (response.data.item.nicknameCheckResult === 'invalid nickname') {
-                alert("사용중인 닉네임입니다. 다른 닉네임을 사용해주세요.");
+                warningAlert({title:"사용중인 닉네임입니다. 다른 닉네임을 사용해주세요."});
                 document.querySelector("#userNickName").focus();
                 return;
             } else {
@@ -95,7 +97,7 @@ const Join = () => {
 
     const idCheck = useCallback(async () => {
         if (form.userName === '') {
-            alert("닉네임을 입력하세요.");
+            warningAlert({title:"닉네임을 입력해주세요."});
             document.querySelector("#userName").focus();
             return;
         }
@@ -106,7 +108,7 @@ const Join = () => {
             });
             console.log(form.userName);
             if (response.data.item.idCheckResult === 'invalid id') {
-                alert("중복된 아이디입니다. 다른 아이디로 변경해주세요.");
+                warningAlert({title:"중복된 아이디입니다. 다른 아이디로 변경해주세요."});
                 document.querySelector("#userName").focus();
                 return;
             } else {
@@ -140,23 +142,23 @@ const Join = () => {
         e.preventDefault();
 
         if (!idChk) {
-            alert("아이디 중복체크를 진행하세요.");
+            warningAlert({title:"아이디 중복체크를 진행해주세요."});
             return;
         }
 
         if (!NickNameChk) {
-            alert("닉네임 중복체크를 진행하세요.");
+            warningAlert({title:"닉네임 중복체크를 진행해주세요."});
             return;
         }
 
         if (!pwValidation) {
-            alert("비밀번호는 특수문자, 영문자, 숫자 조합의 9자리 이상으로 설정하세요.");
+            warningAlert({title:"비밀번호는 특수문자, 영문자, 숫자 조합의 9자리 이상으로 설정해주세요."});
             document.querySelector("#userPw").focus();
             return;
         }
 
         if (!pwChk) {
-            alert("비밀번호가 일치하지 않습니다.");
+            warningAlert({title:"비밀번호가 일치하지 않습니다."});
             document.querySelector("#userPwChk").focus();
             return;
         }
