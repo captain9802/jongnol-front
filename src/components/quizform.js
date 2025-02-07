@@ -5,6 +5,9 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import '../styles/quiz/QuizForm.scss';
+import WarningAlert from './alert/warningAlert';
+import OkAlert from './alert/okAlert';
+import SubmitAlert from './alert/submitAlert';
 
 const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
   const [value, setValue] = useState(0);
@@ -12,6 +15,9 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
   const [tanswer, setTanswer] = useState('');
   const [fanswers, setFanswers] = useState(['']);
   const [imageBox, setImageBox] = useState(null);
+  const {warningAlert} = WarningAlert();
+  const {okAlert} = OkAlert();
+  const {submitAlert} = SubmitAlert();
 
    useEffect(() => {
     const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
@@ -37,17 +43,17 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
     const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
 
     if (!subtitle) {
-      alert('제목이 비어있습니다. 제목을 입력해주세요.');
+      warningAlert({title:'제목이 비어있습니다. 제목을 입력해주세요.'});
       return;
     }
   
     if (!tanswer) {
-      alert('정답칸이 비어있습니다. 정답을 입력해주세요.');
+      warningAlert({title:'정답칸이 비어있습니다. 정답을 입력해주세요.'});
       return;
     }
   
     if (value === 0 && (!fanswers || fanswers.length === 0 || fanswers.some(f => f.trim() === ""))) {
-      alert('오답 선택지가 비어있습니다. 최소한 하나의 오답을 입력해주세요.');
+      warningAlert({title:'오답 선택지가 비어있습니다. 최소한 하나의 오답을 입력해주세요.'});
       return;
     }
 
@@ -64,7 +70,7 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
     
       localStorage.setItem('newquiz', JSON.stringify(newQuizData));
       handleAddQuiz();
-      alert('문제가 등록되었습니다.');
+      okAlert({title:'문제가 등록되었습니다.'});
       return;
     }
   
@@ -79,8 +85,8 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
   
     localStorage.setItem('newquiz', JSON.stringify(newQuizData));
     handleAddQuiz();
-    alert('문제가 등록되었습니다.');
-  };
+    okAlert({title:'문제가 등록되었습니다.'});
+    };
 
   
   
@@ -90,16 +96,20 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
 
   const confirmAndClearData = () => {
     if (hasInputData()) {
-      if (window.confirm('현재 작성 중인 퀴즈란이 초기화됩니다. 괜찮으시겠습니까?')) {
-        clearInputData();
-        return true;
-      } else {
-        return false;
-      }
+      return submitAlert({ 
+        title: '현재 작성 중인 퀴즈란이 초기화됩니다. 괜찮으시겠습니까?' 
+      }).then(result => {
+        if (result.isConfirmed) {
+          clearInputData();
+          return true;
+        } else {
+          return false;
+        }
+      });
     }
     return true;
   };
-
+  
   const clearInputData = () => {
     setSubTitle('');
     setTanswer('');
@@ -120,14 +130,14 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
      if(fanswers.length < 5) {
       setFanswers([...fanswers, '']);
       } else {
-        alert('최대 5개의 보기만 추가할 수 있습니다.');
+        warningAlert({title:'최대 5개의 보기만 추가할 수 있습니다.'});
         return;
       }
     } else if (value === 1) {
       if(fanswers.length < 4) {
         setFanswers([...fanswers, '']);
       }else {
-        alert('최대 4개의 유사 답변을 추가할 수 있습니다.');
+        warningAlert({title:'최대 4개의 유사 답변을 추가할 수 있습니다.'});
         return;
     }
   }};

@@ -4,12 +4,14 @@ import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useNavigate } from 'react-router-dom';
 import '../styles/quiz/QuizDialog.scss';
+import WarningAlert from './alert/warningAlert';
 
 const QuizDialog = () => {
     const [imageDialog, setImageDialog] = useState(null);
     const [openDialog, setOpenDialog] = useState(true);
     const [maintitle, setMainTitle] = useState('');
     const [mainex, setMainEx] = useState('');
+    const {warningAlert} = WarningAlert();
     const navi = useNavigate();
 
     useEffect(() => {
@@ -70,7 +72,7 @@ const QuizDialog = () => {
             convertImageToBase64(randomImage);
         }
         if (!maintitle || !mainex) {
-            alert('퀴즈 제목과 설명을 작성해 주세요.');
+            warningAlert({title:'퀴즈 제목과 설명을 작성해 주세요.'});
             return;
         }
             setOpenDialog(false);
