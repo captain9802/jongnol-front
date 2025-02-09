@@ -5,10 +5,16 @@ import '../../styles/mypage/Mypage_Profile.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserProfile } from '../../apis/userApi';
 import ProfileImg from '../../components/profileImg';
+import WarningAlert from '../../components/alert/warningAlert';
+import OkAlert from '../../components/alert/okAlert';
+import ErrorAlert from '../../components/alert/errorAlert';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const { isLogin, userNickName, userProfileImg } = useSelector((state) => state.user);
+  const {warningAlert} = WarningAlert();
+  const {okAlert} = OkAlert();
+  const {errorAlert} = ErrorAlert();
 
   const [profileImage, setProfileImage] = useState(userProfileImg);
   const [nickname, setNickname] = useState(userNickName);
@@ -41,7 +47,7 @@ const MyProfile = () => {
     e.preventDefault();
 
     if (!nickname.trim()) {
-      alert("닉네임을 입력해주세요!");
+      okAlert({title:"닉네임을 입력해주세요!"});
       return;
     }
 
@@ -49,15 +55,15 @@ const MyProfile = () => {
       .then((result) => {
         if (result.type === 'user/updateprofile/fulfilled') {
           setIsEditing(false);
-          alert("변경이 완료되었습니다.");
+          okAlert({title:"변경이 완료되었습니다."});
         } else {
-          alert("중복 닉네임입니다. 다른 닉네임을 사용해주세요.");
+          warningAlert({title:"중복 닉네임입니다. 다른 닉네임을 사용해주세요."});
           document.querySelector("#nickname").focus();
         }
       })
       .catch((error) => {
         console.log(error)
-        alert("업데이트 실패! 다시 시도해 주세요.");
+        errorAlert();
       });
   }, [dispatch, nickname, form]);
 

@@ -5,16 +5,20 @@ import MyProfile from './MyProfile';
 import MyQuiz from './MyQuiz';
 import '../../styles/mypage/Mypage.scss';
 import { useSelector } from 'react-redux';
+import WarningAlert from '../../components/alert/warningAlert';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const isLogin = useSelector(state => state.user.isLogin);
+  const {warningAlert} = WarningAlert();
+  const navi = useNavigate();
 
   useEffect(() => {
     if(!isLogin) {
-      alert("로그인이 필요합니다.");
-      return window.location.href = "/login";
+      warningAlert({title:"로그인이 필요합니다."});
+      return navi("/login");
     }
   },[isLogin])
   

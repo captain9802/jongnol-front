@@ -6,6 +6,7 @@ import { logout } from '../apis/userApi';
 import '../styles/header/Header.scss'
 import ProfileImg from './profileImg';
 import Swal from 'sweetalert2';
+import OkAlert from './alert/okAlert';
 
 const Header = ({className}) => {
   const navi = useNavigate();
@@ -14,13 +15,10 @@ const Header = ({className}) => {
   const [userImg, setUserImg] = useState(userProfileImg);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
+  const {okAlert} = OkAlert();
   const handleLogout = useCallback(() => {
     dispatch(logout());
-    Swal.fire({
-      text:'로그아웃 되었습니다.',
-      icon:'success',
-      confirmButtonText:'오케이'
-    })
+    okAlert({title:'로그아웃 되었습니다.'});
     navi("/login");
   }, [dispatch, navi]);
 

@@ -2,12 +2,11 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import '../../styles/alert/SwalAlert.scss';
 
-const OkAlert = () => {
-  const okAlert = ({ title, text }) => {
+const ErrorAlert = () => {
+  const errorAlert = ({}) => {
     return Swal.fire({
-      title: title,
-      text: text,
-      imageUrl: '/alert/confirm.png',
+      title: '오류가 발생했습니다. 관리자에게 문의해주세요.',
+      imageUrl: '/alert/error.png',
       imageWidth: '20rem',
       imageHeight: '20rem',
       imageAlt: '성공',
@@ -25,7 +24,7 @@ const OkAlert = () => {
     });
   };
 
-  return { okAlert };
+  return { errorAlert };
 };
 
-export default OkAlert;
+export default ErrorAlert;

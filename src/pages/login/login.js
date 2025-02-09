@@ -5,12 +5,18 @@ import { login } from '../../apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../styles/login/login.scss';
+import OkAlert from '../../components/alert/okAlert';
+import WarningAlert from '../../components/alert/warningAlert';
+import ErrorAlert from '../../components/alert/errorAlert';
 
 const Login = () => {
     const [form, setForm] = useState({
         userName: '',
         userPw: ''
     });
+    const {okAlert} = OkAlert();
+    const {warningAlert} = WarningAlert();
+    const {errorAlert} = ErrorAlert();
 
     const navi = useNavigate();
     const dispatch = useDispatch();
@@ -26,8 +32,17 @@ const Login = () => {
         e.preventDefault();
         dispatch(login(form)).then((result) => {
             if (result.type === 'user/login/fulfilled') {
+                okAlert({title:"로그인되었습니다."})
                 navi("/");
-            }else {
+            } else if (result.type === 'user/login/rejected') {
+                if (result.payload === 200) {
+                    warningAlert({title:"존재하지 않는 아이디입니다."});
+                } else if (result.payload === 201) {
+                    warningAlert({title:"비밀번호가 잘못됐습니다."});
+                } else {
+                    errorAlert();
+                }
+                
                 setForm((prevForm) => ({
                     ...prevForm,
                     userPw: ''

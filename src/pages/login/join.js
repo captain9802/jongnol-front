@@ -5,8 +5,11 @@ import { useDispatch } from 'react-redux';
 import { join } from '../../apis/userApi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../styles/login/join.scss';
-import { useNavigate } from 'react-router-dom';
+import { Await, useNavigate } from 'react-router-dom';
 import WarningAlert from '../../components/alert/warningAlert';
+import ErrorAlert from '../../components/alert/errorAlert';
+import OkAlert from '../../components/alert/okAlert';
+import SubmitAlert from '../../components/alert/submitAlert';
 
 const Join = () => {
     const [form, setForm] = useState({
@@ -22,6 +25,9 @@ const Join = () => {
     const dispatch = useDispatch();
     const navi = useNavigate();
     const {warningAlert} = WarningAlert();
+    const {errorAlert} = ErrorAlert();
+    const {okAlert} = OkAlert();
+    const {submitAlert} = SubmitAlert();
 
     const textFiledchanged = useCallback((e) => {
         setForm({
@@ -70,7 +76,7 @@ const Join = () => {
 
     const userNickNameCheck = useCallback(async () => {
         if (form.userNickName === '') {
-            warningAlert({title:"닉네임 입력해주세요."});
+            warningAlert({title:"닉네임을 입력해주세요."});
             document.querySelector("#userNickName").focus();
             return;
         }
@@ -84,14 +90,17 @@ const Join = () => {
                 document.querySelector("#userNickName").focus();
                 return;
             } else {
-                if (window.confirm(`${form.userNickName}는 사용가능한 닉네임입니다. 사용하시겠습니까?`)) {
-                    document.querySelector("#userNickName").setAttribute('disabled', true);
-                    setNickNameChk(true);
-                    return;
-                }
+                submitAlert({
+                    title: `${form.userNickName}는 사용가능한 닉네임입니다. 사용하시겠습니까?`
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        document.querySelector("#userNickName").setAttribute('disabled', true);
+                        setNickNameChk(true);
+                    }
+                });
             }
         } catch (e) {
-            alert("에러 발생. 관리자에게 문의하세요.");
+            errorAlert();
         }
     }, [form.userNickName]);
 
@@ -112,14 +121,17 @@ const Join = () => {
                 document.querySelector("#userName").focus();
                 return;
             } else {
-                if (window.confirm(`${form.userName}는 사용가능한 아이디입니다. 사용하시겠습니까?`)) {
-                    document.querySelector("#userName").setAttribute('disabled', true);
-                    setIdChk(true);
-                    return;
-                }
+                submitAlert({
+                    title: `${form.userName}은/는는 사용가능한 닉네임입니다. 사용하시겠습니까?`
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        document.querySelector("#userName").setAttribute('disabled', true);
+                        setIdChk(true);
+                    }
+                });
             }
         } catch (e) {
-            alert("에러 발생. 관리자에게 문의하세요.");
+            errorAlert();
         }
     }, [form.userName]);
 
@@ -138,7 +150,7 @@ const Join = () => {
         }
     }, []);
 
-    const handleJoin = useCallback((e) => {
+    const handleJoin = useCallback(async (e) => {
         e.preventDefault();
 
         if (!idChk) {
@@ -163,7 +175,15 @@ const Join = () => {
             return;
         }
 
-        dispatch(join(form));
+        try {
+            const actionResult = await dispatch(join(form)).unwrap();
+    
+            okAlert({title:`${actionResult.userNickName}님 회원가입을 축하합니다.`});
+            navi("/login")
+        } catch (error) {
+            console.log(error);
+            errorAlert();
+        }
     }, [form, NickNameChk, idChk, pwValidation, pwChk, dispatch]);
 
     const handleBack = () => {

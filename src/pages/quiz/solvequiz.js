@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { completeQuiz } from '../../apis/quizApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import SubmitAlert from '../../components/alert/submitAlert';
+import WarningAlert from '../../components/alert/warningAlert';
+import OkAlert from '../../components/alert/okAlert';
 
 const SolveQuiz = () => {
   const quiz = useSelector((state) => state.quiz.solvequiz);  
@@ -13,6 +15,8 @@ const SolveQuiz = () => {
   const disPatch = useDispatch();
   const navi = useNavigate();
   const {submitAlert} = SubmitAlert();
+  const {warningAlert} = WarningAlert();
+  const {okAlert} = OkAlert();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
     const savedIndex = localStorage.getItem('currentQuestionIndex');
@@ -63,17 +67,17 @@ const SolveQuiz = () => {
       const question = quiz.find(q => q.id === parseInt(unansweredQuestions, 10));
       const questionNumber = quiz.indexOf(question) + 1;
       if(Object.keys(storedAnswers).length === 0) {
-        alert(`1번의 문제 정답을 작성해주세요.`);
+        warningAlert({title:`1번의 문제 정답을 작성해주세요.`});
         return;
       }
-      alert(`${questionNumber}의 문제 정답을 작성해주세요.`);
+      warningAlert({title:`${questionNumber}의 문제 정답을 작성해주세요.`});
       return;
     } else {
       submitAlert({
         title: '퀴즈를 제출하시겠습니까?',        
      }).then(result => {
         if (result.isConfirmed) {
-          // SubmitAlert('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
+           okAlert({title: "퀴즈 제출이 완료되었습니다."})
            disPatch(completeQuiz(quizAnswers));
            navi(`/resultquiz/${id}`);
         }

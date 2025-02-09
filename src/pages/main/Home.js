@@ -9,12 +9,14 @@ import { getQuiz } from '../../apis/quizApi';
 import { useLocation } from 'react-router-dom';
 import InQuiz from '../../components/inquiz';
 import { motion } from 'framer-motion';
+import OkAlert from '../../components/alert/okAlert';
 
 const Home = () => {
   const dispatch = useDispatch();
   const quizzes = useSelector((state) => state.quiz.quizzes);
   const hasMore = useSelector((state) => state.quiz.hasMore);
   const location = useLocation();
+  const {okAlert} = OkAlert();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchKeyword, setSearchKeyword] = useState(location.state?.searchKeyword || '');
@@ -83,7 +85,7 @@ const Home = () => {
     console.log("searchKeyword : " + searchKeyword);
     if (event.key === 'Enter') {
       if (searchKeyword === prevSearchKeyword) {
-        alert("동일한 검색어입니다.");
+        okAlert({title:"동일한 검색어입니다.", text: "다른 검색어를 입력해주세요."});
         return;
     }
       const keyword = searchKeyword.trim() === '' ? 'all' : searchKeyword;
