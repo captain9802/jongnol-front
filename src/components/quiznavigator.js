@@ -11,7 +11,6 @@ const QuizNavigator = ({ currentQuiz , onQuizChange , quizzes, setQuizzes, delet
 
   useEffect(() => {
     const storedQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
-    console.log(storedQuizData);
     if (storedQuizData.questions.length === 0) {
       setQuizzes([1]);
     } else {

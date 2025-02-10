@@ -115,14 +115,13 @@ const Join = () => {
             const response = await axios.post(`http://localhost:8080/user/id-check`, {
                 userName: form.userName
             });
-            console.log(form.userName);
             if (response.data.item.idCheckResult === 'invalid id') {
                 warningAlert({title:"중복된 아이디입니다. 다른 아이디로 변경해주세요."});
                 document.querySelector("#userName").focus();
                 return;
             } else {
                 submitAlert({
-                    title: `${form.userName}은/는는 사용가능한 닉네임입니다. 사용하시겠습니까?`
+                    title: `${form.userName}은 사용가능한 닉네임입니다. 사용하시겠습니까?`
                 }).then(result => {
                     if (result.isConfirmed) {
                         document.querySelector("#userName").setAttribute('disabled', true);
@@ -181,7 +180,6 @@ const Join = () => {
             okAlert({title:`${actionResult.userNickName}님 회원가입을 축하합니다.`});
             navi("/login")
         } catch (error) {
-            console.log(error);
             errorAlert();
         }
     }, [form, NickNameChk, idChk, pwValidation, pwChk, dispatch]);
@@ -200,7 +198,7 @@ const Join = () => {
               <ArrowBackIcon/>
             </IconButton>
             <Box className='join__img' onClick={handleHome}>
-            <img src='logo/4.png' alt='logo'/>
+            <img src='logo/4.png' alt='logo' className='join__img__logo'/>
             </Box>
             <Paper className='join__paper'>
             <form onSubmit={handleJoin} className="join__form">

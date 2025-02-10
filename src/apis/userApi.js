@@ -53,6 +53,26 @@ export const logout = createAsyncThunk(
     }
 )
 
+export const deleteUser = createAsyncThunk(
+    'user/deleteuser',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.delete(
+                `http://localhost:8080/user/deleteuser`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                    }
+                }
+            );
+
+            return response.data.item;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+)
+
 export const updateUserProfile = createAsyncThunk(
     'user/updateprofile',
     async (form, thunkAPI) => {
@@ -69,7 +89,6 @@ export const updateUserProfile = createAsyncThunk(
                     }
                 }
             );
-            console.log(response.data.item);
             return response.data.item;
         } catch (e) {
             return thunkAPI.rejectWithValue(e);

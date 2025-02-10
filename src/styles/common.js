@@ -6,37 +6,52 @@ const theme = createTheme({
     VBT: {
       fontSize: '35px',    // 큰 글씨 강조 (BT)
       fontWeight: 600,
-      lineHeight: 1.2     // semibold
+      lineHeight: 1.2,     // semibold
+      '@media (max-width:600px)': {
+        fontSize: '28px', // 작은 화면에서 폰트 크기 조정
+      },
     },
     BT: {
       fontSize: '28px',    // 큰 글씨 강조 (BT)
       fontWeight: 600,
-      lineHeight: 1.2      // semibold
+      lineHeight: 1.2,
+      '@media (max-width:600px)': {
+        fontSize: '24px', // 작은 화면에서 폰트 크기 조정
+      },      // semibold
     },
     SBT: {
       fontSize: '28px',    // 큰 글씨 강조 (BT)
       fontWeight: 500,
-      lineHeight: 1.2      // regular
+      lineHeight: 1.2,
+      '@media (max-width:600px)': {
+        fontSize: '24px', // 작은 화면에서 폰트 크기 조정
+      },      // regular
     },
     BBT: {                // PC 화면에서의 버튼 안 텍스트 (PBT)
       fontSize: '20px',    
       fontWeight: 500,
-      lineHeight: 1.2      // regular
+      lineHeight: 1.2,
+      '@media (max-width:600px)': {
+        fontSize: '16px', // 작은 화면에서 폰트 크기 조정
+      },      // regular
     },
     PBT: {                // PC 화면에서의 버튼 안 텍스트 (PBT)
       fontSize: '18px',    
       fontWeight: 500,
-      lineHeight: 1.2      // regular
+      lineHeight: 1.2,
+      '@media (max-width:600px)': {
+        fontSize: '14px', // 작은 화면에서 폰트 크기 조정
+      },      // regular
     },
     PCT: {                // 카드 대제목 (PCT)
       fontSize: '16px',    
       fontWeight: 600,
-      lineHeight: 1.2      // semibold
+      lineHeight: 1.2,
     },
     MPCT: {                // 카드 대제목 (PCT)
       fontSize: '16px',    
       fontWeight: 400,
-      lineHeight: 1.2      // semibold
+      lineHeight: 1.2,
     },
     PCE: {                // 카드 설명글 (PCE)
       fontSize: '14px',    
@@ -48,7 +63,7 @@ const theme = createTheme({
       fontSize: '16px',    
       fontWeight: 400,     // regular
       color: '#1D1B20',
-      lineHeight: 1.2     // 텍스트 색상
+      lineHeight: 1.2,
     },
   },
   components: {

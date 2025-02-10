@@ -16,10 +16,45 @@
   
     .inquiz_dialog_button {
       padding: 25px 25px 25px 25px;
+
+      &_box {
+        &_delete {
+          width: 30%;
+        }
+        &_submit {
+          width: 70%;
+          text-align: right;
+          &_1 {
+            margin-right: 1rem;
+          } 
+        }
+      }
     }
+
+    @media (max-width: 600px) {
+      .inquiz_dialog_button {
+        &_box {
+          &_delete {
+            &_1{
+              width: 4.25rem;
+              font-size: 0.825rem;
+            }
+          }
+          &_submit {
+            &_1 {
+              width: 4.25rem;
+              font-size: 0.825rem;
+            }
+            &_2 {
+              width: 4.25rem;
+              font-size: 0.825rem;
+            }
+          }
+        }
+      }
+  }
   }
 
-/* 스크롤바 스타일 */
 .MuiDialog-root::-webkit-scrollbar,
 .MuiDialog-paper::-webkit-scrollbar,
 .MuiDialogContent-root::-webkit-scrollbar {

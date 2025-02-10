@@ -4,7 +4,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const sendQuiz = createAsyncThunk(
     'quiz/newquiz',
     async (quizData, thunkAPI) => {
-        console.log(quizData);
         try {
             const response = await axios.post(
                 `http://localhost:8080/quiz/newquiz`,
@@ -38,7 +37,6 @@ export const getQuiz = createAsyncThunk(
                     }
                 }
             );
-            console.log(response.data);
             return response.data;
         } catch(e) {
             return thunkAPI.rejectWithValue(e);
@@ -62,7 +60,6 @@ export const getMyQuiz = createAsyncThunk(
                     }
                 }
             );
-            console.log(response.data);
             return response.data;
         } catch(e) {
             return thunkAPI.rejectWithValue(e);
@@ -98,6 +95,24 @@ export const solveQuiz = createAsyncThunk(
     } 
 );
 
+export const deleteQuiz = createAsyncThunk(
+    'quiz/deletequiz',
+    async (id, thunkAPI) => {
+        try {
+            const response = await axios.delete(
+                `http://localhost:8080/quiz/deletequiz/${id}`,{
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                }
+            }
+            );
+            return response.data.item;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e.response.data);
+        }
+    } 
+);
+
 export const completeQuiz = createAsyncThunk(
     'quiz/completequiz',
     async (quizAnswers, thunkAPI) => {
@@ -114,7 +129,6 @@ export const completeQuiz = createAsyncThunk(
           `http://localhost:8080/quiz/completequiz`,
            questionDTOList 
         );
-        console.log(response.data);
         return response.data;
       } catch (e) {
         return thunkAPI.rejectWithValue(e);

@@ -1,8 +1,9 @@
 .solvequiz {
     width: 100%;
+    margin-top: 3rem;
     .solvequiz__boxes {
         display: grid;
-        gap: 2rem;
+        gap: 5rem;
 
         &__buttons {
             display: flex;
@@ -51,10 +52,18 @@
                     .selected {
                         background-color: #F5904B;
                         color: white;
+                        width: 100%;
+                        font-weight: 600;
+                        height: 100%;
+                        min-height: 40px;
                       }
                     .non {
                         background-color: white;
                         color: #572973;
+                        width: 100%;
+                        font-weight: 600;
+                        height: 100%;
+                        min-height: 40px;
                     }
                 }
             }
@@ -72,7 +81,8 @@
                 &--textfeild {
                     background-color: white;
                     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-                    width: 50rem;
+                    max-width: 50rem;
+                    width: 100%;
                     &:focus-within {
                         border-color: #F5904B;
                         box-shadow: 0 0 8px rgba(245, 144, 75, 0.5);
@@ -94,8 +104,35 @@
             display: flex;
             width: 100%;
             &--button {
-                width: 50rem;
+                font-weight: 600;
             }
+        }
+    }
+
+    @media (max-width: 1500px) {
+        .solvequiz__boxes__content {
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .solvequiz__boxes__content__img {
+            margin-bottom: 2rem;
+            width: 100%;
+            &--question {
+                width: 100%;
+            }
+        }
+
+        .solvequiz__boxes__content__multi--box {
+            justify-items: center;
+        }
+
+        .solvequiz__boxes__content__multi--box .non {
+            max-width: 50rem;
+        }
+
+        .solvequiz__boxes__submit {
+            margin-bottom: 5rem;
         }
     }
 }

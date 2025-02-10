@@ -29,10 +29,24 @@
 div:where(.swal2-container) img:where(.swal2-image) {
     margin: 0;
     justify-self: center;
+    @media (max-width: 600px) {
+        width: 16rem !important;
+        height: 16rem !important;
+    }
 }
 
 div:where(.swal2-container) h2:where(.swal2-title) {
     padding: 0;
     font-size: 1.25rem;
+
+    @media (max-width: 600px) {
+        font-size: 1rem;
+    }
+}
+
+div:where(.swal2-container) div:where(.swal2-popup) {
+    @media (max-width: 600px) {
+        width: 365px;
+    }
 }
 

@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
@@ -11,6 +11,7 @@ const Resultquiz = () => {
     const resultquiz = useSelector((state) => state.quiz.resultquiz);
     const quizAnswers = JSON.parse(localStorage.getItem('quizAnswers')) || {};  
     const quiz = useSelector((state) => state.quiz.solvequiz);  
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
 
     const navi = useNavigate();
     const { id } = useParams();
@@ -77,12 +78,12 @@ const Resultquiz = () => {
                 </motion.div>
             </Box>
             <Box className="resultquiz__button">
-                <Button color='primary' size='large' variant='contained' onClick={gohome}>다른 퀴즈 풀러가기</Button>
-                <Button color='primary' size='large' variant='contained' onClick={restartQuiz}>다시 풀어보기</Button>
+                <Button color='primary' size={isSmallScreen ? 'small' : 'large'} variant='contained' onClick={gohome}  className="resultquiz__button_1">다른 퀴즈 풀러가기</Button>
+                <Button color='primary' size={isSmallScreen ? 'small' : 'large'} variant='contained' onClick={restartQuiz} className="resultquiz__button_1">다시 풀어보기</Button>
             </Box>
             <Box className="resultquiz__button">
-                <Button color='secondary' size='large' variant='contained' onClick={() => setShowCorrect(false)}>오답 문제 보기</Button>
-                <Button color='third' size='large' variant='contained' onClick={() => setShowCorrect(true)}>정답 문제 보기</Button>
+                <Button color='secondary' size={isSmallScreen ? 'small' : 'large'} variant='contained' onClick={() => setShowCorrect(false)} className="resultquiz__button_1">오답 문제 보기</Button>
+                <Button color='third' size={isSmallScreen ? 'small' : 'large'} variant='contained' onClick={() => setShowCorrect(true)} className="resultquiz__button_1">정답 문제 보기</Button>
             </Box>
 
             {showCorrect === false && (

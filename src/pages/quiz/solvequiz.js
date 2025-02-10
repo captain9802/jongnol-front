@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/quiz/SolveQuiz.scss';
 import { Box, Typography, Button, TextField } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
 import { completeQuiz } from '../../apis/quizApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import SubmitAlert from '../../components/alert/submitAlert';
@@ -38,7 +37,7 @@ const SolveQuiz = () => {
       setCurrentQuestionIndex(0);
     }
     localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
-  }, [quiz, currentQuestionIndex]);
+  }, [quiz]);
 
   const handleAnswerSelection = (questionId, answer) => {
     const updatedAnswers = { ...quizAnswers, [questionId]: answer };
@@ -121,7 +120,9 @@ const SolveQuiz = () => {
                 question === currentQuestion ? 'solvequiz__boxes__button--active' : ''
               }`}
               key={question.id}
-              onClick={() => setCurrentQuestionIndex(idx)}
+              onClick={() => {
+                setCurrentQuestionIndex(idx);
+              }}
             >
               문제 {idx + 1}
             </Button>
@@ -129,7 +130,7 @@ const SolveQuiz = () => {
         </Box>
 
         <Typography 
-          variant="BT"
+          variant="VBT"
           className="solvequiz__boxes__title">{currentQuestion ? `${currentQuestionIndex + 1}. ${currentQuestion.subtitle}` : "문제가 없음"}
         </Typography>
         <Box className={currentQuestion && currentQuestion.type === 0 ? "solvequiz__boxes__content" : "solvequiz__boxes__contents"}>
@@ -151,7 +152,7 @@ const SolveQuiz = () => {
                 <Button
                   color='primary'
                   variant="contained"
-                  size="size"
+                  size="small"
                   key={idx}
                   onClick={() => handleAnswerSelection(currentQuestion.id, answer)}
                   className={storedAnswers[currentQuestion.id] === answer ? 'selected' : 'non'}
@@ -184,7 +185,7 @@ const SolveQuiz = () => {
               <Button 
                 className="solvequiz__boxes__submit--button"
                 variant="contained"
-                size="size"
+                size="large"
                 onClick={handleSubmit}>제출하기</Button>
             )}
           </Box>

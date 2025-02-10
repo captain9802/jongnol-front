@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box, Button, Menu, MenuItem, Typography, useMediaQuery  } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../apis/userApi';
 import '../styles/header/Header.scss'
 import ProfileImg from './profileImg';
-import Swal from 'sweetalert2';
 import OkAlert from './alert/okAlert';
 
 const Header = ({className}) => {
   const navi = useNavigate();
   const {isLogin, userProfileImg} = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery('(max-width:600px)');
-  const [userImg, setUserImg] = useState(userProfileImg);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const {okAlert} = OkAlert();
@@ -20,7 +18,7 @@ const Header = ({className}) => {
     dispatch(logout());
     okAlert({title:'로그아웃 되었습니다.'});
     navi("/login");
-  }, [dispatch, navi]);
+  }, [dispatch, navi, okAlert]);
 
   const quizCreat = useCallback(() => {
     navi("/quizcreate");
@@ -56,7 +54,7 @@ const Header = ({className}) => {
           {isSmallScreen ? (
             <>
             <Box sx={{marginRight: '1rem'}}>
-              <ProfileImg number={userImg} onClick={handleProfileClick}/>
+              <ProfileImg number={userProfileImg} onClick={handleProfileClick}/>
               <Menu
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}

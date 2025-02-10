@@ -22,9 +22,6 @@ const QuizDialog = () => {
     }, []);
 
     useEffect(() => {
-        console.log("maintitle" + maintitle)
-        console.log("description" + mainex)
-
         if (imageDialog !== null) {
             const existingQuizData = JSON.parse(localStorage.getItem('newquiz')) || {};
             const quizData = {

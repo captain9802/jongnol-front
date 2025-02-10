@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, MenuItem, Typography, Box } from "@mui/material";
-import { solveQuiz } from "../apis/quizApi";
+import { solveQuiz, deleteQuiz } from "../apis/quizApi";
 import '../styles/quiz/InQuiz.scss';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import SubmitAlert from "./alert/submitAlert";
+import ErrorAlert from "./alert/errorAlert";
+import OkAlert from "./alert/okAlert";
+import WarningAlert from "./alert/warningAlert";
 
 const InQuiz = ({ open, onClose, onStart, quizData, questionCount }) => {
   const dispatch = useDispatch();
   const navi = useNavigate();
-
+  const {submitAlert} = SubmitAlert();
+  const {errorAlert} = ErrorAlert();
+  const {okAlert} = OkAlert();
+  const {warningAlert} = WarningAlert();
+  const { userId } = useSelector((state) => state.user);
 
   const [selectedCount, setSelectedCount] = useState(questionCount);
 
@@ -37,11 +45,34 @@ const InQuiz = ({ open, onClose, onStart, quizData, questionCount }) => {
 
   const handleStartClick = () => {
     onStart(selectedCount);
-    console.log(quizData.id);
     dispatch(solveQuiz(quizData.id));
     navi(`/solvequiz/${quizData.id}`);
     onClose();
   };
+
+  const handleDeleteClick = () => {
+    submitAlert({
+      title: `정말 퀴즈를 삭제하시겠습니까??`
+    }).then(result => {
+      if (result.isConfirmed) {
+        dispatch(deleteQuiz(quizData.id))
+          .then((response) => {
+            if (response?.meta?.requestStatus === 'fulfilled') {
+              okAlert({ title: "퀴즈가 삭제되었습니다." });
+              onClose();
+            } else {
+              warningAlert({ title: "권한이 없습니다. 이 퀴즈를 삭제할 수 없습니다." });
+            }
+          })
+          .catch((error) => {
+            if (error) {
+              errorAlert();
+            }
+          });
+      }
+    });
+  };
+  
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth className="inquiz_dialog">
@@ -77,12 +108,21 @@ const InQuiz = ({ open, onClose, onStart, quizData, questionCount }) => {
         />
       </DialogContent>
       <DialogActions className="inquiz_dialog_button">
-        <Button onClick={onClose} color="primary" variant="contained">
+        {userId === quizData.userId && (
+          <Box className="inquiz_dialog_button_box_delete">
+            <Button onClick={handleDeleteClick} color="secondary" variant="contained" size="small" className="inquiz_dialog_button_box_delete_1">
+              삭제하기
+            </Button>
+          </Box>
+        )}
+        <Box className="inquiz_dialog_button_box_submit">
+        <Button onClick={onClose} color="primary" variant="contained" size="small" className="inquiz_dialog_button_box_submit_1">
           취소하기
         </Button>
-        <Button onClick={handleStartClick} color="primary" variant="contained">
+        <Button onClick={handleStartClick} color="primary" variant="contained" size="small" className="inquiz_dialog_button_box_submit_2">
           시작하기
         </Button>
+        </Box>
       </DialogActions>
     </Dialog>
   );

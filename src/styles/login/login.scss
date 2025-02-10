@@ -55,5 +55,18 @@
         justify-content: flex-end;
         margin-top: 16px;
     }
-    
+
+    @media (max-width: 600px) {
+        .login {
+        &__img {
+            &__logo {
+                width: 365px;
+            }
+        }
+        
+        &__paper {
+            width: 365px;
+        }
+        }
+    }
 }

@@ -6,7 +6,8 @@ const userSlice = createSlice({
     initialState: {
         isLogin: sessionStorage.getItem("ACCESS_TOKEN") ? true : false,
         userNickName: '',
-        userProfileImg: sessionStorage.getItem("UserProfile_Img")
+        userProfileImg: sessionStorage.getItem("UserProfile_Img"),
+        userId: sessionStorage.getItem("User"),
     },
     reducers: {
         change_searchCondition: (state, action) => ({
@@ -20,42 +21,32 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(join.fulfilled, (state, action) => {
-            alert(`${action.payload.userNickName}님 회원가입을 축하합니다.`);
-            window.location.href = '/login';
-            
             return state;
         });
         builder.addCase(join.rejected, (state, action) => {
-            alert("에러 발생. 관리자에게 문의하세요.")
-            console.log(action.payload);
             return state;
         });
         builder.addCase(login.fulfilled, (state, action) => {
             sessionStorage.setItem("ACCESS_TOKEN", action.payload.token);
             sessionStorage.setItem("UserNickName", action.payload.userNickName);
             sessionStorage.setItem("UserProfile_Img", action.payload.profileImg);
+            sessionStorage.setItem("User", action.payload.id);
 
             return {
                 ...state,
                 isLogin: true,
                 userNickName: action.payload.userNickName,
-                userProfileImg: action.payload.profileImg
+                userProfileImg: action.payload.profileImg,
+                userId: action.payload.id
             };
         });
         builder.addCase(login.rejected, (state, action) => {
-            if(action.payload === 200) {
-                alert("존재하지 않는 아이디입니다.");
-            } else if(action.payload === 201) {
-                alert("비밀번호가 잘못됐습니다.");
-            } else {
-                alert("알 수 없는 에러발생.");
-            }
-
             return state;
         });
         builder.addCase(logout.fulfilled, (state, action) => {
             sessionStorage.removeItem("ACCESS_TOKEN");
             localStorage.clear();
+            sessionStorage.clear();
             return {
                 ...state,
                 isLogin: false
@@ -71,7 +62,6 @@ const userSlice = createSlice({
             };
         });
         builder.addCase(updateUserProfile.rejected, (state, action) => {
-            console.log(action.payload.response.data.errorCode);
             return state;
         });
     }

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { sendQuiz, getQuiz, getCountQP, solveQuiz, getMyQuiz, completeQuiz } from "../apis/quizApi";
+import { sendQuiz, getQuiz, getCountQP, solveQuiz, getMyQuiz, completeQuiz, deleteQuiz } from "../apis/quizApi";
 
 const quizSlice = createSlice({
   name: "quiz",
@@ -27,11 +27,9 @@ const quizSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(sendQuiz.fulfilled, (state, action) => {
-        console.log(action.payload);
         return state;
       })
       .addCase(sendQuiz.rejected, (state, action) => {
-        console.log(action.payload);
         return state;
       })
       .addCase(getQuiz.pending, (state, action) => {
@@ -39,7 +37,6 @@ const quizSlice = createSlice({
         return state;
       })
       .addCase(getQuiz.rejected, (state, action) => {
-        console.log(action.payload);
         return state;
       })
       .addCase(getQuiz.fulfilled, (state, action) => {
@@ -61,23 +58,18 @@ const quizSlice = createSlice({
         state.loading = true;
       })
       .addCase(getMyQuiz.rejected, (state, action) => {
-        console.log(action.payload);
       })
       .addCase(getCountQP.fulfilled, (state, action) => {
         state.quizzesCount = action.payload.quizzesCount;
         state.usersCount = action.payload.usersCount;
       })
       .addCase(getCountQP.rejected, (state, action) => {
-        console.log(action.payload);
       })
       .addCase(solveQuiz.fulfilled, (state, action) => {
         state.solvequiz = action.payload;
         localStorage.setItem("solvequiz", JSON.stringify(state.solvequiz));
-        console.log(action.payload);
-        console.log(state.solvequiz);
       })
       .addCase(solveQuiz.rejected, (state, action) => {
-        console.log(action.payload);
         return state;
       })
       .addCase(completeQuiz.fulfilled, (state, action) => {
@@ -85,11 +77,17 @@ const quizSlice = createSlice({
         localStorage.setItem("resultquiz", JSON.stringify(action.payload));
       })
       .addCase(completeQuiz.rejected, (state, action) => {
-        console.log(action.payload);
+        return state;
+      })
+      .addCase(deleteQuiz.fulfilled, (state, action) => {
+        const deletedQuizId = action.meta.arg;
+        state.myquizzes = state.myquizzes.filter(quiz => quiz.id !== deletedQuizId);
+        state.quizzes = state.quizzes.filter(quiz => quiz.id !== deletedQuizId);
+      })
+      .addCase(deleteQuiz.rejected, (state, action) => {
         return state;
       });
   },
-  
 });
 
 export default quizSlice.reducer;

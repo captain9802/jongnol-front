@@ -82,7 +82,6 @@ const Home = () => {
   };
 
   const handleKeyPress = (event) => {
-    console.log("searchKeyword : " + searchKeyword);
     if (event.key === 'Enter') {
       if (searchKeyword === prevSearchKeyword) {
         okAlert({title:"동일한 검색어입니다.", text: "다른 검색어를 입력해주세요."});
@@ -96,7 +95,6 @@ const Home = () => {
   };
 
   const handleCardClick = (quiz) => {
-    console.log("??");
     setSelectedQuiz(quiz);
     setQuestionCount(quiz.questionsCount);
     setDialogOpen(true);
@@ -107,7 +105,6 @@ const Home = () => {
   };
 
   const handleStartQuiz = (questionCount) => {
-    console.log(`퀴즈 시작 - 문제 수: ${questionCount}`);
     setDialogOpen(false);
   };
 
@@ -174,7 +171,6 @@ const Home = () => {
               animate="visible"
               custom={index}
               variants={cardVariants}
-              onAnimationComplete={() => console.log(card.id)}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.1 }}
             >

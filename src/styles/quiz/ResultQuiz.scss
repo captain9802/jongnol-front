@@ -46,4 +46,14 @@
             color: green;
         }
     }
+
+    @media (max-width: 600px) {
+    .resultquiz__score .CircularProgressbar {
+        width: 100%;
+    }
+
+    .resultquiz__button_1 {
+        width: 100%;
+    }
+}
 }

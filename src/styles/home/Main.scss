@@ -30,7 +30,7 @@
 }
 
 .search-bar {
-  width: 370px;
+  width: 100%;
   height: 2.734375rem;
   background-color: white;
   border-radius: 5px;
@@ -92,14 +92,17 @@
 }
 
 .main_right-box_item:nth-of-type(1) {
+  padding: 1rem;
   background-color: #02D7C5;
 }
 
 .main_right-box_item:nth-of-type(2) {
+  padding: 1rem;
   background-color: #FFC91B;
 }
 
 .main_right-box_item:nth-of-type(3) {
+  padding: 1rem;
   background-color: #AC8EF8;
 }
 

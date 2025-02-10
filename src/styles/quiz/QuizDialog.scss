@@ -87,6 +87,13 @@
       height: 200px;
       box-shadow: none;
     }
+
+    @media (max-width: 434px) {
+      .creatquiz__dialogQuiz .creatquiz__dialogImage {
+        width: auto !important;
+        height: auto !important;
+      }
+  }
   }
 
   

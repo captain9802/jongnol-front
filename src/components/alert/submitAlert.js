@@ -1,4 +1,3 @@
-import React from 'react';
 import Swal from 'sweetalert2';
 import '../../styles/alert/SwalAlert.scss';
 
@@ -22,6 +21,9 @@ const SubmitAlert = () => {
         image: 'custom-img-button',
         title: 'custom-title-button'
       },
+      willOpen: () => {
+        document.querySelector('.swal2-container').style.zIndex = '9999';
+      }
     });
   };
 

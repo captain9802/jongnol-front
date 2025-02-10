@@ -82,17 +82,16 @@
 
         &--password {
             color: red;
-            font-size: 12px !important;
             text-align: center;
         }
 
         &--success {
             color: green;
+            text-align: center;
         }
 
         &--fail {
             color: red;
-            font-size: 12px !important;
             text-align: center;
         }
     }
@@ -105,6 +104,22 @@
     &__link {
         &:hover {
             text-decoration: underline;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .join {
+        &__img {
+            &__logo {
+                width: 365px;
+            }
+        }
+        
+        &__paper {
+            &.MuiPaper-root {
+                width: 365px;
+            };
+        }
         }
     }
 }

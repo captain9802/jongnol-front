@@ -44,7 +44,6 @@ const Creatquiz = () => {
     }).then(result => {
         if (result.isConfirmed) {
             if (currentQuiz !== newQuizData.questions.length) {
-                console.log(newQuizData.questions);
                 for (let i = currentQuiz; i < newQuizData.questions.length; i++) {
                     newQuizData.questions[i].quizNumber -= 1;
                 }
@@ -85,7 +84,6 @@ const Creatquiz = () => {
     }    if (quizzes.length < 50) {
       setQuizzes((prevQuizzes) => {
         const newQuizzes = [...prevQuizzes, prevQuizzes.length + 1];
-        console.log(newQuizzes.length);
         handleQuizChange(newQuizzes.length);
         return newQuizzes;
       });

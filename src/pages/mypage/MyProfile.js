@@ -3,11 +3,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import React, { useState, useEffect, useCallback } from 'react';
 import '../../styles/mypage/Mypage_Profile.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserProfile } from '../../apis/userApi';
+import { deleteUser, logout, updateUserProfile } from '../../apis/userApi';
 import ProfileImg from '../../components/profileImg';
 import WarningAlert from '../../components/alert/warningAlert';
 import OkAlert from '../../components/alert/okAlert';
 import ErrorAlert from '../../components/alert/errorAlert';
+import { useNavigate } from 'react-router-dom';
+import SubmitAlert from '../../components/alert/submitAlert';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -15,6 +17,8 @@ const MyProfile = () => {
   const {warningAlert} = WarningAlert();
   const {okAlert} = OkAlert();
   const {errorAlert} = ErrorAlert();
+  const {submitAlert} = SubmitAlert();
+  const navi = useNavigate();
 
   const [profileImage, setProfileImage] = useState(userProfileImg);
   const [nickname, setNickname] = useState(userNickName);
@@ -43,6 +47,7 @@ const MyProfile = () => {
       userProfileImg: profileImage 
     });
   }, [nickname, profileImage]);
+
   const handleUpdateClick = useCallback((e) => {
     e.preventDefault();
 
@@ -62,7 +67,6 @@ const MyProfile = () => {
         }
       })
       .catch((error) => {
-        console.log(error)
         errorAlert();
       });
   }, [dispatch, nickname, form]);
@@ -74,7 +78,6 @@ const MyProfile = () => {
 
       if (storedNickName && storedProfileImg) {
         setNickname(storedNickName);
-        console.log(storedProfileImg)
         setProfileImage(storedProfileImg);
         };
       }
@@ -93,6 +96,30 @@ const MyProfile = () => {
     }
     return null;
   };
+
+  const handleDeleteUser= () => {
+      submitAlert({
+        title: `정말 회원 탈퇴를 진행하시겠습니까?`
+      }).then(result => {
+        if (result.isConfirmed) {
+          dispatch(deleteUser())
+            .then((response) => {
+              if (response?.meta?.requestStatus === 'fulfilled') {
+                okAlert({ title: "회원탈퇴가 완료되었습니다." });
+                dispatch(logout())
+                navi("/");
+              } else {
+                errorAlert();
+              }
+            })
+            .catch((error) => {
+              if (error) {
+                errorAlert();
+              }
+            });
+        }
+      });
+    };
 
   return (
     <Box className="mypage">
@@ -136,6 +163,7 @@ const MyProfile = () => {
           size="sizeLarge"
           color="primary"
           sx={{ backgroundColor: '#B3261E' }}
+          onClick={handleDeleteUser}
         >
           회원탈퇴
         </Button>
