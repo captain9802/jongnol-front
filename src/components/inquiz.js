@@ -108,7 +108,7 @@ const InQuiz = ({ open, onClose, onStart, quizData, questionCount }) => {
         />
       </DialogContent>
       <DialogActions className="inquiz_dialog_button">
-        {userId === quizData.userId && (
+        {userId == quizData.userId && (
           <Box className="inquiz_dialog_button_box_delete">
             <Button onClick={handleDeleteClick} color="secondary" variant="contained" size="small" className="inquiz_dialog_button_box_delete_1">
               삭제하기

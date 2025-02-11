@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { join } from '../../apis/userApi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../styles/login/join.scss';
-import { Await, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WarningAlert from '../../components/alert/warningAlert';
 import ErrorAlert from '../../components/alert/errorAlert';
 import OkAlert from '../../components/alert/okAlert';
