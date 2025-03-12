@@ -13,8 +13,8 @@ const Card = ({ image, title, description }) => {
         />
       </Box>
       <Box className="card__content">
-        <Typography variant="PCT">{title}</Typography>
-        <Typography variant="PCE">{description}</Typography>
+        <Typography variant="PCT" className='card__content__title'>{title}</Typography>
+        <Typography variant="PCE" className='card__content__description'>{description}</Typography>
       </Box>
     </Paper>
   );

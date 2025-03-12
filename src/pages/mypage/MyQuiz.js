@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMyQuiz } from '../../apis/quizApi';
 import Card from '../../components/card';
 import InQuiz from '../../components/inquiz';
+import Spinning from '../../components/spinning';
 
 const MyQuiz = () => {
-  const { myquizzes, myquizhasMore } = useSelector((state) => state.quiz);
+  const { myquizzes, myquizhasMore, loading } = useSelector((state) => state.quiz);
 
   const dispatch = useDispatch();
 
@@ -85,7 +86,10 @@ const MyQuiz = () => {
   return (
     <Box className="myquiz">
       <Paper className="myquiz_info">
-        {myquizzes.length === 0 ? (
+      {loading ? (
+          <Spinning loading={loading} />
+      ) : (
+        myquizzes.length === 0 ? (
           <Box sx={{display:'grid', justifyContent:'center'}}>
           <img src='./alert/404.png' alt='퀴즈 없음' style={{width:'300px'}}/>
           <Typography variant="PBT" align="center" color="textSecondary">
@@ -115,7 +119,7 @@ const MyQuiz = () => {
               </Grid2>
             ))}
           </Grid2>
-        )}
+        ))}
       </Paper>
   
       {selectedQuiz && (

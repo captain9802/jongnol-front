@@ -8,6 +8,9 @@ import '../styles/quiz/QuizForm.scss';
 import WarningAlert from './alert/warningAlert';
 import OkAlert from './alert/okAlert';
 import SubmitAlert from './alert/submitAlert';
+import ErrorAlert from './alert/errorAlert';
+import { useDispatch } from 'react-redux';
+import { deleteImage, uploadImage } from '../apis/quizApi';
 
 const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
   const [value, setValue] = useState(0);
@@ -16,8 +19,11 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
   const [fanswers, setFanswers] = useState(['']);
   const [imageBox, setImageBox] = useState(null);
   const {warningAlert} = WarningAlert();
+  const {errorAlert} = ErrorAlert();
   const {okAlert} = OkAlert();
   const {submitAlert} = SubmitAlert();
+  const dispatch = useDispatch();
+
 
    useEffect(() => {
     const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
@@ -38,7 +44,15 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
     }
   }, [currentQuiz, quizzes]); 
 
-  const saveData = () => {
+  const saveData = async () => {
+    let finalImageBox = imageBox;
+
+    if (imageBox) {
+        const uploadedUrl = await uploadImageToServer(imageBox);
+        if (uploadedUrl) {
+            finalImageBox = uploadedUrl;
+        }
+    }
 
     const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
 
@@ -65,7 +79,7 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
         subtitle,                
         tanswer: combinedTanswer,                 
         fanswers: [''],                
-        imageBox                 
+        imageBox: finalImageBox                 
       };
     
       localStorage.setItem('newquiz', JSON.stringify(newQuizData));
@@ -80,7 +94,7 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
       subtitle,                
       tanswer,                 
       fanswers,                
-      imageBox                 
+      imageBox: finalImageBox                 
     };
   
     localStorage.setItem('newquiz', JSON.stringify(newQuizData));
@@ -88,7 +102,6 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
     okAlert({title:'문제가 등록되었습니다.'});
     };
 
-  
   
   const hasInputData = () => {
     return subtitle || tanswer || fanswers.some(answer => answer.trim() !== '') || imageBox;
@@ -164,19 +177,56 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
   const handleImageChangeBox = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      
-      reader.onloadend = () => {
-        const base64Image = reader.result;
-        setImageBox(base64Image);
-      };
-  
-      reader.readAsDataURL(file);
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            const img = new Image();
+            img.src = reader.result;
+
+            img.onload = () => {
+                const maxWidth = 1024;
+                const maxHeight = 1024;
+                const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                canvas.width = img.width * ratio;
+                canvas.height = img.height * ratio;
+
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                const base64Image = canvas.toDataURL('image/jpeg', 0.7);
+
+                setImageBox(base64Image);
+            };
+        };
+
+        reader.readAsDataURL(file);
     }
-  };
+};
+
+const uploadImageToServer = async (base64Image) => {
+  try {
+      const imageUrl = await dispatch(uploadImage(base64Image)).unwrap();
+      setImageBox(imageUrl);
+      return imageUrl;
+  } catch (error) {
+      errorAlert();
+      return null;
+  }
+};
 
   const handleRemoveImageBox = (event) => {
     event.stopPropagation();
+    // if (!imageBox) return;
+    // dispatch(deleteImage(imageBox))
+    //     .unwrap()
+    //     .then(() => {
+    //         setImageBox(null);
+    //     })
+    //     .catch((error) => {
+    //         errorAlert();
+    //     });
     setImageBox(null);
   };
 
@@ -266,8 +316,13 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
                   value={tanswer}
                   onChange={(e) => setTanswer(e.target.value)}
                   placeholder="객관식 정답을 입력해주세요. (최대 50자)"
-                  inputProps={{ maxLength: 30 }}
+                  inputProps={{ maxLength: 50 }}
                   className="creatquiz__answerField"
+                  sx={{
+                    '& .MuiOutlinedInput-input': {
+                      padding: '12px',
+                    },
+                  }}
                 />
               </Box>
               <Typography variant="BT" className="creatquiz__header">
@@ -285,6 +340,11 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
                     placeholder="객관식 보기 및 답안을 작성해주세요. (최대 50자)"
                     inputProps={{ maxLength: 50 }}
                     className="creatquiz__answerField"
+                    sx={{
+                      '& .MuiOutlinedInput-input': {
+                        padding: '12px',
+                      },
+                    }}
                   />
                   {fanswers.length > 1 && (
                     <RemoveCircleOutlineIcon
@@ -356,6 +416,11 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
                   placeholder="주관식 정답을 입력해주세요. (최대 50자)"
                   inputProps={{ maxLength: 50 }}
                   className="creatquiz__answerField"
+                  sx={{
+                    '& .MuiOutlinedInput-input': {
+                      padding: '12px',
+                    },
+                  }}
                 />
               </Box>
               <Typography variant="BT" className="creatquiz__header">
@@ -373,6 +438,11 @@ const QuizForm = ({ currentQuiz, deleteData , quizzes, handleAddQuiz}) => {
                     placeholder="주관식 유사답안을 입력해주세요. (최대 50자)"
                     inputProps={{ maxLength: 50 }}
                     className="creatquiz__answerField"
+                    sx={{
+                      '& .MuiOutlinedInput-input': {
+                        padding: '12px',
+                      },
+                    }}
                   />
                   <RemoveCircleOutlineIcon
                     className="creatquiz__removeIcon"

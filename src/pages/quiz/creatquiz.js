@@ -6,7 +6,7 @@ import '../../styles/quiz/CreateQuiz.scss';
 import QuizNavigator from '../../components/quiznavigator';
 import QuizDialog from '../../components/quizdialog';
 import QuizForm from '../../components/quizform';
-import { sendQuiz } from '../../apis/quizApi';
+import { deleteImage, sendQuiz } from '../../apis/quizApi';
 import WarningAlert from '../../components/alert/warningAlert';
 import OkAlert from '../../components/alert/okAlert';
 import ErrorAlert from '../../components/alert/errorAlert';
@@ -39,16 +39,27 @@ const Creatquiz = () => {
 
     const newQuizData = JSON.parse(localStorage.getItem('newquiz')) || { questions: [] };
 
+    const removedQuiz = newQuizData.questions[currentQuiz - 1];
+
     submitAlert({
         title: `현재 작성 중인 ${currentQuiz}번 퀴즈가 삭제됩니다. 괜찮으시겠습니까?`
     }).then(result => {
         if (result.isConfirmed) {
+            if (removedQuiz?.imageBox) {
+                dispatch(deleteImage(removedQuiz.imageBox))
+                    .unwrap()
+                    .then(() => {
+                        console.log("이미지 삭제 완료");
+                    })
+                    .catch((error) => {
+                        errorAlert();
+                    });
+            }
             if (currentQuiz !== newQuizData.questions.length) {
                 for (let i = currentQuiz; i < newQuizData.questions.length; i++) {
                     newQuizData.questions[i].quizNumber -= 1;
                 }
             }
-
             newQuizData.questions.splice(currentQuiz - 1, 1);
             localStorage.setItem('newquiz', JSON.stringify(newQuizData));
 
@@ -62,9 +73,9 @@ const Creatquiz = () => {
                 return newQuizzes;
             });
 
-            okAlert({title:'퀴즈가 삭제되었습니다.'});
+            okAlert({title: '퀴즈가 삭제되었습니다.'});
         } else {
-            okAlert({title:'취소되었습니다.'});
+            okAlert({title: '취소되었습니다.'});
         }
     });
 };
@@ -107,7 +118,7 @@ const Creatquiz = () => {
 
   const handleSubmitQuiz = async () => {
     const quizData = JSON.parse(localStorage.getItem('newquiz'));
-
+    console.log(JSON.stringify(quizData, null, 2));
     if (!quizData || !quizData.questions.length) {
       warningAlert({title:'등록할 퀴즈가 없습니다.'});
       return;

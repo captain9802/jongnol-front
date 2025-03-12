@@ -1,100 +1,61 @@
-.creatquiz__dialog {
-  
-    .css-16htz67-MuiPaper-root-MuiDialog-paper {
-      margin: 0;
-      max-width: 437px;
-      height: 700px;
-      padding: 25px;
-      box-sizing: unset;
-    }
-  
-    .css-kw13he-MuiDialogContent-root {
-      padding: 25px 0;
-      display: grid;
-      gap: 20px;
-    }
-  
-    .creatquiz__dialogQuiz {
-      display: grid;
-      gap: 10px;
-  
-      .css-19izr6y-MuiTypography-root {
-        display: flex;
-        justify-content: center;
-      }
-  
-      .css-15fu35s-MuiDialogActions-root {
-        padding: 0;
-      }
-      .css-1s7hm3h-MuiInputBase-root-MuiOutlinedInput-root {
-        padding: 10px;
-        position: static;
-        height: 100%;
-      }
-  
-      .css-w4nesw-MuiInputBase-input-MuiOutlinedInput-input {
-        height: 100% !important;
-      }
-  
-      .creatquiz__dialogImage {
-        width: 434px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        cursor: pointer;
-        position: relative;
-        height: 235px;
-      }
-  
-      .creatquiz__imagePreview {
-        object-fit: contain;
-        max-width: 100%;
-        max-height: 100%;
-      }
-  
-      .creatquiz__imagePreviewContainer {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    
-      .creatquiz__formButtonContainer {
-        float: right;
-        margin-top: 30px;
-        margin-bottom: 30px;
-      }
-    
-      .creatquiz__clearIcon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-        color: red;
-        font-size: 30px;
-      }
-  
-      .creatquiz__icon {
-        height: 50px;
-        width: 50px;
-      }
-    
-    }
-  
-    .creatquiz__dialogImage {
+.createquiz__dialog {
+  margin: 0;
+
+  .createquiz__dialogQuiz {
+    display: grid;
+    gap: 10px;
+
+    .createquiz__dialogImage {
+      width: 434px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      height: 235px;
       border: 1px solid #ccc;
-      height: 200px;
       box-shadow: none;
     }
 
-    @media (max-width: 434px) {
-      .creatquiz__dialogQuiz .creatquiz__dialogImage {
-        width: auto !important;
-        height: auto !important;
-      }
-  }
+    .createquiz__imagePreview {
+      object-fit: contain;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .createquiz__imagePreviewContainer {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .createquiz__formButtonContainer {
+      float: right;
+      margin: 30px 0;
+    }
+
+    .createquiz__clearIcon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      color: red;
+      font-size: 30px;
+    }
+
+    .createquiz__icon {
+      height: 50px;
+      width: 50px;
+    }
   }
 
-  
-  
+  @media (max-width: 434px) {
+    .createquiz__dialogQuiz .createquiz__dialogImage {
+      width: auto !important;
+      height: auto !important;
+      min-height: 174px;
+    }
+  }
+}

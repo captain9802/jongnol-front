@@ -91,7 +91,11 @@ const SolveQuiz = () => {
 
     if (e.key === 'Enter') {
       if (currentQuestionIndex !== quiz.length - 1) {
-        handleNextQuestion();
+        handleNextQuestion(e.target.value);
+      } else{
+        setTimeout(() => {
+          handleSubmit();
+        }, 0);
       }
     }
   };

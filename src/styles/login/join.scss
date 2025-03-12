@@ -6,9 +6,6 @@
     .MuiOutlinedInput-root {
         background-color: white;
       }
-    .css-bmd30r-MuiGrid2-root {
-        --Grid-rowSpacing: 0;
-    }
 
     &__backarrow {
         width: 40px;
@@ -51,14 +48,7 @@
         width: 100%;
         margin-left: 10px;
         margin-right: 10px;
-
-        .css-1n91y37-MuiInputBase-root-MuiInput-root{
-            margin-top: 8px ;
-        }
-
-        .css-1e2f6ol-MuiFormLabel-root-MuiInputLabel-root {
-            top: -10px;
-        }
+        margin-bottom: 1rem;
     }
 
     &__button {

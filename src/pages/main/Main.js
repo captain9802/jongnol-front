@@ -38,7 +38,7 @@ const Main = () => {
   }
 
   const images = [
-    "images/home/1.png",
+    "images/home/25.png",
     "images/home/2.png",
     "images/home/3.png"
   ];

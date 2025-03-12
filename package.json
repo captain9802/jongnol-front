@@ -51,6 +51,13 @@
   "devDependencies": {
     "node-sass": "^9.0.0",
     "sass": "^1.83.1",
-    "sass-loader": "^16.0.2"
+    "sass-loader": "^16.0.2",
+    "@babel/plugin-transform-react-jsx": "^7.23.4",
+    "@emotion/babel-plugin": "^11.10.6"
+  },
+  "babel": {
+    "plugins": [
+      ["@emotion", { "sourceMap": true, "autoLabel": "always", "labelFormat": "[filename]--[local]" }]
+    ]
   }
 }

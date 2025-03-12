@@ -69,11 +69,6 @@
     border-radius: 4px;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   
-    .css-1s7hm3h-MuiInputBase-root-MuiOutlinedInput-root {
-      padding: 12px;
-      height: 100%;
-    }
-  
     .MuiOutlinedInput-root {
       fieldset {
         border: none;
@@ -94,10 +89,6 @@
       width: 100%;
       border-radius: 4px;
       box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-  
-      .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input {
-        padding: 12px;
-      }
   
       .MuiOutlinedInput-root {
         fieldset {
@@ -181,7 +172,3 @@
     background-color: #F5904B;
   }
 }
-
-.css-w4nesw-MuiInputBase-input-MuiOutlinedInput-input {
-    height: 100% !important;
-  }

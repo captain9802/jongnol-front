@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, TextField, IconButton, Menu, MenuItem, Grid2 } from '@mui/material';
+import { Box, TextField, IconButton, Menu, MenuItem, Grid2, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Card from '../../components/card';
@@ -10,11 +10,11 @@ import { useLocation } from 'react-router-dom';
 import InQuiz from '../../components/inquiz';
 import { motion } from 'framer-motion';
 import OkAlert from '../../components/alert/okAlert';
+import Spinning from '../../components/spinning';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const quizzes = useSelector((state) => state.quiz.quizzes);
-  const hasMore = useSelector((state) => state.quiz.hasMore);
+  const { quizzes, hasMore, loading } = useSelector((state) => state.quiz);
   const location = useLocation();
   const {okAlert} = OkAlert();
 
@@ -83,11 +83,12 @@ const Home = () => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      if (searchKeyword === prevSearchKeyword) {
-        okAlert({title:"동일한 검색어입니다.", text: "다른 검색어를 입력해주세요."});
-        return;
-    }
       const keyword = searchKeyword.trim() === '' ? 'all' : searchKeyword;
+    
+    if (keyword === prevSearchKeyword) {
+      okAlert({title: "동일한 검색어입니다.", text: "다른 검색어를 입력해주세요."});
+      return;
+    }
       setPrevSearchKeyword(keyword);
       setOffset(0);
       dispatch(getQuiz({ searchCondition: 'title', searchKeyword: keyword, offset : 0, limit}));
@@ -163,25 +164,37 @@ const Home = () => {
         </Menu>
       </Box>
       <Grid2 container spacing={2} className="home__grid">
-        {quizzes.map((card, index) => (
-          <Grid2 item key={index} onClick={() => handleCardClick(card)}>
-             <motion.div
-             className="home__grid-item"
-              initial="hidden"
-              animate="visible"
-              custom={index}
-              variants={cardVariants}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.1 }}
-            >
-            <Card
-              className="home__gird-item-card"
-              image={card.thumbnail}
-              title={card.title}
-              description={card.description}
-            />
-            </motion.div>
+      {loading ? (
+          <Spinning loading={loading} />
+      ) : (
+      quizzes.length === 0 ? (
+          <Grid2 item xs={12} className="home__grid__imagebox">
+            <img src='./alert/404.png' alt='퀴즈 없음' className="home__grid__imageboxs"/>
+            <Typography variant="PBT" className="no-quizzes-message">
+              퀴즈가 존재하지 않습니다.
+            </Typography>
           </Grid2>
+        ) : (
+          quizzes.map((card, index) => (
+            <Grid2 item key={index} onClick={() => handleCardClick(card)}>
+              <motion.div
+                className="home__grid-item"
+                initial="hidden"
+                animate="visible"
+                custom={index}
+                variants={cardVariants}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.1 }}
+              >
+                <Card
+                  className="home__gird-item-card"
+                  image={card.thumbnail}
+                  title={card.title}
+                  description={card.description}
+                />
+              </motion.div>
+            </Grid2>
+          ))
         ))}
       </Grid2>
       {selectedQuiz && (

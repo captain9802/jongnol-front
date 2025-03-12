@@ -22,6 +22,49 @@ export const sendQuiz = createAsyncThunk(
     } 
 );
 
+export const uploadImage = createAsyncThunk(
+  'quiz/uploadImage',
+  async (base64Image, thunkAPI) => {
+    try {
+      const imageDTO = { image: base64Image };
+
+      const response = await axios.post(
+        `http://localhost:8080/quiz/temporaryload`,
+        imageDTO,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        }
+      );
+
+      return response.data.imageUrl;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e);
+    }
+  }
+);
+
+export const deleteImage = createAsyncThunk(
+    'quiz/deleteImage',
+    async (ImageUrl, thunkAPI) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8080/quiz/deletetemporary`,
+           {data: { image: ImageUrl }} ,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }
+        );
+        return response.data;
+      } catch (e) {
+        return thunkAPI.rejectWithValue(e);
+      }
+    }
+  );
+
 export const getQuiz = createAsyncThunk(
     'quiz/getquiz',
     async ({ searchCondition, searchKeyword, offset, limit  }, thunkAPI) => {

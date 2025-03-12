@@ -14,7 +14,8 @@ const quizSlice = createSlice({
     usersCount: 0,
     hasMore: true,
     myquizhasMore: true,
-    solvequiz: JSON.parse(localStorage.getItem("solvequiz")) || []
+    solvequiz: JSON.parse(localStorage.getItem("solvequiz")) || [],
+    searchKeyword: ""
   },
   reducers: {
     change_searchCondition: (state, action) => {
@@ -33,19 +34,28 @@ const quizSlice = createSlice({
         return state;
       })
       .addCase(getQuiz.pending, (state, action) => {
-        state.loading = true;
-        return state;
+        if(state.searchKeyword !== action.meta.arg.searchKeyword && state.searchKeyword !== "alls") {
+          state.quizzes = [];
+          state.hasMore = true;
+          state.loading = true;
+        } else if(state.searchKeyword === "alls") {
+          state.loading = false;
+        }
       })
       .addCase(getQuiz.rejected, (state, action) => {
         return state;
       })
       .addCase(getQuiz.fulfilled, (state, action) => {
-        if (state.searchKeyword !== action.payload.searchKeyword && action.payload.item.length !== 0 ) {
-          state.searchKeyword = action.payload.searchKeyword;
-          state.quizzes = action.payload.item;
+        const newSearchKeyword = action.meta.arg.searchKeyword === "all" ? "alls" : action.meta.arg.searchKeyword || "";
+        const newQuizzes = action.payload.item || [];
+
+        if (state.searchKeyword !== newSearchKeyword) {
+          state.searchKeyword = newSearchKeyword;
+          state.quizzes = newQuizzes;
         } else {
-            state.quizzes = [...state.quizzes, ...action.payload.item];
+          state.quizzes = [...state.quizzes, ...newQuizzes];
         }
+
         state.hasMore = action.payload.hasMore;
         state.loading = false;
       })

@@ -50,9 +50,14 @@ const MyProfile = () => {
 
   const handleUpdateClick = useCallback((e) => {
     e.preventDefault();
+    const username = sessionStorage.getItem("UserNickName");
+    const userprofile = sessionStorage.getItem("UserProfile_Img");
 
     if (!nickname.trim()) {
       okAlert({title:"닉네임을 입력해주세요!"});
+      return;
+    } else if (username === form.userNickName && profileImage === userprofile) {
+      warningAlert({title:"변경된 내용이 없습니다."});
       return;
     }
 

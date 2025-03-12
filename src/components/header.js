@@ -36,9 +36,17 @@ const Header = ({className}) => {
     setAnchorEl(null);
   };
   return (
-    <Box className="header">
-      <Box className={className === 'headerText' ? 'headerText' : 'headers'} onClick={() => navi('/')}>
-        <Typography variant="VBT">
+        <Box className="header">
+      <Box
+        className={className === 'headerText' ? 'headerText' : 'headers'}
+        sx={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        <Typography variant="VBT" className='header__logotext' onClick={() => navi('/')}>
           <span style={{ color: '#F5904B' }}>J</span>
           <span style={{ color: 'black' }}>o</span>
           <span style={{ color: 'black' }}>n</span>
@@ -48,78 +56,107 @@ const Header = ({className}) => {
           <span style={{ color: '#F5904B' }}>L</span>
         </Typography>
       </Box>
-      <Box className="header__buttons">
-      {isLogin ? (
-        <>
-          {isSmallScreen ? (
-            <>
-            <Box sx={{marginRight: '1rem'}}>
-              <ProfileImg number={userProfileImg} onClick={handleProfileClick}/>
-              <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleCloseMenu}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  className='header__buttons__menu'
-                >
-                  <MenuItem onClick={quizCreat}>퀴즈 등록</MenuItem>
-                  <MenuItem sx={{borderBottom:"2px dashed #F5904B", borderTop:"2px dashed #F5904B"}} onClick={mypage}>마이페이지</MenuItem>
-                  <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
-                </Menu>
+      <Box
+        className="header__buttons"
+        sx={{
+          marginLeft: 'auto',
+          display: 'flex',
+          gap: '0.825rem',
+        }}
+      >
+        {isLogin ? (
+          <>
+            {isSmallScreen ? (
+              <>
+                <Box sx={{ marginRight: '1rem' }}>
+                  <ProfileImg number={userProfileImg} onClick={handleProfileClick} />
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleCloseMenu}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    sx={{
+                      '& .MuiPaper-root': {
+                        border: '2px dashed #F5904B',
+                      },
+                      '& .MuiList-root': {
+                        padding: 0,
+                      },
+                      '& .MuiMenuItem-root': {
+                        display: 'flex',
+                        justifyContent: 'center',
+                        fontSize: '16px',
+                        color: '#572973',
+                      },
+                    }}
+                  >
+                    <MenuItem onClick={quizCreat}>퀴즈 등록</MenuItem>
+                    <MenuItem
+                      sx={{ borderBottom: '2px dashed #F5904B', borderTop: '2px dashed #F5904B' }}
+                      onClick={mypage}
+                    >
+                      마이페이지
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+                  </Menu>
                 </Box>
-            </>
-          ) : (
-            <>
-              <Button
-                className="header__buttons__button"
-                color='primary'
-                variant="contained"
-                size="small"
-                onClick={quizCreat}
-              >
-                퀴즈 등록
-              </Button>
-              <Button
-                className="header__buttons__button_logout"
-                color='primary'
-                variant="contained"
-                size="small"
-                onClick={handleLogout}
-              >
-                로그아웃
-              </Button>
-              <Button
-                className="header__buttons__button"
-                color='primary'
-                variant="contained"
-                size="small"
-                onClick={mypage}
-              >
-                마이페이지
-              </Button>
-            </>
-          )}
-        </>
+              </>
+            ) : (
+              <>
+                <Button
+                  className="header__buttons__button"
+                  color="primary"
+                  variant="contained"
+                  size="small"
+                  onClick={quizCreat}
+                >
+                  퀴즈 등록
+                </Button>
+                <Button
+                  className="header__buttons__button_logout"
+                  color="primary"
+                  variant="contained"
+                  size="small"
+                  onClick={handleLogout}
+                >
+                  로그아웃
+                </Button>
+                <Button
+                  className="header__buttons__button"
+                  color="primary"
+                  variant="contained"
+                  size="small"
+                  onClick={mypage}
+                >
+                  마이페이지
+                </Button>
+              </>
+            )}
+          </>
         ) : (
           <Button
             className="header__buttons__button_join"
-            color='primary'
+            color="primary"
             variant="contained"
             size="small"
             onClick={() => navi('/login')}
+            sx={{
+              width: '8.75rem !important',
+            }}
           >
             로그인 / 회원가입
           </Button>
         )}
       </Box>
     </Box>
+
   );
 };
 

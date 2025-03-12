@@ -23,6 +23,22 @@
     &__content {
       padding: 10px;
       display: grid;
+
+      &__title {
+        display: -webkit-box;        
+        -webkit-line-clamp: 2;       
+        -webkit-box-orient: vertical;
+        overflow: hidden;            
+        text-overflow: ellipsis;
+      }
+
+      &__description {
+        display: -webkit-box;        
+        -webkit-line-clamp: 2;       
+        -webkit-box-orient: vertical;
+        overflow: hidden;            
+        text-overflow: ellipsis;
+      }
     }
   }
   
