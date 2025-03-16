@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, MenuItem, Typography, Box } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, MenuItem, Typography, Box, RadioGroup, Radio, FormControl, FormControlLabel } from "@mui/material";
 import { solveQuiz, deleteQuiz } from "../apis/quizApi";
 import '../styles/quiz/InQuiz.scss';
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ const InQuiz = ({ open, onClose, onStart, quizData, questionCount }) => {
   const {okAlert} = OkAlert();
   const {warningAlert} = WarningAlert();
   const { userId } = useSelector((state) => state.user);
+  const [quizMode, setQuizMode] = useState(0);
 
   const [selectedCount, setSelectedCount] = useState(questionCount);
 
@@ -44,8 +45,9 @@ const InQuiz = ({ open, onClose, onStart, quizData, questionCount }) => {
   
 
   const handleStartClick = () => {
+    const questionsCount = selectedCount;
     onStart(selectedCount);
-    dispatch(solveQuiz(quizData.id));
+    dispatch(solveQuiz({id: quizData.id, questionsCount, quizMode}));
     navi(`/solvequiz/${quizData.id}`);
     onClose();
   };
@@ -81,6 +83,23 @@ const InQuiz = ({ open, onClose, onStart, quizData, questionCount }) => {
       </DialogTitle>
       <DialogContent className="inquiz_dialog_content">
         <Typography variant="MPCT">{quizData.description}</Typography>
+
+        <RadioGroup
+            row
+            value={quizMode}
+            onChange={(e) => setQuizMode(e.target.value)}
+          >
+            <FormControlLabel
+              value={0}
+              control={<Radio />}
+              label="차례대로 풀기"
+            />
+            <FormControlLabel
+              value={1}
+              control={<Radio />}
+              label="랜덤으로 풀기"
+            />
+          </RadioGroup>
         <Box className="inquiz_dialog_menuitem">
           <TextField
             select
@@ -89,6 +108,7 @@ const InQuiz = ({ open, onClose, onStart, quizData, questionCount }) => {
             value={selectedCount}
             onChange={(e) => setSelectedCount(Number(e.target.value))}
           >
+            
             {getSelectableCounts().map((count) => (
               <MenuItem key={count} value={count}>
                 {count} 문제

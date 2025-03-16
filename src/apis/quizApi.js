@@ -125,17 +125,18 @@ export const getCountQP = createAsyncThunk(
 );
 
 export const solveQuiz = createAsyncThunk(
-    'quiz/solvequiz',
-    async (id, thunkAPI) => {
-        try {
-            const response = await axios.get(
-                `http://localhost:8080/quiz/solvequiz/${id}`,
-            );
-            return response.data.questions;
-        } catch(e) {
-            return thunkAPI.rejectWithValue(e);
-        }
-    } 
+  'quiz/solvequiz',
+  async ({ id, questionsCount, quizMode }, thunkAPI) => {
+      try {
+          const response = await axios.post(
+              `http://localhost:8080/quiz/solvequiz/${id}`, 
+              {questionsCount, quizMode}
+          );
+          return response.data.questions;
+      } catch (e) {
+          return thunkAPI.rejectWithValue(e);
+      }
+  }
 );
 
 export const deleteQuiz = createAsyncThunk(

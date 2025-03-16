@@ -168,7 +168,7 @@ const Home = () => {
           <Spinning loading={loading} />
       ) : (
       quizzes.length === 0 ? (
-          <Grid2 item xs={12} className="home__grid__imagebox">
+          <Grid2  xs={12} className="home__grid__imagebox">
             <img src='./alert/404.png' alt='퀴즈 없음' className="home__grid__imageboxs"/>
             <Typography variant="PBT" className="no-quizzes-message">
               퀴즈가 존재하지 않습니다.
@@ -176,7 +176,7 @@ const Home = () => {
           </Grid2>
         ) : (
           quizzes.map((card, index) => (
-            <Grid2 item key={index} onClick={() => handleCardClick(card)}>
+            <Grid2  key={index} onClick={() => handleCardClick(card)}>
               <motion.div
                 className="home__grid-item"
                 initial="hidden"

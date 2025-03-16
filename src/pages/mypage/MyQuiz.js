@@ -99,7 +99,7 @@ const MyQuiz = () => {
         ) : (
           <Grid2 container spacing={9} className="myquiz_info__grid">
             {myquizzes.map((card, index) => (
-              <Grid2 item key={index} onClick={() => handleCardClick(card)}>
+              <Grid2 key={index} onClick={() => handleCardClick(card)}>
                 <motion.div
                   className="myquiz_info__grid-item"
                   initial="hidden"

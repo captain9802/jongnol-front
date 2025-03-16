@@ -38,16 +38,19 @@ const Main = () => {
   }
 
   const images = [
-    "images/home/25.png",
+    "images/home/iphone1.png",
     "images/home/2.png",
     "images/home/3.png"
   ];
 
   useEffect(() => {
+    let isMounted = true;
+  
     const slideShow = async () => {
       try {
-        while (true) {
+        while (isMounted) {
           for (let i = 0; i < images.length; i++) {
+            if (!isMounted) return;
             await controls.start({ x: -100 * i + '%' });
             await new Promise(resolve => setTimeout(resolve, 3000));
           }
@@ -56,7 +59,12 @@ const Main = () => {
         console.error('슬라이드 에러', error);
       }
     };
+  
     slideShow();
+  
+    return () => {
+      isMounted = false;
+    };
   }, [controls, images.length]);
 
   const handleKeyPress = (event) => {
@@ -264,6 +272,7 @@ const Main = () => {
             { img: "images/home/main_people.png", title: "Any Where", description: "다른 사람이 만든 퀴즈를 손쉽게 접하고 자신의 것으로 만드세요." }
           ].map((feature, index) => (
             <motion.div
+            key={index}
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
