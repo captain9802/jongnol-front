@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+#  JongNol - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**JongNol**은 퀴즈를 생성하고 풀이하며, 사용자와 지식을 공유할 수 있는 플랫폼입니다.
+이 저장소는 JongNol 서비스의 **React 기반 프론트**입니다.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 주요 기능
 
-### `npm start`
+* 📄 퀴즈 생성 및 업로드 (`creatquiz.js`)
+* 🌟 퀴즈 풀이 및 정답 확인 (`solvequiz.js`, `resultquiz.js`)
+* 👤 로그인 및 마이페이지 관리
+* 🗺️ 메인 페이지 및 레이아웃 구성
+* ⚠️ 에러 페이지 구성
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📁 주요 포백 구조
 
-### `npm test`
+```
+src/
+├─ apis/               # 백엔드 API 통신 함수
+├─ components/         # 공통 케코 콘텐츠
+├─ pages/
+│   ├─ login/          # 로그인 화면
+│   ├─ main/           # 메인 화면
+│   ├─ mypage/         # 마이페이지
+│   ├─ quiz/           # 퀴즈 생성/풀이/결과
+│   └─ errorPage.js    # 에러 페이지
+├─ store/              # 상태 관리 (Redux 또는 자체 store)
+├─ slices/             # Redux 슬라이스 정의
+├─ App.js              # 라우티드 및 앱 진입점
+└─ index.js            # React 앱 엔트리포인트
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🛠 기술 스택
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| 범위        | 기술                           |
+| --------- | ---------------------------- |
+| Framework | React                        |
+| Routing   | React Router                 |
+| 상태관리      | Redux, 자체 store 구조           |
+| 스타일링      | CSS 모듈 + 글로벌 스타일 (`styles/`) |
+| API 통신    | Axios (`apis/` 내만 정의)        |
+| 인증        | JWT 기반 로그인 구현                |
+| 빌드 및 배포   | Vite 또는 CRA (추가 확인 필요)       |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ⚙️ 실행 방법
 
-### `npm run eject`
+```bash
+git clone https://github.com/captain9802/jongnol-front.git
+cd jongnol-front
+npm install
+npm run start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+> ⚠️ `.env` 파일에서 API 서버 주소(`REACT_APP_API_URL`) 등을 반드시 설정해야 합니다.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🔗 연동 백엔드
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* Backend: [jongnol-back](https://github.com/captain9802/jongnol-back)
+* 인증/퀴즈 API 통신은 Axios를 통해 처리됩니다.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 👨‍💼 개발자
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* 손우성 ([@captain9802](https://github.com/captain9802))
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
